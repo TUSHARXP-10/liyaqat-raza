@@ -1,0 +1,459 @@
+import * as THREE from 'three';
+import { nextFrame } from '../lib/math.js';
+
+// Every surface on the bottle is painted procedurally in canvas: no image
+// assets, crisp at any DPR. Each painter can run in three modes:
+//   color — albedo (sRGB)
+//   pbr   — packed ORM-style map: G = roughness, B = metalness
+//   bump  — height for engraving
+
+function makeCanvas(w, h) {
+  const c = document.createElement('canvas');
+  c.width = w;
+  c.height = h;
+  return [c, c.getContext('2d')];
+}
+
+function toTexture(canvas, { color = true, wrap = false, anisotropy = 8 } = {}) {
+  const t = new THREE.CanvasTexture(canvas);
+  t.colorSpace = color ? THREE.SRGBColorSpace : THREE.NoColorSpace;
+  t.anisotropy = anisotropy;
+  if (wrap) t.wrapS = t.wrapT = THREE.MirroredRepeatWrapping;
+  t.needsUpdate = true;
+  return t;
+}
+
+function goldGradient(ctx, y0, y1) {
+  const g = ctx.createLinearGradient(0, y0, 0, y1);
+  g.addColorStop(0, '#f3dd9c');
+  g.addColorStop(0.22, '#c1913f');
+  g.addColorStop(0.42, '#f1d894');
+  g.addColorStop(0.6, '#a9772c');
+  g.addColorStop(0.8, '#e7c77f');
+  g.addColorStop(1, '#9d6c28');
+  return g;
+}
+
+export function spacedText(ctx, text, x, y, spacing) {
+  const chars = [...text];
+  const widths = chars.map((ch) => ctx.measureText(ch).width);
+  const total = widths.reduce((a, b) => a + b, 0) + spacing * (chars.length - 1);
+  let cx = x - total / 2;
+  const align = ctx.textAlign;
+  ctx.textAlign = 'left';
+  chars.forEach((ch, i) => {
+    ctx.fillText(ch, cx, y);
+    cx += widths[i] + spacing;
+  });
+  ctx.textAlign = align;
+}
+
+const PBR = (rough, metal) => `rgb(0,${Math.round(rough * 255)},${Math.round(metal * 255)})`;
+
+function palette(ctx, mode, h) {
+  if (mode === 'color') {
+    return {
+      gold: goldGradient(ctx, 0, h),
+      groove: '#4a2f0f',
+      hi: 'rgba(255,242,205,0.55)',
+      black: '#0b0908',
+      inlay: goldGradient(ctx, 0, h),
+    };
+  }
+  if (mode === 'pbr') {
+    return { gold: PBR(0.24, 1), groove: PBR(0.5, 1), hi: null, black: PBR(0.12, 0), inlay: PBR(0.26, 1) };
+  }
+  return { gold: '#808080', groove: '#2c2c2c', hi: null, black: '#808080', inlay: '#a6a6a6' };
+}
+
+function groove(ctx, pal, pathFn, width = 3) {
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = pal.groove;
+  ctx.lineWidth = width;
+  pathFn();
+  ctx.stroke();
+  if (pal.hi) {
+    ctx.save();
+    ctx.translate(1.3, 1.3);
+    ctx.strokeStyle = pal.hi;
+    ctx.lineWidth = Math.max(1, width * 0.35);
+    pathFn();
+    ctx.stroke();
+    ctx.restore();
+  }
+}
+
+function starPath(ctx, cx, cy, r, points = 8, inner = 0.765, rot = -Math.PI / 2) {
+  ctx.beginPath();
+  for (let i = 0; i < points * 2; i++) {
+    const a = rot + (i * Math.PI) / points;
+    const rr = i % 2 ? r * inner : r;
+    const x = cx + Math.cos(a) * rr;
+    const y = cy + Math.sin(a) * rr;
+    i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+  }
+  ctx.closePath();
+}
+
+function brushed(ctx, x, y, w, h, alpha = 0.08) {
+  for (let yy = y; yy < y + h; yy += 2) {
+    ctx.fillStyle = `rgba(${Math.random() > 0.5 ? '255,245,215' : '60,35,5'},${Math.random() * alpha})`;
+    ctx.fillRect(x, yy, w, 1);
+  }
+}
+
+// Islamic eight-point star lattice, the engraved motif on the cap.
+function lattice(ctx, pal, x, y, w, h, cell) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(x, y, w, h);
+  ctx.clip();
+  const cols = Math.ceil(w / cell) + 1;
+  const rows = Math.ceil(h / cell) + 1;
+  const ox = x + (w - (cols - 1) * cell) / 2;
+  const oy = y + (h - (rows - 1) * cell) / 2;
+  for (let r = -1; r <= rows; r++) {
+    for (let c = -1; c <= cols; c++) {
+      const cx = ox + c * cell;
+      const cy = oy + r * cell;
+      groove(ctx, pal, () => starPath(ctx, cx, cy, cell * 0.42), 2.4);
+      groove(ctx, pal, () => { ctx.beginPath(); ctx.arc(cx, cy, cell * 0.13, 0, Math.PI * 2); }, 1.6);
+      // diamond joints between stars
+      const dx = cx + cell / 2, dy = cy + cell / 2, d = cell * 0.14;
+      groove(ctx, pal, () => {
+        ctx.beginPath();
+        ctx.moveTo(dx, dy - d); ctx.lineTo(dx + d, dy); ctx.lineTo(dx, dy + d); ctx.lineTo(dx - d, dy); ctx.closePath();
+      }, 1.6);
+    }
+  }
+  ctx.restore();
+}
+
+/* ------------------------------------------------------------------ Label */
+
+export async function makeLabelTextures(names) {
+  const W = 1024, H = 1448;
+  const draw = (ctx, pbr, name) => {
+    const gold = pbr ? PBR(0.3, 1) : goldGradient(ctx, 0, H);
+    ctx.fillStyle = pbr ? PBR(0.72, 0) : '#0a0908';
+    ctx.fillRect(0, 0, W, H);
+    if (!pbr) {
+      const v = ctx.createRadialGradient(W / 2, H * 0.42, 50, W / 2, H / 2, H * 0.75);
+      v.addColorStop(0, 'rgba(60,45,25,0.35)');
+      v.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = v;
+      ctx.fillRect(0, 0, W, H);
+      for (let i = 0; i < 9000; i++) {
+        ctx.fillStyle = `rgba(255,235,200,${Math.random() * 0.035})`;
+        ctx.fillRect(Math.random() * W, Math.random() * H, 1.5, 1.5);
+      }
+    }
+    const text = (str, font, y, spacing) => {
+      ctx.font = font;
+      ctx.textBaseline = 'alphabetic';
+      ctx.textAlign = 'center';
+      if (!pbr) {
+        ctx.fillStyle = 'rgba(0,0,0,0.9)';
+        spacedText(ctx, str, W / 2 + 3, y + 3, spacing);
+      }
+      ctx.fillStyle = gold;
+      spacedText(ctx, str, W / 2, y, spacing);
+    };
+
+    ctx.strokeStyle = gold;
+    ctx.lineWidth = 5;
+    ctx.strokeRect(36, 36, W - 72, H - 72);
+    ctx.lineWidth = 2;
+    ctx.strokeRect(54, 54, W - 108, H - 108);
+    ctx.fillStyle = gold;
+    [[54, 54], [W - 54, 54], [54, H - 54], [W - 54, H - 54]].forEach(([x, y]) => {
+      ctx.beginPath();
+      ctx.moveTo(x, y - 14); ctx.lineTo(x + 14, y); ctx.lineTo(x, y + 14); ctx.lineTo(x - 14, y);
+      ctx.fill();
+    });
+
+    ctx.font = '700 200px "Aref Ruqaa"';
+    ctx.textAlign = 'center';
+    if (!pbr) {
+      ctx.fillStyle = 'rgba(0,0,0,0.9)';
+      ctx.fillText('رضا', W / 2 + 4, 344);
+    }
+    ctx.fillStyle = gold;
+    ctx.fillText('رضا', W / 2, 340);
+
+    text('RAZA', '500 190px Cinzel', 590, 16);
+    text('PERFUME', '400 50px Cinzel', 688, 34);
+
+    ctx.strokeStyle = gold;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(W / 2 - 170, 800); ctx.lineTo(W / 2 - 22, 800);
+    ctx.moveTo(W / 2 + 22, 800); ctx.lineTo(W / 2 + 170, 800);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(W / 2, 786); ctx.lineTo(W / 2 + 13, 800); ctx.lineTo(W / 2, 814); ctx.lineTo(W / 2 - 13, 800);
+    ctx.fill();
+
+    text('PREMIUM LUXURY', '400 60px Cinzel', 960, 10);
+    text(name, '500 78px Cinzel', 1160, 14);
+    text('EAU DE PARFUM', '400 42px Cinzel', 1240, 9);
+  };
+
+  const out = {};
+  for (const name of names) {
+    const [c1, x1] = makeCanvas(W, H);
+    const [c2, x2] = makeCanvas(W, H);
+    draw(x1, false, name);
+    draw(x2, true, name);
+    out[name] = { map: toTexture(c1), pbr: toTexture(c2, { color: false }) };
+    await nextFrame();
+  }
+  return out;
+}
+
+/* -------------------------------------------------------------------- Cap */
+
+// Side canvas proportion matches an octagon face (0.551 wide x 0.7 tall).
+export function makeCapTextures() {
+  const W = 2048, H = 330, P = W / 8;
+  const side = (mode) => {
+    const [c, ctx] = makeCanvas(W, H);
+    const pal = palette(ctx, mode, H);
+    for (let i = 0; i < 8; i++) {
+      const x0 = i * P;
+      if (i % 2 === 0) {
+        ctx.fillStyle = pal.gold;
+        ctx.fillRect(x0, 0, P, H);
+        if (mode === 'color') brushed(ctx, x0, 0, P, H, 0.1);
+        groove(ctx, pal, () => { ctx.beginPath(); ctx.rect(x0 + 12, 12, P - 24, H - 24); }, 3);
+        groove(ctx, pal, () => { ctx.beginPath(); ctx.rect(x0 + 21, 21, P - 42, H - 42); }, 1.8);
+        lattice(ctx, pal, x0 + 25, 25, P - 50, H - 50, 46);
+      } else {
+        ctx.fillStyle = pal.black;
+        ctx.fillRect(x0, 0, P, H);
+        ctx.strokeStyle = pal.inlay;
+        ctx.lineWidth = 3;
+        ctx.strokeRect(x0 + 10, 10, P - 20, H - 20);
+        if (i === 1 || i === 7) {
+          ctx.save();
+          ctx.translate(x0 + P / 2, H / 2);
+          ctx.rotate(-Math.PI / 2);
+          ctx.fillStyle = pal.inlay;
+          ctx.font = '500 40px Cinzel';
+          ctx.textBaseline = 'middle';
+          spacedText(ctx, 'RAZA', 0, 2, 12);
+          ctx.restore();
+        }
+      }
+    }
+    return c;
+  };
+
+  const top = (mode) => {
+    const S = 512;
+    const [c, ctx] = makeCanvas(S, S);
+    const pal = palette(ctx, mode, S);
+    ctx.fillStyle = pal.gold;
+    ctx.fillRect(0, 0, S, S);
+    if (mode === 'color') {
+      const g = ctx.createRadialGradient(S / 2, S / 2, 20, S / 2, S / 2, S / 2);
+      g.addColorStop(0, 'rgba(255,240,200,0.35)');
+      g.addColorStop(1, 'rgba(90,55,10,0.35)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, S, S);
+    }
+    const cx = S / 2, cy = S / 2;
+    [236, 222, 150].forEach((r, i) => groove(ctx, pal, () => { ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); }, i === 1 ? 1.6 : 3));
+    // sixteen-point interlaced rosette
+    groove(ctx, pal, () => {
+      ctx.beginPath();
+      for (let i = 0; i < 16; i++) {
+        const a1 = (i / 16) * Math.PI * 2, a2 = ((i + 5) / 16) * Math.PI * 2;
+        ctx.moveTo(cx + Math.cos(a1) * 130, cy + Math.sin(a1) * 130);
+        ctx.lineTo(cx + Math.cos(a2) * 130, cy + Math.sin(a2) * 130);
+      }
+    }, 2.2);
+    groove(ctx, pal, () => starPath(ctx, cx, cy, 58), 2.4);
+    groove(ctx, pal, () => { ctx.beginPath(); ctx.arc(cx, cy, 20, 0, Math.PI * 2); }, 2);
+    for (let i = 0; i < 16; i++) {
+      const a = (i / 16) * Math.PI * 2;
+      groove(ctx, pal, () => starPath(ctx, cx + Math.cos(a) * 186, cy + Math.sin(a) * 186, 22, 8, 0.765, a), 1.8);
+    }
+    return c;
+  };
+
+  return {
+    side: {
+      map: toTexture(side('color')),
+      pbr: toTexture(side('pbr'), { color: false }),
+      bump: toTexture(side('bump'), { color: false }),
+    },
+    top: {
+      map: toTexture(top('color')),
+      pbr: toTexture(top('pbr'), { color: false }),
+      bump: toTexture(top('bump'), { color: false }),
+    },
+  };
+}
+
+/* ------------------------------------------------------------------- Coin */
+
+export function makeCoinTextures() {
+  const S = 512;
+  const draw = (mode) => {
+    const [c, ctx] = makeCanvas(S, S);
+    const pal = palette(ctx, mode, S);
+    ctx.fillStyle = pal.gold;
+    ctx.fillRect(0, 0, S, S);
+    const cx = S / 2, cy = S / 2;
+    if (mode === 'color') {
+      const g = ctx.createRadialGradient(cx - 60, cy - 80, 10, cx, cy, S / 2);
+      g.addColorStop(0, 'rgba(255,245,210,0.45)');
+      g.addColorStop(1, 'rgba(80,45,5,0.45)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, S, S);
+    }
+    groove(ctx, pal, () => { ctx.beginPath(); ctx.arc(cx, cy, 238, 0, Math.PI * 2); }, 4);
+    groove(ctx, pal, () => { ctx.beginPath(); ctx.arc(cx, cy, 200, 0, Math.PI * 2); }, 2);
+    for (let i = 0; i < 60; i++) {
+      const a = (i / 60) * Math.PI * 2;
+      groove(ctx, pal, () => { ctx.beginPath(); ctx.arc(cx + Math.cos(a) * 219, cy + Math.sin(a) * 219, 3, 0, Math.PI * 2); }, 2);
+    }
+    ctx.font = '600 280px Cinzel';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    if (mode === 'color') {
+      ctx.fillStyle = 'rgba(60,35,5,0.85)';
+      ctx.fillText('R', cx + 6, cy + 20);
+      ctx.fillStyle = 'rgba(255,245,215,0.9)';
+      ctx.fillText('R', cx - 3, cy + 11);
+      ctx.fillStyle = goldGradient(ctx, cy - 140, cy + 140);
+      ctx.fillText('R', cx, cy + 14);
+    } else if (mode === 'bump') {
+      ctx.fillStyle = '#e8e8e8';
+      ctx.fillText('R', cx, cy + 14);
+    } else {
+      ctx.fillStyle = PBR(0.16, 1);
+      ctx.fillText('R', cx, cy + 14);
+    }
+    return c;
+  };
+  return {
+    map: toTexture(draw('color')),
+    pbr: toTexture(draw('pbr'), { color: false }),
+    bump: toTexture(draw('bump'), { color: false }),
+  };
+}
+
+/* ----------------------------------------------------------------- Marble */
+
+// Black marble with fractured gold veins. Pixel-by-pixel noise, chunked across
+// frames so the preloader keeps animating while it paints.
+async function paintMarble(noise, w, h, pxPerUnit, seedOffset, onRows) {
+  const [c, ctx] = makeCanvas(w, h);
+  const [cp, ctxp] = makeCanvas(w, h);
+  const img = ctx.createImageData(w, h);
+  const imgp = ctxp.createImageData(w, h);
+  const d = img.data, dp = imgp.data;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const wx = x / pxPerUnit + seedOffset, wy = y / pxPerUnit;
+      const n = noise.fbm3(wx * 1.1, wy * 1.1, 0.3, 5);
+      const cloud = noise.fbm3(wx * 0.6 + 9, wy * 0.6, 1.7, 3);
+      const v1 = Math.abs(Math.sin((wx * 0.9 + wy * 1.7 + n * 3.4) * 2.6));
+      const vein1 = 1 - Math.min(1, v1 / 0.05);
+      const crack = Math.abs(noise.noise3(wx * 2.4, wy * 2.4, 3.1) + n * 0.25);
+      const vein2 = 1 - Math.min(1, crack / 0.022);
+      const hair = Math.abs(noise.noise3(wx * 5.5, wy * 5.5, 7.7));
+      const vein3 = (1 - Math.min(1, hair / 0.012)) * 0.45;
+      let gold = Math.max(vein1 * 0.95, vein2 * 0.8, vein3);
+      gold *= 0.55 + 0.45 * (noise.noise3(wx * 3, wy * 3, 5) * 0.5 + 0.5);
+      const base = 10 + 16 * (n * 0.5 + 0.5) + 26 * Math.max(0, cloud) ** 2;
+      const i = (y * w + x) * 4;
+      d[i] = base * 1.02 + (214 - base) * gold;
+      d[i + 1] = base + (160 - base) * gold;
+      d[i + 2] = base * 0.94 + (78 - base) * gold;
+      d[i + 3] = 255;
+      dp[i] = 0;
+      dp[i + 1] = 255 * (0.42 - 0.14 * gold);
+      dp[i + 2] = 255 * Math.min(1, gold * 1.4);
+      dp[i + 3] = 255;
+    }
+    if (y % 10 === 0) await onRows(y / h);
+  }
+  ctx.putImageData(img, 0, 0);
+  ctxp.putImageData(imgp, 0, 0);
+  return [c, ctx, cp, ctxp];
+}
+
+export async function makeMarbleTextures(noise, onProgress = () => {}) {
+  // side: octagon with 8 faces 1.19 wide, 0.7 tall -> keep texels square
+  const SW = 3072, SH = 225, P = SW / 8;
+  const [side, sctx, sideP, sctxp] = await paintMarble(noise, SW, SH, 322, 0, async (p) => {
+    onProgress(p * 0.7);
+    await nextFrame();
+  });
+
+  // engraved RAZA on the front face
+  const engrave = (ctx, pbr) => {
+    ctx.font = '500 92px Cinzel';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    if (!pbr) {
+      ctx.fillStyle = 'rgba(0,0,0,0.85)';
+      spacedText(ctx, 'RAZA', P / 2 + 3, SH / 2 + 7, 17);
+      ctx.fillStyle = goldGradient(ctx, SH / 2 - 46, SH / 2 + 46);
+    } else {
+      ctx.fillStyle = PBR(0.22, 1);
+    }
+    spacedText(ctx, 'RAZA', P / 2, SH / 2 + 4, 17);
+  };
+  engrave(sctx, false);
+  engrave(sctxp, true);
+
+  const [top, , topP] = await paintMarble(noise, 512, 512, 165, 17.3, async (p) => {
+    onProgress(0.7 + p * 0.3);
+    await nextFrame();
+  });
+
+  onProgress(1);
+  return {
+    side: { map: toTexture(side), pbr: toTexture(sideP, { color: false }) },
+    top: { map: toTexture(top), pbr: toTexture(topP, { color: false }) },
+  };
+}
+
+/* ------------------------------------------------------- Liquid & sprites */
+
+export function makeSwirlTexture(noise) {
+  const S = 256;
+  const [c, ctx] = makeCanvas(S, S);
+  const img = ctx.createImageData(S, S);
+  for (let y = 0; y < S; y++) {
+    for (let x = 0; x < S; x++) {
+      const u = x / 64, v = y / 64;
+      const qx = noise.fbm3(u, v, 0.2, 3), qy = noise.fbm3(u + 5.2, v + 1.3, 0.2, 3);
+      const n = noise.fbm3(u + 3 * qx, v + 3 * qy, 1.4, 4) * 0.5 + 0.5;
+      const val = Math.pow(n, 1.6) * 255 * 1.4;
+      const i = (y * S + x) * 4;
+      img.data[i] = img.data[i + 1] = img.data[i + 2] = Math.min(255, 70 + val);
+      img.data[i + 3] = 255;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+  return toTexture(c, { color: false, wrap: true });
+}
+
+export function makeGlowTexture() {
+  const S = 256;
+  const [c, ctx] = makeCanvas(S, S);
+  const g = ctx.createRadialGradient(S / 2, S / 2, 0, S / 2, S / 2, S / 2);
+  g.addColorStop(0, 'rgba(255,255,255,1)');
+  g.addColorStop(0.25, 'rgba(255,255,255,0.45)');
+  g.addColorStop(0.6, 'rgba(255,255,255,0.1)');
+  g.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, S, S);
+  return toTexture(c);
+}

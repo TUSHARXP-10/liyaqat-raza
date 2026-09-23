@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="en" class="is-loading">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Raza Perfume — Scents That Tell Stories</title>
+  <meta name="description" content="Raza Perfume. Rooted in tradition since 1989 — rare fragrances inspired by Arabian heritage, crafted for the modern gentleman." />
+  <meta name="theme-color" content="#070504" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070504'/%3E%3Ctext x='32' y='44' font-family='serif' font-size='34' text-anchor='middle' fill='%23d4a94f'%3ER%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/styles/main.css" />
+</head>
+<body>
+
+  <!-- ============================================================ PRELOADER -->
+  <div class="preloader" data-preloader>
+    <div class="preloader__half preloader__half--top"></div>
+    <div class="preloader__half preloader__half--bottom"></div>
+    <div class="preloader__seam"></div>
+    <div class="preloader__inner">
+      <div class="preloader__mark">
+        <span class="preloader__arabic" data-pre-arabic>رضا</span>
+        <span class="preloader__word" data-pre-word>RAZA</span>
+        <span class="preloader__sub">Perfume · Est. 1989</span>
+      </div>
+      <div class="preloader__progress">
+        <span class="preloader__line"><span data-pre-bar></span></span>
+        <span class="preloader__count" data-pre-count>000</span>
+      </div>
+      <div class="preloader__enter" data-pre-enter>
+        <button class="btn btn--solid" type="button" data-enter="sound" data-magnetic>
+          <span class="btn__label">Enter with sound</span><span class="btn__arrow" aria-hidden="true">→</span>
+        </button>
+        <button class="link-quiet" type="button" data-enter="silent">Enter in silence</button>
+      </div>
+      <p class="preloader__hint">Best experienced with sound · Scroll to unfold the story</p>
+    </div>
+  </div>
+
+  <!-- ============================================================ BACKDROPS (fixed film set, behind the 3D stage) -->
+  <div class="backdrop" aria-hidden="true">
+    <div class="bd bd--hero" data-bd="hero">
+      <div class="bd__glow bd__glow--hero"></div>
+      <div class="bd__rays"></div>
+      <svg class="bd__arches bd__arches--far" data-arches="far" preserveAspectRatio="xMidYMax slice"></svg>
+      <svg class="bd__arches bd__arches--mid" data-arches="mid" preserveAspectRatio="xMidYMax slice"></svg>
+      <div class="bd__lanterns">
+        <span style="--x:18%;--y:22%;--d:0s"></span>
+        <span style="--x:34%;--y:14%;--d:1.3s"></span>
+        <span style="--x:71%;--y:17%;--d:.6s"></span>
+        <span style="--x:86%;--y:26%;--d:2.1s"></span>
+      </div>
+      <svg class="bd__arches bd__arches--near" data-arches="near" preserveAspectRatio="xMidYMax slice"></svg>
+      <div class="bd__floor"></div>
+    </div>
+
+    <div class="bd bd--anatomy" data-bd="anatomy">
+      <div class="bd__spot"></div>
+      <svg class="bd__rosette" data-rosette viewBox="-500 -500 1000 1000"></svg>
+      <div class="bd__smoke"><i></i><i></i><i></i></div>
+    </div>
+
+    <div class="bd bd--story" data-bd="story">
+      <div class="bd__past">
+        <div class="bd__film-scratches"><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="bd__present" data-bd-present>
+        <div class="bd__sky"></div>
+        <div class="bd__sun"></div>
+        <div class="bd__clouds"><i></i><i></i><i></i></div>
+        <svg class="bd__skyline bd__skyline--far" data-skyline="far" preserveAspectRatio="xMidYMax slice"></svg>
+        <svg class="bd__skyline bd__skyline--near" data-skyline="near" preserveAspectRatio="xMidYMax slice"></svg>
+        <div class="bd__haze"></div>
+      </div>
+    </div>
+
+    <div class="bd bd--founder" data-bd="founder">
+      <div class="bd__candlelight"></div>
+      <div class="bd__bokeh"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+
+    <div class="bd bd--collection" data-bd="collection">
+      <div class="bd__grade bd__grade--base" data-grade="0"></div>
+      <div class="bd__grade bd__grade--oud" data-grade="1"></div>
+      <div class="bd__grade bd__grade--musk" data-grade="2"></div>
+      <div class="bd__giant" data-giant>
+        <span data-giant-word="0">BASE</span>
+        <span data-giant-word="1">OUD</span>
+        <span data-giant-word="2">MUSK</span>
+      </div>
+      <div class="bd__floor bd__floor--collection"></div>
+    </div>
+
+    <div class="bd bd--journey" data-bd="journey">
+      <div class="bd__glow bd__glow--journey"></div>
+    </div>
+  </div>
+
+  <!-- ============================================================ 3D STAGE -->
+  <canvas class="webgl" data-webgl aria-hidden="true"></canvas>
+
+  <!-- anatomy callouts live above the stage, positioned from the 3D projection -->
+  <div class="callouts" data-callouts>
+    <svg class="callouts__lines" data-callout-lines></svg>
+    <ol class="callouts__list" aria-label="The anatomy of a Raza bottle">
+      <li class="callout" data-callout="cap" data-side="left">
+        <span class="callout__num">01</span><h3 class="callout__title">The Cap</h3>
+        <p>A bold signature. Inspired by Arabian heritage, crafted with precision.</p>
+      </li>
+      <li class="callout" data-callout="spray" data-side="right">
+        <span class="callout__num">02</span><h3 class="callout__title">The Spray</h3>
+        <p>A fine mist. Engineered for a luxurious and long-lasting experience.</p>
+      </li>
+      <li class="callout" data-callout="collar" data-side="left">
+        <span class="callout__num">03</span><h3 class="callout__title">The Collar</h3>
+        <p>A seamless fit. Precision machined for elegance and durability.</p>
+      </li>
+      <li class="callout" data-callout="bottle" data-side="right">
+        <span class="callout__num">04</span><h3 class="callout__title">The Bottle</h3>
+        <p>A statement piece. Made from crystal-grade glass, designed to last.</p>
+      </li>
+      <li class="callout" data-callout="fragrance" data-side="left">
+        <span class="callout__num">05</span><h3 class="callout__title">The Fragrance</h3>
+        <p>A blend of rare ingredients. Capturing emotions, memories and moments.</p>
+      </li>
+      <li class="callout" data-callout="base" data-side="right">
+        <span class="callout__num">06</span><h3 class="callout__title">The Base</h3>
+        <p>A solid foundation. Rooted in tradition, built for the future.</p>
+      </li>
+    </ol>
+  </div>
+
+  <!-- ============================================================ FX -->
+  <!-- sepia grade lives at the root so its blend mode reaches everything below -->
+  <div class="fx__film" data-film aria-hidden="true"></div>
+  <div class="fx" aria-hidden="true">
+    <div class="fx__vignette"></div>
+    <div class="fx__grain"></div>
+    <div class="fx__flash" data-flash></div>
+  </div>
+
+  <!-- ============================================================ CHROME -->
+  <header class="nav" data-nav>
+    <a class="logo" href="#hero" data-scrollto aria-label="Raza Perfume — home">
+      <span class="logo__arabic">رضا</span>
+      <span class="logo__word">RAZA</span>
+      <span class="logo__sub">Perfume</span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#hero" data-scrollto data-nav-link="hero" class="is-active"><span class="roll"><span data-text="Home">Home</span></span></a>
+      <a href="#story" data-scrollto data-nav-link="story"><span class="roll"><span data-text="Our Story">Our Story</span></span></a>
+      <a href="#collection" data-scrollto data-nav-link="collection"><span class="roll"><span data-text="Collections">Collections</span></span></a>
+      <a href="#anatomy" data-scrollto data-nav-link="anatomy"><span class="roll"><span data-text="Craftsmanship">Craftsmanship</span></span></a>
+      <a href="#founder" data-scrollto data-nav-link="founder"><span class="roll"><span data-text="Journal">Journal</span></span></a>
+      <a href="#journey" data-scrollto data-nav-link="journey"><span class="roll"><span data-text="Contact">Contact</span></span></a>
+    </nav>
+    <div class="nav__tools">
+      <button class="nav__search" type="button" aria-label="Search">
+        <span class="nav__search-label">Search</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+      </button>
+      <button class="nav__icon nav__bag" type="button" aria-label="Shopping bag" data-bag>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>
+        <span class="nav__bag-count" data-bag-count>0</span>
+      </button>
+      <button class="nav__icon" type="button" aria-label="Account">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="4"/><path d="M4 21c1.2-4 4.3-6 8-6s6.8 2 8 6"/></svg>
+      </button>
+      <button class="nav__burger" type="button" aria-label="Open menu" aria-expanded="false" data-burger><span></span><span></span></button>
+    </div>
+  </header>
+
+  <div class="menu" data-menu aria-hidden="true">
+    <nav class="menu__links">
+      <a href="#hero" data-scrollto><small>I</small>Home</a>
+      <a href="#anatomy" data-scrollto><small>II</small>Craftsmanship</a>
+      <a href="#story" data-scrollto><small>III</small>Our Story</a>
+      <a href="#founder" data-scrollto><small>IV</small>The Founder</a>
+      <a href="#collection" data-scrollto><small>V</small>Collections</a>
+      <a href="#journey" data-scrollto><small>VI</small>Contact</a>
+    </nav>
+    <p class="menu__foot">رضا · More than a fragrance. A legacy.</p>
+  </div>
+
+  <aside class="chapters" aria-label="Chapters" data-chapters>
+    <a href="#hero" data-scrollto data-chapter="hero"><span class="chapters__num">I</span><span class="chapters__name">Prologue</span></a>
+    <a href="#anatomy" data-scrollto data-chapter="anatomy"><span class="chapters__num">II</span><span class="chapters__name">The Anatomy</span></a>
+    <a href="#story" data-scrollto data-chapter="story"><span class="chapters__num">III</span><span class="chapters__name">Origins</span></a>
+    <a href="#founder" data-scrollto data-chapter="founder"><span class="chapters__num">IV</span><span class="chapters__name">The Founder</span></a>
+    <a href="#collection" data-scrollto data-chapter="collection"><span class="chapters__num">V</span><span class="chapters__name">Collection</span></a>
+    <a href="#journey" data-scrollto data-chapter="journey"><span class="chapters__num">VI</span><span class="chapters__name">The Journey</span></a>
+    <span class="chapters__track"><span data-chapters-fill></span></span>
+  </aside>
+
+  <button class="sound" type="button" data-sound aria-pressed="false" aria-label="Toggle ambient sound">
+    <span class="sound__bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="sound__label" data-sound-label>Sound off</span>
+  </button>
+
+  <div class="cursor" aria-hidden="true" data-cursor>
+    <div class="cursor__ring"><span class="cursor__text" data-cursor-text></span></div>
+    <div class="cursor__dot"></div>
+  </div>
+
+  <!-- ============================================================ STORY -->
+  <main class="story" id="top">
+
+    <!-- I · PROLOGUE -->
+    <section class="sec hero" id="hero" data-section="hero">
+      <div class="hero__content" data-hero-content>
+        <p class="eyebrow hero__eyebrow">
+          <span class="hero__eyebrow-line"></span>
+          <span data-hero-eyebrow>Base — The Original Essence</span>
+        </p>
+        <h1 class="hero__title" aria-label="Scents that tell stories">
+          <span class="hero__slide is-active" data-hero-slide="0" aria-hidden="true">
+            <span class="hero__line">Scents</span><span class="hero__line">that tell</span><span class="hero__line">stories</span>
+          </span>
+          <span class="hero__slide" data-hero-slide="1" aria-hidden="true">
+            <span class="hero__line">Rich.</span><span class="hero__line">Bold.</span><span class="hero__line">Timeless.</span>
+          </span>
+          <span class="hero__slide" data-hero-slide="2" aria-hidden="true">
+            <span class="hero__line">Pure.</span><span class="hero__line">Elegant.</span><span class="hero__line">Everlasting.</span>
+          </span>
+        </h1>
+        <p class="hero__lead" data-hero-lead>Rooted in tradition. Created for today. Raza Perfume brings you the finest scents, inspired by heritage, designed for modern gentlemen.</p>
+        <div class="hero__cta" data-hero-cta>
+          <a class="btn" href="#collection" data-scrollto data-magnetic data-cursor-label="Explore">
+            <span class="btn__label">Explore Collection</span><span class="btn__arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+        <div class="hero__pager" role="tablist" aria-label="Featured fragrance" data-hero-pager>
+          <button type="button" role="tab" class="is-active" data-hero-go="0" aria-selected="true"><span>01</span><i><b></b></i></button>
+          <button type="button" role="tab" data-hero-go="1" aria-selected="false"><span>02</span><i><b></b></i></button>
+          <button type="button" role="tab" data-hero-go="2" aria-selected="false"><span>03</span><i><b></b></i></button>
+        </div>
+      </div>
+      <p class="hero__aside" data-hero-aside><span>A legacy</span><span>in every</span><span>drop</span></p>
+      <div class="hero__scroll" data-hero-scroll>
+        <span>Scroll to begin the story</span>
+        <i></i>
+      </div>
+    </section>
+
+    <!-- II · THE ANATOMY -->
+    <section class="sec anatomy" id="anatomy" data-section="anatomy">
+      <div class="anatomy__pin" data-anatomy-pin>
+        <div class="anatomy__intro" data-anatomy-intro>
+          <p class="eyebrow"><span class="eyebrow__num">II</span> Craftsmanship</p>
+          <h2 class="display anatomy__title" data-split-chars>
+            <span class="display__line">The Anatomy</span>
+            <span class="display__line">of a Legend</span>
+          </h2>
+          <span class="rule" data-anatomy-rule></span>
+          <p class="anatomy__lead" data-split-lines>Every element of Raza is designed with purpose — a perfect balance of tradition, innovation and timeless craftsmanship.</p>
+        </div>
+        <div class="anatomy__counter" data-anatomy-counter aria-hidden="true">
+          <span class="anatomy__counter-now" data-anatomy-now>00</span><span class="anatomy__counter-total">/ 06</span>
+        </div>
+        <div class="anatomy__hint" data-anatomy-hint aria-hidden="true">Keep scrolling — watch it come apart</div>
+        <p class="anatomy__outro" data-anatomy-outro>Six elements. <em>One legend.</em></p>
+        <img class="anatomy__fallback" src="/media/anatomy.jpg" alt="The anatomy of a Raza bottle: cap, spray, collar, bottle, fragrance and base." loading="lazy" />
+      </div>
+    </section>
+
+    <!-- III · ORIGINS -->
+    <section class="sec story-sec" id="story" data-section="story">
+      <div class="story__pin" data-story-pin>
+        <div class="story__rewind" data-rewind>
+          <p class="story__rewind-label" data-rewind-label><span>◂◂</span> Rewinding time</p>
+          <div class="odometer" data-odometer aria-hidden="true"></div>
+          <p class="story__rewind-sub" data-rewind-sub>to where it all began</p>
+        </div>
+
+        <div class="story__copy" data-story-copy>
+          <p class="eyebrow"><span class="eyebrow__num">III</span> Our Story</p>
+          <h2 class="display story__title">
+            <span class="display__line" data-story-word>Established</span>
+            <span class="display__line"><span data-story-word>in</span> <span class="story__year" data-story-year>1989</span></span>
+          </h2>
+          <span class="rule" data-story-rule></span>
+          <p class="story__text" data-story-text>What began in 1989 as a small shop, fueled by a deep love for fragrances, has grown into Raza Perfume — a trusted name across generations. More than just scents, we create emotions, memories, and moments that last forever.</p>
+          <a class="btn" href="#founder" data-scrollto data-magnetic data-story-btn>
+            <span class="btn__label">Discover our journey</span><span class="btn__arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <figure class="story__photo" data-story-photo>
+          <div class="story__photo-inner" data-story-photo-inner>
+            <svg class="etching" viewBox="0 0 600 440" role="img" aria-label="The first Raza Perfume shop, established 1989">
+              <defs>
+                <pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                  <line x1="0" y1="0" x2="0" y2="5" stroke="#3a2714" stroke-width="1" />
+                </pattern>
+                <pattern id="hatchX" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-40)">
+                  <line x1="0" y1="0" x2="0" y2="5" stroke="#3a2714" stroke-width="1.1" />
+                </pattern>
+                <pattern id="stripes" width="22" height="10" patternUnits="userSpaceOnUse">
+                  <rect width="11" height="10" fill="#6b4a26" /><rect x="11" width="11" height="10" fill="#c9b184" />
+                </pattern>
+                <radialGradient id="photoVignette" cx="50%" cy="50%" r="70%">
+                  <stop offset="55%" stop-color="#000" stop-opacity="0" />
+                  <stop offset="100%" stop-color="#1a0f05" stop-opacity=".75" />
+                </radialGradient>
+                <radialGradient id="shopGlow" cx="50%" cy="40%" r="60%">
+                  <stop offset="0%" stop-color="#f6d58e" stop-opacity=".55" />
+                  <stop offset="100%" stop-color="#f6d58e" stop-opacity="0" />
+                </radialGradient>
+                <filter id="paperGrain" x="0" y="0" width="100%" height="100%">
+                  <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="4" result="n" />
+                  <feColorMatrix in="n" type="matrix" values="0 0 0 0 .23  0 0 0 0 .15  0 0 0 0 .07  0 0 0 .55 -.18" />
+                  <feComposite in2="SourceGraphic" operator="in" />
+                </filter>
+              </defs>
+              <rect width="600" height="440" fill="#d8c59d" />
+              <!-- street & sky -->
+              <rect y="0" width="600" height="46" fill="#e4d4b0" />
+              <rect y="398" width="600" height="42" fill="#b39a6d" />
+              <rect y="398" width="600" height="42" fill="url(#hatch)" opacity=".35" />
+              <!-- facade -->
+              <rect x="36" y="34" width="528" height="366" fill="#cdb68a" stroke="#3a2714" stroke-width="2" />
+              <rect x="36" y="34" width="528" height="30" fill="#b99f70" stroke="#3a2714" stroke-width="2" />
+              <g fill="#3a2714">
+                <rect x="46" y="66" width="6" height="8" /><rect x="66" y="66" width="6" height="8" /><rect x="86" y="66" width="6" height="8" /><rect x="106" y="66" width="6" height="8" /><rect x="126" y="66" width="6" height="8" /><rect x="146" y="66" width="6" height="8" /><rect x="166" y="66" width="6" height="8" /><rect x="186" y="66" width="6" height="8" /><rect x="206" y="66" width="6" height="8" /><rect x="226" y="66" width="6" height="8" /><rect x="246" y="66" width="6" height="8" /><rect x="266" y="66" width="6" height="8" /><rect x="286" y="66" width="6" height="8" /><rect x="306" y="66" width="6" height="8" /><rect x="326" y="66" width="6" height="8" /><rect x="346" y="66" width="6" height="8" /><rect x="366" y="66" width="6" height="8" /><rect x="386" y="66" width="6" height="8" /><rect x="406" y="66" width="6" height="8" /><rect x="426" y="66" width="6" height="8" /><rect x="446" y="66" width="6" height="8" /><rect x="466" y="66" width="6" height="8" /><rect x="486" y="66" width="6" height="8" /><rect x="506" y="66" width="6" height="8" /><rect x="526" y="66" width="6" height="8" /><rect x="546" y="66" width="6" height="8" />
+              </g>
+              <!-- pilasters -->
+              <rect x="36" y="78" width="30" height="322" fill="url(#hatch)" opacity=".55" />
+              <rect x="534" y="78" width="30" height="322" fill="url(#hatch)" opacity=".55" />
+              <line x1="66" y1="78" x2="66" y2="400" stroke="#3a2714" stroke-width="1.5" />
+              <line x1="534" y1="78" x2="534" y2="400" stroke="#3a2714" stroke-width="1.5" />
+              <!-- sign board -->
+              <rect x="128" y="84" width="344" height="70" fill="#2a1c0f" stroke="#8b6a3b" stroke-width="3" />
+              <rect x="136" y="91" width="328" height="56" fill="none" stroke="#8b6a3b" stroke-width="1" />
+              <text x="300" y="127" text-anchor="middle" font-family="Pinyon Script, cursive" font-size="36" fill="#ecdcb4">Raza Perfume</text>
+              <text x="300" y="143" text-anchor="middle" font-family="Cinzel, serif" font-size="9.5" letter-spacing="4" fill="#cbb07a">ESTD. 1989</text>
+              <!-- awning -->
+              <path d="M150 164 H450 L462 186 H138 Z" fill="url(#stripes)" stroke="#3a2714" stroke-width="1.5" />
+              <path d="M138 186 q9 12 18 0 q9 12 18 0 q9 12 18 0 q9 12 18 0 q9 12 18 0 q9 12 18 0 q9 12 18 0 q9 12 18 0 q9 12 18 0 q9 12 18 0 q9 12 18 0 q9 12 18 0 q9 12 18 0 q9 12 18 0 q9 12 18 0 q9 12 18 0 q9 12 18 0 q9 12 18 0" fill="#9c7c4c" stroke="#3a2714" stroke-width="1.2" />
+              <!-- shop opening -->
+              <rect x="156" y="196" width="288" height="204" fill="#3b2a18" stroke="#3a2714" stroke-width="2" />
+              <rect x="156" y="196" width="288" height="204" fill="url(#shopGlow)" />
+              <g stroke="#7a5d36" stroke-width="3">
+                <line x1="168" y1="236" x2="432" y2="236" /><line x1="168" y1="276" x2="432" y2="276" /><line x1="168" y1="316" x2="432" y2="316" />
+              </g>
+              <g fill="#c8a868" stroke="#2a1c0f" stroke-width=".8">
+                <rect x="174" y="218" width="10" height="18" rx="2" /><rect x="177" y="212" width="4" height="6" />
+                <rect x="192" y="222" width="14" height="14" rx="3" /><rect x="197" y="216" width="4" height="6" />
+                <rect x="214" y="214" width="9" height="22" rx="2" /><rect x="216.5" y="208" width="4" height="6" />
+                <rect x="232" y="220" width="16" height="16" rx="7" /><rect x="238" y="214" width="4" height="6" />
+                <rect x="256" y="216" width="10" height="20" rx="2" /><rect x="259" y="210" width="4" height="6" />
+                <rect x="340" y="218" width="12" height="18" rx="2" /><rect x="344" y="212" width="4" height="6" />
+                <rect x="360" y="222" width="14" height="14" rx="3" /><rect x="365" y="216" width="4" height="6" />
+                <rect x="382" y="214" width="9" height="22" rx="2" /><rect x="384.5" y="208" width="4" height="6" />
+                <rect x="400" y="220" width="16" height="16" rx="7" /><rect x="406" y="214" width="4" height="6" />
+                <rect x="176" y="258" width="14" height="18" rx="3" /><rect x="181" y="252" width="4" height="6" />
+                <rect x="198" y="262" width="10" height="14" rx="2" /><rect x="201" y="256" width="4" height="6" />
+                <rect x="216" y="256" width="16" height="20" rx="7" /><rect x="222" y="250" width="4" height="6" />
+                <rect x="240" y="260" width="10" height="16" rx="2" /><rect x="243" y="254" width="4" height="6" />
+                <rect x="350" y="258" width="14" height="18" rx="3" /><rect x="355" y="252" width="4" height="6" />
+                <rect x="372" y="262" width="10" height="14" rx="2" /><rect x="375" y="256" width="4" height="6" />
+                <rect x="390" y="256" width="16" height="20" rx="7" /><rect x="396" y="250" width="4" height="6" />
+                <rect x="412" y="260" width="10" height="16" rx="2" /><rect x="415" y="254" width="4" height="6" />
+                <rect x="180" y="298" width="16" height="18" rx="7" /><rect x="186" y="292" width="4" height="6" />
+                <rect x="204" y="300" width="10" height="16" rx="2" /><rect x="207" y="294" width="4" height="6" />
+                <rect x="388" y="298" width="16" height="18" rx="7" /><rect x="394" y="292" width="4" height="6" />
+                <rect x="410" y="300" width="10" height="16" rx="2" /><rect x="413" y="294" width="4" height="6" />
+              </g>
+              <!-- lantern -->
+              <line x1="300" y1="196" x2="300" y2="214" stroke="#2a1c0f" stroke-width="1.5" />
+              <path d="M292 214 h16 l-3 22 h-10 Z" fill="#e9c77f" stroke="#2a1c0f" stroke-width="1.2" />
+              <circle cx="300" cy="226" r="16" fill="#f6d58e" opacity=".25" />
+              <!-- shopkeeper -->
+              <g fill="#20150b">
+                <circle cx="300" cy="286" r="13" />
+                <path d="M300 272 c-10 0 -15 4 -15 8 l30 0 c0 -4 -5 -8 -15 -8Z" />
+                <path d="M270 340 q4 -38 30 -40 q26 2 30 40 Z" />
+              </g>
+              <!-- counter -->
+              <rect x="164" y="336" width="272" height="64" fill="#8b6a3b" stroke="#3a2714" stroke-width="2" />
+              <rect x="164" y="336" width="272" height="64" fill="url(#hatchX)" opacity=".4" />
+              <rect x="164" y="336" width="272" height="8" fill="#5a4022" />
+              <g fill="#e2c486" stroke="#2a1c0f" stroke-width=".8">
+                <rect x="214" y="318" width="12" height="18" rx="2" /><rect x="218" y="312" width="4" height="6" />
+                <rect x="370" y="320" width="16" height="16" rx="7" /><rect x="376" y="314" width="4" height="6" />
+              </g>
+              <!-- arched windows -->
+              <g stroke="#3a2714" stroke-width="2">
+                <path d="M84 340 V230 a28 34 0 0 1 56 0 V340 Z" fill="#3b2a18" />
+                <path d="M460 340 V230 a28 34 0 0 1 56 0 V340 Z" fill="#3b2a18" />
+              </g>
+              <g stroke="#a0845a" stroke-width="1.5" fill="none">
+                <line x1="112" y1="198" x2="112" y2="340" /><line x1="84" y1="270" x2="140" y2="270" />
+                <line x1="488" y1="198" x2="488" y2="340" /><line x1="460" y1="270" x2="516" y2="270" />
+              </g>
+              <rect x="80" y="340" width="64" height="8" fill="#a0845a" stroke="#3a2714" />
+              <rect x="456" y="340" width="64" height="8" fill="#a0845a" stroke="#3a2714" />
+              <!-- pots -->
+              <g>
+                <path d="M86 400 l6 -30 h26 l6 30 Z" fill="#7a5530" stroke="#3a2714" stroke-width="1.5" />
+                <path d="M105 372 q-26 -22 -14 -48 q10 18 14 48 q2 -34 22 -52 q4 30 -22 52" fill="#4d3a1e" />
+                <path d="M476 400 l6 -30 h26 l6 30 Z" fill="#7a5530" stroke="#3a2714" stroke-width="1.5" />
+                <path d="M495 372 q-26 -22 -14 -48 q10 18 14 48 q2 -34 22 -52 q4 30 -22 52" fill="#4d3a1e" />
+              </g>
+              <!-- aged photo treatment -->
+              <rect width="600" height="440" fill="#8a6a3a" opacity=".12" />
+              <rect width="600" height="440" filter="url(#paperGrain)" />
+              <rect width="600" height="440" fill="url(#photoVignette)" />
+              <g stroke="#f3e6c8" stroke-opacity=".35" stroke-width=".8">
+                <line x1="132" y1="0" x2="128" y2="440" /><line x1="421" y1="0" x2="424" y2="210" />
+              </g>
+            </svg>
+          </div>
+          <figcaption>Raza Perfume · The first shop · 1989</figcaption>
+        </figure>
+
+        <blockquote class="story__quote" data-story-quote>
+          <p class="handwritten">
+            <span data-quote-line>Fragrance is</span>
+            <span data-quote-line>a silent language</span>
+            <span data-quote-line>that speaks directly</span>
+            <span data-quote-line>to the heart.</span>
+          </p>
+          <footer>
+            <span class="signature" data-signature>Liyaqat</span>
+            <span class="story__quote-role">Founder, Raza Perfume</span>
+          </footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- IV · THE FOUNDER -->
+    <section class="sec founder" id="founder" data-section="founder">
+      <div class="founder__grid">
+        <figure class="founder__arch" data-founder-arch>
+          <div class="founder__arch-inner" data-founder-arch-inner>
+            <img class="founder__photo" src="/media/founder.jpg" alt="Liyaqat, founder of Raza Perfume" data-founder-photo />
+            <div class="candle" aria-hidden="true">
+              <div class="candle__glow"></div>
+              <div class="candle__flame"><i></i></div>
+              <div class="candle__wick"></div>
+              <div class="candle__wax"></div>
+            </div>
+            <span class="founder__arabic" aria-hidden="true">رضا</span>
+          </div>
+        </figure>
+
+        <div class="founder__copy">
+          <p class="eyebrow"><span class="eyebrow__num">IV</span> The Founder</p>
+          <h2 class="display founder__name" data-founder-name>Liyaqat</h2>
+          <span class="rule" data-founder-rule></span>
+          <p class="founder__text" data-founder-text>A visionary, a dreamer, and a connoisseur of fine fragrances. Liyaqat founded Raza with a simple belief — that a fragrance can be more than a scent; it can be a legacy.</p>
+          <a class="btn" href="#collection" data-scrollto data-magnetic data-founder-btn>
+            <span class="btn__label">Meet our founder</span><span class="btn__arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <div class="founder__burner" aria-hidden="true" data-burner>
+          <canvas class="founder__smoke" data-smoke></canvas>
+          <svg viewBox="0 0 200 300" class="burner">
+            <defs>
+              <linearGradient id="brass" x1="0" x2="1">
+                <stop offset="0" stop-color="#3a2410" /><stop offset=".35" stop-color="#b98a45" /><stop offset=".55" stop-color="#f0cf88" /><stop offset=".8" stop-color="#8a5f2a" /><stop offset="1" stop-color="#2a180a" />
+              </linearGradient>
+              <radialGradient id="ember"><stop offset="0" stop-color="#ffe2a0" /><stop offset=".5" stop-color="#ff9a30" /><stop offset="1" stop-color="#ff6a00" stop-opacity="0" /></radialGradient>
+              <filter id="emberBlur"><feGaussianBlur stdDeviation="3" /></filter>
+            </defs>
+            <ellipse cx="100" cy="160" rx="60" ry="40" fill="url(#ember)" filter="url(#emberBlur)" class="burner__ember" />
+            <circle cx="100" cy="22" r="7" fill="url(#brass)" />
+            <path d="M100 30 v10" stroke="#b98a45" stroke-width="3" />
+            <path d="M62 112 C62 70 82 44 100 40 C118 44 138 70 138 112 Z" fill="url(#brass)" />
+            <g fill="#ffb347" class="burner__holes">
+              <path d="M84 104 v-16 a6 7 0 0 1 12 0 v16 Z" /><path d="M104 104 v-16 a6 7 0 0 1 12 0 v16 Z" />
+              <circle cx="100" cy="66" r="4" />
+            </g>
+            <rect x="52" y="112" width="96" height="10" rx="2" fill="url(#brass)" />
+            <path d="M58 122 H142 L132 212 H68 Z" fill="url(#brass)" />
+            <g fill="#ffb347" class="burner__holes">
+              <path d="M76 180 v-26 a7 9 0 0 1 14 0 v26 Z" /><path d="M93 180 v-26 a7 9 0 0 1 14 0 v26 Z" /><path d="M110 180 v-26 a7 9 0 0 1 14 0 v26 Z" />
+              <circle cx="83" cy="196" r="3" /><circle cx="100" cy="196" r="3" /><circle cx="117" cy="196" r="3" />
+              <circle cx="100" cy="136" r="4" /><circle cx="80" cy="136" r="3" /><circle cx="120" cy="136" r="3" />
+            </g>
+            <rect x="64" y="212" width="72" height="8" rx="2" fill="url(#brass)" />
+            <path d="M88 220 H112 L108 256 H92 Z" fill="url(#brass)" />
+            <path d="M46 290 C58 262 80 254 100 254 C120 254 142 262 154 290 Z" fill="url(#brass)" />
+            <rect x="40" y="288" width="120" height="8" rx="3" fill="url(#brass)" />
+          </svg>
+        </div>
+      </div>
+
+      <blockquote class="founder__quote" data-founder-quote>
+        <p class="founder__quote-text" data-quote-words>True luxury is not seen,<br />it is felt.</p>
+        <cite>— <span class="signature">Liyaqat</span></cite>
+      </blockquote>
+    </section>
+
+    <!-- V · COLLECTION -->
+    <section class="sec collection" id="collection" data-section="collection">
+      <div class="collection__pin" data-collection-pin>
+        <header class="collection__head">
+          <p class="eyebrow"><span class="eyebrow__num">V</span> Our Collection</p>
+          <h2 class="display collection__title" data-split-chars>
+            <span class="display__line">Discover</span>
+            <span class="display__line">our fragrances</span>
+          </h2>
+        </header>
+
+        <div class="collection__details" data-variants>
+          <article class="variant is-active" data-variant="0">
+            <p class="variant__index">01 <span>/ 03</span></p>
+            <h3 class="variant__name" data-variant-name>Base</h3>
+            <p class="variant__tag">The Original Essence</p>
+            <p class="variant__desc">The signature that started it all. Warm amber and precious woods, balanced with a whisper of spice — the scent of the House of Raza.</p>
+            <dl class="variant__notes">
+              <div><dt>Top</dt><dd>Saffron · Bergamot</dd></div>
+              <div><dt>Heart</dt><dd>Amber · Rose</dd></div>
+              <div><dt>Base</dt><dd>Sandalwood · Musk</dd></div>
+            </dl>
+          </article>
+          <article class="variant" data-variant="1">
+            <p class="variant__index">02 <span>/ 03</span></p>
+            <h3 class="variant__name" data-variant-name>Oud</h3>
+            <p class="variant__tag">Rich. Bold. Timeless.</p>
+            <p class="variant__desc">Smoked agarwood from ancient forests, deepened with leather and resin. A commanding trail that lingers long after you leave the room.</p>
+            <dl class="variant__notes">
+              <div><dt>Top</dt><dd>Black Pepper · Cardamom</dd></div>
+              <div><dt>Heart</dt><dd>Agarwood · Leather</dd></div>
+              <div><dt>Base</dt><dd>Incense · Vetiver</dd></div>
+            </dl>
+          </article>
+          <article class="variant" data-variant="2">
+            <p class="variant__index">03 <span>/ 03</span></p>
+            <h3 class="variant__name" data-variant-name>Musk</h3>
+            <p class="variant__tag">Pure. Elegant. Everlasting.</p>
+            <p class="variant__desc">Clean white musk wrapped in soft florals and powdered iris — quiet, luminous and impossibly close to the skin.</p>
+            <dl class="variant__notes">
+              <div><dt>Top</dt><dd>Neroli · Pear</dd></div>
+              <div><dt>Heart</dt><dd>Jasmine · Iris</dd></div>
+              <div><dt>Base</dt><dd>White Musk · Ambrette</dd></div>
+            </dl>
+          </article>
+          <div class="variant__actions">
+            <button class="btn btn--solid" type="button" data-add-to-bag data-magnetic>
+              <span class="btn__label">Add to bag</span><span class="btn__arrow" aria-hidden="true">+</span>
+            </button>
+            <a class="link-quiet" href="#journey" data-scrollto>Request a sample</a>
+          </div>
+        </div>
+
+        <nav class="collection__rail" aria-label="Choose a fragrance" data-rail>
+          <button type="button" class="rail-card is-active" data-rail-go="0">
+            <svg viewBox="0 0 40 64" aria-hidden="true" class="rail-card__bottle" style="--liquid:#c9761a"><rect x="12" y="2" width="16" height="10" rx="1.5" class="cap" /><rect x="16" y="12" width="8" height="5" class="neck" /><rect x="4" y="17" width="32" height="44" rx="4" class="glass" /><rect x="7" y="22" width="26" height="36" rx="2.5" class="liquid" /><rect x="12" y="29" width="16" height="22" class="label" /></svg>
+            <span class="rail-card__text"><strong>Base</strong><small>The Original Essence</small></span>
+          </button>
+          <button type="button" class="rail-card" data-rail-go="1">
+            <svg viewBox="0 0 40 64" aria-hidden="true" class="rail-card__bottle" style="--liquid:#2a150a"><rect x="12" y="2" width="16" height="10" rx="1.5" class="cap" /><rect x="16" y="12" width="8" height="5" class="neck" /><rect x="4" y="17" width="32" height="44" rx="4" class="glass" /><rect x="7" y="22" width="26" height="36" rx="2.5" class="liquid" /><rect x="12" y="29" width="16" height="22" class="label" /></svg>
+            <span class="rail-card__text"><strong>Oud</strong><small>Rich. Bold. Timeless.</small></span>
+          </button>
+          <button type="button" class="rail-card" data-rail-go="2">
+            <svg viewBox="0 0 40 64" aria-hidden="true" class="rail-card__bottle" style="--liquid:#efe6d4"><rect x="12" y="2" width="16" height="10" rx="1.5" class="cap" /><rect x="16" y="12" width="8" height="5" class="neck" /><rect x="4" y="17" width="32" height="44" rx="4" class="glass" /><rect x="7" y="22" width="26" height="36" rx="2.5" class="liquid" /><rect x="12" y="29" width="16" height="22" class="label" /></svg>
+            <span class="rail-card__text"><strong>Musk</strong><small>Pure. Elegant. Everlasting.</small></span>
+          </button>
+          <span class="collection__progress"><span data-collection-progress></span></span>
+        </nav>
+      </div>
+    </section>
+
+    <!-- PROMISES -->
+    <section class="sec promise" id="promise" data-section="promise" aria-label="Our promises">
+      <ul class="promise__list">
+        <li class="promise__item" data-promise>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M4 12h24v20H4z" /><path d="M28 18h9l7 7v7H28z" /><circle cx="12" cy="35" r="4" /><circle cx="36" cy="35" r="4" /><path d="M8 18h10M8 23h7" /></svg>
+          <div><h3>Free Shipping</h3><p>On orders above ₹999</p></div>
+        </li>
+        <li class="promise__item" data-promise>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4 7 10v12c0 11 7 18 17 22 10-4 17-11 17-22V10z" /><path d="m16 24 6 6 11-12" /></svg>
+          <div><h3>Secure Payments</h3><p>100% safe &amp; encrypted</p></div>
+        </li>
+        <li class="promise__item" data-promise>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 18h36v8H6z" /><path d="M9 26h30v17H9z" /><path d="M24 18v25" /><path d="M24 18c-3-8-12-10-12-4 0 3 5 4 12 4 7 0 12-1 12-4 0-6-9-4-12 4z" /></svg>
+          <div><h3>Exclusive Offers</h3><p>For our members</p></div>
+        </li>
+        <li class="promise__item" data-promise>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 28v-4a16 16 0 0 1 32 0v4" /><path d="M8 26h6v12H8zM34 26h6v12h-6z" /><path d="M40 38c0 4-5 6-12 6h-3" /></svg>
+          <div><h3>24/7 Support</h3><p>We're here for you</p></div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- VI · THE JOURNEY -->
+    <footer class="sec journey" id="journey" data-section="journey">
+      <div class="journey__top">
+        <a class="logo logo--lg" href="#hero" data-scrollto aria-label="Raza Perfume — back to top">
+          <span class="logo__arabic">رضا</span>
+          <span class="logo__word">RAZA</span>
+          <span class="logo__sub">Perfume</span>
+        </a>
+
+        <form class="subscribe" data-subscribe novalidate>
+          <p class="eyebrow">Join our journey</p>
+          <p class="subscribe__text">Be the first to know about new launches, offers and stories.</p>
+          <div class="subscribe__row">
+            <label class="sr-only" for="email">Email address</label>
+            <input id="email" type="email" placeholder="Enter your email" autocomplete="email" required />
+            <button class="btn btn--solid" type="submit" data-magnetic><span class="btn__label">Subscribe</span><span class="btn__arrow" aria-hidden="true">→</span></button>
+          </div>
+          <p class="subscribe__status" data-subscribe-status role="status" aria-live="polite"></p>
+        </form>
+
+        <div class="social">
+          <p class="eyebrow">Follow us</p>
+          <ul>
+            <li><a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.3" cy="6.7" r="1" class="fill" /></svg></a></li>
+            <li><a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M14 21v-8h3l.5-3.5H14V7.6c0-1 .4-1.8 1.9-1.8H18V2.7c-.4 0-1.6-.2-3-.2-3 0-4.6 1.7-4.6 4.8v2.2H7.5V13h2.9v8" /></svg></a></li>
+            <li><a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><rect x="2.5" y="5.5" width="19" height="13" rx="4" /><path d="m10 9 5 3-5 3z" class="fill" /></svg></a></li>
+            <li><a href="#" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M4 20l1.2-3.8A8.5 8.5 0 1 1 8 19z" /><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.6-2-1-1 1c-1.3-.5-2.4-1.6-2.9-2.9l1-1-1-2z" class="fill" /></svg></a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="journey__giant" data-giant-footer aria-hidden="true">
+        <span>R</span><span>A</span><span>Z</span><span>A</span>
+      </div>
+
+      <div class="journey__bottom">
+        <nav class="journey__links" aria-label="Footer">
+          <a href="#hero" data-scrollto>Home</a>
+          <a href="#story" data-scrollto>Our Story</a>
+          <a href="#collection" data-scrollto>Collections</a>
+          <a href="#founder" data-scrollto>Journal</a>
+          <a href="#journey" data-scrollto>Contact</a>
+          <a href="#journey" data-scrollto>FAQ</a>
+        </nav>
+        <p class="journey__copy">© 2026 Raza Perfume. All Rights Reserved.</p>
+        <p class="journey__sign">More than a fragrance.<br /><em>A legacy.</em></p>
+      </div>
+    </footer>
+  </main>
+
+  <noscript><style>.preloader{display:none}html.is-loading{overflow:auto}</style></noscript>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
