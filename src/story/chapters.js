@@ -152,8 +152,10 @@ function setupStory({ triggers: T }) {
   odo.set(year.v);
   const words = $$('[data-story-word]');
   const text = SplitText.create('[data-story-text]', { type: 'lines', mask: 'lines' }).lines;
+  const founderName = SplitText.create('[data-story-founder] .display__line', { type: 'words,chars' }).chars;
+  const founderText = SplitText.create('[data-founder-origin-text]', { type: 'lines', mask: 'lines' }).lines;
 
-  // where the big counter must land so it becomes the "1989" in the title
+  // where the big counter must land so it becomes the "1986" in the title
   const M = { dx: 0, dy: 0, scale: 0.3 };
   const offsetIn = (el) => {
     let x = 0, y = 0, n = el;
@@ -177,32 +179,45 @@ function setupStory({ triggers: T }) {
 
   const tl = gsap.timeline({
     defaults: { ease: 'none' },
-    scrollTrigger: { trigger: '#story', start: 'top top', end: '+=340%', pin: true, scrub: 1, anticipatePin: 1, invalidateOnRefresh: true },
+    scrollTrigger: { trigger: '#story', start: 'top top', end: '+=460%', pin: true, scrub: 1, anticipatePin: 1, invalidateOnRefresh: true },
   });
   T.story = tl.scrollTrigger;
 
-  tl.fromTo('[data-rewind-label]', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.04 }, 0)
-    .fromTo('[data-rewind-sub]', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.04 }, 0.02)
-    .to(year, { v: 1989, duration: 0.28, ease: 'power2.inOut', onUpdate: () => odo.set(year.v) }, 0.02)
-    .to(['[data-rewind-label]', '[data-rewind-sub]'], { autoAlpha: 0, duration: 0.04 }, 0.31)
-    .to(odoEl, { x: () => M.dx, y: () => M.dy, scale: () => M.scale, duration: 0.1, ease: 'power2.inOut' }, 0.32)
-    .from('#story .eyebrow', { autoAlpha: 0, x: -20, duration: 0.05 }, 0.33)
-    .from(words, { yPercent: 110, autoAlpha: 0, stagger: 0.02, duration: 0.06, ease: 'power3.out' }, 0.34)
-    .fromTo(slot, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.02 }, 0.415)
-    .to(odoEl, { autoAlpha: 0, duration: 0.02 }, 0.425)
-    .from('[data-story-rule]', { scaleX: 0, duration: 0.04 }, 0.42)
-    .from(text, { yPercent: 100, stagger: 0.01, duration: 0.05, ease: 'power3.out' }, 0.44)
-    .from('[data-story-btn]', { autoAlpha: 0, y: 20, duration: 0.04 }, 0.5)
-    .fromTo('[data-story-photo]', { autoAlpha: 0, y: 260, rotation: -18 }, { autoAlpha: 1, y: 0, rotation: -5, duration: 0.12, ease: 'power3.out' }, 0.46)
-    .fromTo('[data-story-photo-inner]', { filter: 'brightness(2.6) sepia(1) blur(6px)' }, { filter: 'brightness(1) sepia(0.15) blur(0px)', duration: 0.14 }, 0.5)
+  // 1 · rewind to 1986
+  tl.fromTo('[data-rewind-label]', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.03 }, 0)
+    .fromTo('[data-rewind-sub]', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.03 }, 0.015)
+    .to(year, { v: 1986, duration: 0.2, ease: 'power2.inOut', onUpdate: () => odo.set(year.v) }, 0.015)
+    .to(['[data-rewind-label]', '[data-rewind-sub]'], { autoAlpha: 0, duration: 0.03 }, 0.22)
+    // 2 · the counter lands in the title: "Established in 1986"
+    .to(odoEl, { x: () => M.dx, y: () => M.dy, scale: () => M.scale, duration: 0.08, ease: 'power2.inOut' }, 0.23)
+    .from('[data-story-copy] .eyebrow', { autoAlpha: 0, x: -20, duration: 0.04 }, 0.24)
+    .from(words, { yPercent: 110, autoAlpha: 0, stagger: 0.015, duration: 0.05, ease: 'power3.out' }, 0.245)
+    .fromTo(slot, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.015 }, 0.3)
+    .to(odoEl, { autoAlpha: 0, duration: 0.015 }, 0.307)
+    .from('[data-story-rule]', { scaleX: 0, duration: 0.03 }, 0.3)
+    .from(text, { yPercent: 100, stagger: 0.008, duration: 0.04, ease: 'power3.out' }, 0.315)
+    // 3 · his photograph drops in and develops
+    .fromTo('[data-story-photo]', { autoAlpha: 0, y: 260, rotation: -18 }, { autoAlpha: 1, y: 0, rotation: -5, duration: 0.1, ease: 'power3.out' }, 0.33)
+    .fromTo('[data-story-photo-inner]', { filter: 'brightness(2.6) sepia(1) blur(6px)' }, { filter: 'brightness(1) sepia(0.15) blur(0px)', duration: 0.12 }, 0.36)
+    // 4 · the story gives way to the man who began it
+    .to('[data-story-copy]', { autoAlpha: 0, y: -40, duration: 0.05 }, 0.5)
+    .fromTo('[data-story-founder]', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01 }, 0.52)
+    .from('[data-story-founder] .eyebrow', { autoAlpha: 0, x: -20, duration: 0.04 }, 0.52)
+    .from(founderName, { yPercent: 120, rotate: 6, stagger: 0.004, duration: 0.05, ease: 'power3.out' }, 0.53)
+    .from('[data-founder-origin-rule]', { scaleX: 0, duration: 0.03 }, 0.56)
+    .from(founderText, { yPercent: 100, stagger: 0.008, duration: 0.04, ease: 'power3.out' }, 0.57)
+    .from('[data-story-btn]', { autoAlpha: 0, y: 20, duration: 0.03 }, 0.6)
     // on phones the photograph steps aside so the quote can take its place
     .to('[data-story-photo]', { autoAlpha: () => (isMobile() ? 0 : 1), y: () => (isMobile() ? -40 : 0), duration: 0.05 }, 0.62);
 
+  // 5 · his words, in his hand
   $$('[data-quote-line]').forEach((line, i) => {
-    tl.to(line, { clipPath: 'inset(-20% -12% -30% 0%)', duration: 0.05, ease: 'power1.inOut' }, 0.64 + i * 0.045);
+    tl.to(line, { clipPath: 'inset(-20% -12% -30% 0%)', duration: 0.06, ease: 'power1.inOut' }, 0.64 + i * 0.06);
   });
-  tl.to('[data-signature]', { clipPath: 'inset(-20% -25% -40% 0%)', duration: 0.06 }, 0.83)
-    .to('.story__quote-role', { opacity: 1, duration: 0.03 }, 0.86)
+  tl.to('[data-quote-translation]', { opacity: 1, y: 0, duration: 0.04 }, 0.75)
+    .to('[data-signature]', { clipPath: 'inset(-20% -25% -40% 0%)', duration: 0.06 }, 0.79)
+    .to('.story__quote-role', { opacity: 1, duration: 0.03 }, 0.85)
+    // 6 · colour returns
     .to('[data-bd-present]', { opacity: 1, duration: 0.1 }, 0.86)
     .to('[data-film]', { opacity: 0, duration: 0.08 }, 0.88)
     .set({}, {}, 1);
@@ -228,7 +243,8 @@ function setupFounder() {
     .fromTo('[data-founder-arch-inner]', { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.8, ease: 'expo.inOut' }, 0)
     .from('[data-founder-arch]', { autoAlpha: 0, duration: 1.2 }, 0)
     .from('#founder .eyebrow', { autoAlpha: 0, x: -20, duration: 1 }, 0.4)
-    .from(name, { yPercent: 110, stagger: 0.06, duration: 1.4, ease: 'expo.out' }, 0.5)
+    .from(name, { yPercent: 115, stagger: 0.035, duration: 1.4, ease: 'expo.out' }, 0.5)
+    .from('[data-founder-surname]', { autoAlpha: 0, y: 14, duration: 1.2, ease: 'expo.out' }, 0.95)
     .from('[data-founder-rule]', { scaleX: 0, duration: 1.2, ease: 'expo.out' }, 0.9)
     .from(text, { yPercent: 100, stagger: 0.08, duration: 1.2, ease: 'expo.out' }, 0.9)
     .from('[data-founder-btn]', { autoAlpha: 0, y: 20, duration: 1 }, 1.2)
@@ -377,7 +393,7 @@ function setupBackdropFades() {
   });
   gsap.fromTo('[data-skyline="near"]', { xPercent: 0 }, {
     xPercent: -4, ease: 'none', immediateRender: false,
-    scrollTrigger: { trigger: '#story', start: 'top top', end: () => `+=${innerHeight * 4.4}`, scrub: true },
+    scrollTrigger: { trigger: '#story', start: 'top top', end: () => `+=${innerHeight * 5.6}`, scrub: true },
   });
 }
 

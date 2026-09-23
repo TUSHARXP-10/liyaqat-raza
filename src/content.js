@@ -4,8 +4,8 @@
 export const BRAND = {
   name: 'Raza',
   arabic: 'رضا',
-  founder: 'Liyaqat',
-  established: 1989,
+  founder: 'Yasinali Sayyad',
+  established: 1986,
 };
 
 export const VARIANTS = [
