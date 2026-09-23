@@ -14,7 +14,7 @@ const CAM_Z = 12;
 
 // A warm product-photography studio, baked to a PMREM so glass and gold
 // pick up long softbox reflections instead of a generic room.
-function studioEnvironment(renderer) {
+export function studioEnvironment(renderer) {
   const env = new THREE.Scene();
   env.add(new THREE.Mesh(
     new THREE.SphereGeometry(30, 32, 16),

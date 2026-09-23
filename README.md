@@ -14,6 +14,32 @@ npm run preview  # serve the built dist/ locally
 
 Open with `?skip` (e.g. `http://localhost:5173/?skip`) to bypass the preloader while developing.
 
+## The Atelier (store)
+
+Chapter VI (`#shop`) lists all 95 fragrances from the client's `ONLINE LIST.xlsx` (`src/shop/products.js`).
+It has photos, tabs, search, sort, quick view, in-card quantity steppers and a bag drawer.
+Checkout opens WhatsApp to **+91 89760 35333** with the order written out. The call number
+**+91 90295 04320** appears in quick view, the bag and the footer.
+
+- **Photos:** studio renders of the Raza bottle in `public/media/products/`. Regenerate with
+  `npm run render:products` (needs Google Chrome). A real photo can replace any render via
+  `image_url` in Supabase.
+- **Prices:** until a product has a price it shows "Price on request". Set prices in Supabase
+  (Table Editor → `products` → `price`), or append a number to the row in `src/shop/products.js`.
+
+### Supabase setup (one time)
+
+1. Supabase → **SQL Editor**: paste and run `supabase/schema.sql`, then `supabase/seed.sql`.
+2. Supabase → **Project Settings → API Keys**: copy the **Publishable key**.
+3. Vercel → **Settings → Environment Variables**, then redeploy:
+   - `VITE_SUPABASE_URL` = `https://unsrlrbbgjecswbswncc.supabase.co`
+   - `VITE_SUPABASE_PUBLISHABLE_KEY` = the key from step 2
+
+Orders then land in the `orders` table (the `order_overview` view is the readable list) before
+the WhatsApp message is sent. The public key can only read products and place orders through
+`place_order`, which takes prices from the database. See the comments in `schema.sql`.
+Without these variables the store still works: it uses the bundled catalogue and goes straight to WhatsApp.
+
 ## Deploy (Vercel)
 
 The repo is Vercel-ready (`vercel.json`):

@@ -132,9 +132,12 @@ function lattice(ctx, pal, x, y, w, h, cell) {
 
 /* ------------------------------------------------------------------ Label */
 
-export async function makeLabelTextures(names) {
+// entries: a variant name ('BASE'), or a spec for shop renders:
+//   { key, line: 'LUXURY COLLECTION', title: 'Nº 07', footer: 'SINCE 1986' }
+export async function makeLabelTextures(entries) {
   const W = 1024, H = 1448;
-  const draw = (ctx, pbr, name) => {
+  const specOf = (e) => (typeof e === 'string' ? { key: e, line: 'PREMIUM LUXURY', title: e, footer: 'EAU DE PARFUM' } : e);
+  const draw = (ctx, pbr, spec) => {
     const gold = pbr ? PBR(0.3, 1) : goldGradient(ctx, 0, H);
     ctx.fillStyle = pbr ? PBR(0.72, 0) : '#0a0908';
     ctx.fillRect(0, 0, W, H);
@@ -149,8 +152,15 @@ export async function makeLabelTextures(names) {
         ctx.fillRect(Math.random() * W, Math.random() * H, 1.5, 1.5);
       }
     }
-    const text = (str, font, y, spacing) => {
+    // shrinks the line to fit inside the label's border when it runs long
+    const text = (str, font, y, spacing, maxWidth = 860) => {
       ctx.font = font;
+      const width = [...str].reduce((w, ch) => w + ctx.measureText(ch).width, 0) + spacing * ([...str].length - 1);
+      if (width > maxWidth) {
+        const k = maxWidth / width;
+        ctx.font = font.replace(/(\d+)px/, (_, px) => `${Math.floor(px * k)}px`);
+        spacing *= k;
+      }
       ctx.textBaseline = 'alphabetic';
       ctx.textAlign = 'center';
       if (!pbr) {
@@ -195,18 +205,19 @@ export async function makeLabelTextures(names) {
     ctx.moveTo(W / 2, 786); ctx.lineTo(W / 2 + 13, 800); ctx.lineTo(W / 2, 814); ctx.lineTo(W / 2 - 13, 800);
     ctx.fill();
 
-    text('PREMIUM LUXURY', '400 60px Cinzel', 960, 10);
-    text(name, '500 78px Cinzel', 1160, 14);
-    text('EAU DE PARFUM', '400 42px Cinzel', 1240, 9);
+    text(spec.line, '400 60px Cinzel', 960, 10);
+    text(spec.title, '500 78px Cinzel', 1160, 14);
+    text(spec.footer, '400 42px Cinzel', 1240, 9);
   };
 
   const out = {};
-  for (const name of names) {
+  for (const entry of entries) {
+    const spec = specOf(entry);
     const [c1, x1] = makeCanvas(W, H);
     const [c2, x2] = makeCanvas(W, H);
-    draw(x1, false, name);
-    draw(x2, true, name);
-    out[name] = { map: toTexture(c1), pbr: toTexture(c2, { color: false }) };
+    draw(x1, false, spec);
+    draw(x2, true, spec);
+    out[spec.key] = { map: toTexture(c1), pbr: toTexture(c2, { color: false }) };
     await nextFrame();
   }
   return out;

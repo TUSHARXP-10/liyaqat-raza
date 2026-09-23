@@ -3,6 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { Odometer } from '../ui/odometer.js';
 import { Smoke } from '../ui/smoke.js';
+import { initShop } from '../shop/shop.js';
 import { heroState } from './keyframes.js';
 
 // Every chapter's choreography. Pinned chapters scrub their timelines with
@@ -19,7 +20,9 @@ export function buildChapters(ctx) {
   setupAnatomy(ctx);
   setupStory(ctx);
   setupFounder(ctx);
-  setupCollection(ctx);
+  const shop = initShop(ctx);
+  setupCollection({ ...ctx, shop });
+  ctx.triggers.shopEnter = ScrollTrigger.create({ trigger: '#shop', start: 'top bottom', end: 'top top' });
   setupPromise(ctx);
   setupJourney();
   setupBackdropFades();
@@ -245,6 +248,7 @@ function setupFounder() {
     .from('#founder .eyebrow', { autoAlpha: 0, x: -20, duration: 1 }, 0.4)
     .from(name, { yPercent: 115, stagger: 0.035, duration: 1.4, ease: 'expo.out' }, 0.5)
     .from('[data-founder-surname]', { autoAlpha: 0, y: 14, duration: 1.2, ease: 'expo.out' }, 0.95)
+    .from('[data-founder-link]', { autoAlpha: 0, y: 10, duration: 1, ease: 'expo.out' }, 1.1)
     .from('[data-founder-rule]', { scaleX: 0, duration: 1.2, ease: 'expo.out' }, 0.9)
     .from(text, { yPercent: 100, stagger: 0.08, duration: 1.2, ease: 'expo.out' }, 0.9)
     .from('[data-founder-btn]', { autoAlpha: 0, y: 20, duration: 1 }, 1.2)
@@ -264,7 +268,7 @@ function setupFounder() {
 
 /* ------------------------------------------------------------- COLLECTION */
 
-function setupCollection({ triggers: T, lenis, ambient }) {
+function setupCollection({ triggers: T, lenis, ambient, shop }) {
   const title = SplitText.create('#collection .display__line', { type: 'words,chars' }).chars;
   const articles = $$('[data-variant]');
   const names = articles.map((a) => SplitText.create(a.querySelector('[data-variant-name]'), { type: 'words,chars' }).chars);
@@ -315,15 +319,12 @@ function setupCollection({ triggers: T, lenis, ambient }) {
     lenis.scrollTo(st.start + stops[i] * (st.end - st.start), { duration: 1.8 });
   }));
 
-  let bag = 0;
-  const badge = $('[data-bag-count]');
+  // the three house signatures share the Atelier's bag
+  const signatures = ['house-base', 'house-oud', 'house-musk'];
   const add = $('[data-add-to-bag]');
   const addLabel = add.querySelector('.btn__label');
   add.addEventListener('click', () => {
-    bag += 1;
-    badge.textContent = bag;
-    badge.classList.add('has-items');
-    gsap.fromTo(badge, { scale: 1.9 }, { scale: 1, duration: 0.9, ease: 'elastic.out(1, 0.4)' });
+    shop.add(signatures[current]);
     const name = articles[current].querySelector('[data-variant-name]').textContent.trim();
     addLabel.textContent = `${name} added ✓`;
     clearTimeout(add._t);
@@ -385,7 +386,7 @@ function setupBackdropFades() {
   fade('[data-bd="story"]', '[data-bd="anatomy"]', '#story', 'top bottom', 'top 15%');
   fade('[data-bd="founder"]', '[data-bd="story"]', '#founder', 'top bottom', 'top 20%');
   fade('[data-bd="collection"]', '[data-bd="founder"]', '#collection', 'top bottom', 'top top');
-  fade('[data-bd="journey"]', '[data-bd="collection"]', '#promise', 'top bottom', 'bottom 40%');
+  fade('[data-bd="journey"]', '[data-bd="collection"]', '#shop', 'top bottom', 'top 30%');
 
   gsap.fromTo('[data-rosette]', { rotation: -30, scale: 0.85 }, {
     rotation: 60, scale: 1.1, ease: 'none', immediateRender: false,
@@ -411,13 +412,16 @@ function setupChrome({ lenis, ambient }) {
     onUpdate: (self) => {
       const y = self.scroll();
       nav.classList.toggle('is-scrolled', y > 40);
-      nav.classList.toggle('is-hidden', self.direction === 1 && y > innerHeight * 0.6 && !menuOpen);
+      const away = self.direction === 1 && y > innerHeight * 0.6 && !menuOpen;
+      nav.classList.toggle('is-hidden', away);
+      document.documentElement.classList.toggle('nav-away', away);
       fill.style.transform = `scaleY(${self.progress})`;
     },
   });
 
-  const chapterOf = { hero: 'hero', anatomy: 'anatomy', story: 'story', founder: 'founder', collection: 'collection', promise: 'collection', journey: 'journey' };
+  const chapterOf = { hero: 'hero', anatomy: 'anatomy', story: 'story', founder: 'founder', collection: 'collection', shop: 'shop', promise: 'shop', journey: 'journey' };
   const setActive = (id) => {
+    document.documentElement.classList.toggle('in-shop', id === 'shop');
     $$('[data-chapter]').forEach((a) => a.classList.toggle('is-active', a.dataset.chapter === id));
     $$('[data-nav-link]').forEach((a) => a.classList.toggle('is-active', a.dataset.navLink === id));
   };

@@ -8,6 +8,22 @@ export const BRAND = {
   established: 1986,
 };
 
+// Shop settings come from environment variables (.env locally, Vercel →
+// Settings → Environment Variables in production). See .env.example.
+const env = import.meta.env || {};
+export const SHOP = {
+  // WhatsApp that receives orders — digits only, with country code
+  whatsapp: String(env.VITE_WHATSAPP_NUMBER || '918976035333').replace(/\D/g, ''),
+  // phone for calls
+  phone: '+919029504320',
+  phoneLabel: '+91 90295 04320',
+  whatsappLabel: '+91 89760 35333',
+  instagram: 'https://www.instagram.com/raza_perfumenx2kalyan/',
+  supabaseUrl: env.VITE_SUPABASE_URL || '',
+  supabaseKey: env.VITE_SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_ANON_KEY || '',
+  pageSize: 12,
+};
+
 export const VARIANTS = [
   {
     key: 'base',

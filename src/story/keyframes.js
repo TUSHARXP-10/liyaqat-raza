@@ -39,6 +39,6 @@ export const KEYFRAMES = [
   { at: ['collection', 0.78], d: { ry: 0.2 + TAU * 2, variant: 2 }, m: { y: 0.1 } },
   { at: ['collection', 1], d: { ry: 0.4 + TAU * 2, variant: 2 }, m: { y: 0.1 } },
 
-  // Exit — rises out of frame as the promises arrive
-  { at: ['promise', 0.6], d: { y: 1.3, s: 0.7, ry: 1 + TAU * 2, opacity: 0, halo: 0, splash: 0, dust: 0.6 }, m: { y: 1.3 } },
+  // Exit — rises out of frame as the Atelier (shop) arrives
+  { at: ['shopEnter', 0.6], d: { y: 1.3, s: 0.7, ry: 1 + TAU * 2, opacity: 0, halo: 0, splash: 0, dust: 0.6 }, m: { y: 1.3 } },
 ];

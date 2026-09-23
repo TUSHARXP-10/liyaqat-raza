@@ -180,6 +180,12 @@ export class Bottle {
     const collar = new THREE.Group();
     const ring = new THREE.Mesh(faceted(0.36, 0.42, 0.24, 12), m.crystal);
     collar.add(ring);
+    // the metal crimp that seals the neck, seen through the crystal
+    const crimp = new THREE.Mesh(
+      lathe([[0, -0.14], [0.2, -0.14], [0.215, -0.12], [0.215, 0.12], [0.2, 0.14], [0, 0.14]], 48),
+      m.goldSoft,
+    );
+    collar.add(crimp);
     add('collar', collar, 2.22, { y: 0.6, delay: 0.22 });
 
     // Spray: neck, crimped ferrule, actuator with nozzle
