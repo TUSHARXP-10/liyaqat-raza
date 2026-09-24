@@ -4,7 +4,7 @@
 export const BRAND = {
   name: 'Raza',
   arabic: 'رضا',
-  founder: 'Yasinali Sayyad',
+  founder: 'Yasinali Sayad',
   established: 1986,
 };
 
