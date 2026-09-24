@@ -22,18 +22,29 @@ view, the bag and the footer.
 
 **Updating products, prices and stock: the spreadsheet is the source of truth.**
 
-1. Edit `src/lib/ONLINE LIST.xlsx`, keeping the sections REGULAR / PREMIUM COLLECTION / LUXURY
-   COLLECTION and the columns SR NO · MATERIAL DISCRIPTION · COMPANY · QUANTITY · PRICE.
-   - PRICE: `499`, `₹ 499` or `499/-` all work. Leave it empty and the site offers
-     **Ask price on WhatsApp**.
-   - QUANTITY: leave it empty for "not tracked". `0` shows **Sold out** (add disabled, ask
-     availability instead). `1–5` shows **Only n left**, and customers can't add more than you have.
+1. Edit `src/lib/SHOP NX2 ONLINE LIST.xlsx`. Keep the sections REGULAR / PREMIUM COLLECTION /
+   LUXURY COLLECTION, with SR NO and MATERIAL DISCRIPTION (the name) in the first two columns.
+   The columns after the name are read from their heading, so they can be in any order:
+   - **Sizes:** columns headed `30ML`, `50ML`, `100ML`, `6ML`, `12ML` … hold one price per size.
+     A label on the row above the headings (`PERFUME`, `ATTAR`) sets the kind for the size columns
+     under it and to its right. The shop shows "From ₹150", and customers choose Perfume or Attar,
+     then the size, in quick view. Today every Regular fragrance comes in Perfume 30/50/100 ml
+     (₹250/₹400/₹900) and Attar 6/12 ml (₹150/₹250).
+   - **PRICE:** a single price, for products sold in one size. `499`, `₹ 499` or `499/-` all work.
+   - **No price:** a product without prices offers **Ask price on WhatsApp**. Premium and Luxury
+     are like this for now.
+   - **QUANTITY** (optional): leave it empty for "not tracked". `0` shows **Sold out** (add
+     disabled, ask availability instead). `1–5` shows **Only n left**, and customers can't add
+     more than you have.
 2. Run `npm run import:products`. It writes `src/shop/catalog.json` and refreshes
-   `supabase/seed.sql`, then reports counts plus anything it couldn't read (e.g. a price typed as
-   text) and any new product names.
+   `supabase/seed.sql`. It then reports counts, plus anything it couldn't read: a price typed as
+   text, a product listed twice in a section (the first is kept), or new product names.
 3. For a new product, add a tidy display name in `NAMES` (`src/shop/products.js`); until then it
    shows the sheet spelling in title case. Then run `npm run render:products -- <id>` for its photo,
    and commit.
+
+Product links stay valid when a fragrance moves collection: `?p=premium-dior-sauvage` still opens
+Dior Sauvage after it moved to Regular. A link can also open on a size: `?p=regular-dior-sauvage&size=attar-12ml`.
 
 With Supabase connected, the same prices and stock can also be changed live in the dashboard
 (`products` table). Re-running the seed never wipes a dashboard value with an empty spreadsheet cell.
@@ -49,10 +60,15 @@ With Supabase connected, the same prices and stock can also be changed live in t
   exist; sold-out items sink to the end.
 - **Shareable views:** active filters appear as removable pills and are kept in the address bar,
   so a filtered view can be shared.
-- **Product cards:** photo, number, collection, Inspired tag, stock badge, price or "Ask price",
-  and Add turning into a quantity stepper.
-- **Quick view:** quantity and stock, Ask on WhatsApp, share link, save, prev/next with keys or
-  swipe, and "More from this collection".
+- **Product cards:** photo, number, collection, Inspired tag, sizes ("Perfume & Attar · 5 sizes"),
+  stock badge, and a price ("From ₹150") or "Ask price". The button is "Choose" for fragrances
+  sold in sizes, and Add (which turns into a quantity stepper) for the rest.
+- **Quick view:** Perfume / Attar and size picker with each size's price. It remembers the last
+  size picked when moving to the next fragrance, and shows a count on sizes already in the bag.
+  Also quantity and stock, Ask on WhatsApp, share link (including the size), save, prev/next with
+  keys or swipe, and "More from this collection".
+- **Bag and order:** one line per size ("Cool Water, Attar · 12 ml × 3 — ₹750"), in the bag, the
+  WhatsApp message and the Supabase order. The database prices each size itself.
 - **Photos:** studio renders of the Raza bottle in `public/media/products/`
   (`npm run render:products`, needs Google Chrome). A real photo can replace any render via
   `image_url` in Supabase.

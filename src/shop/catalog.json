@@ -1,5 +1,5 @@
 {
-  "source": "ONLINE LIST.xlsx",
+  "source": "SHOP NX2 ONLINE LIST.xlsx",
   "products": [
     {
       "category": "regular",
@@ -7,7 +7,34 @@
       "sheetName": "COOL WATER",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -15,23 +42,104 @@
       "sheetName": "DESIRE",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
       "number": 3,
-      "sheetName": "BLUE JEAN",
+      "sheetName": "CREED MEN",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
       "number": 4,
-      "sheetName": "WHITE LOBNDON",
+      "sheetName": "WHITE LONDON",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -39,15 +147,69 @@
       "sheetName": "BLACK LONDON",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
       "number": 6,
-      "sheetName": "MAGNET",
+      "sheetName": "ARO MAGNET",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -55,7 +217,34 @@
       "sheetName": "LOMANI CODE",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -63,23 +252,104 @@
       "sheetName": "CR 7",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
       "number": 9,
-      "sheetName": "SEVEN EARTH",
+      "sheetName": "INVICTUS",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
       "number": 10,
-      "sheetName": "PONDS",
+      "sheetName": "M. PONDS",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -87,7 +357,34 @@
       "sheetName": "CHARLIE",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -95,15 +392,69 @@
       "sheetName": "HELMENTON GREEN",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
       "number": 13,
-      "sheetName": "FOREST SPICE",
+      "sheetName": "ARMANI BLACK",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -111,7 +462,34 @@
       "sheetName": "POLO SPORTS",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -119,7 +497,34 @@
       "sheetName": "POLO RED",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -127,15 +532,69 @@
       "sheetName": "B DELICIOUS",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
       "number": 17,
-      "sheetName": "WHITE MEERA",
+      "sheetName": "TOMMY GIRL",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -143,7 +602,34 @@
       "sheetName": "JAGUAR BLACK",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -151,7 +637,34 @@
       "sheetName": "GUCCI BAMBOO",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -159,7 +672,34 @@
       "sheetName": "BLACK EXCESS",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -167,15 +707,69 @@
       "sheetName": "COOL GIRL",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
       "number": 22,
-      "sheetName": "ROYAL BLUE",
+      "sheetName": "RASASI ROYAL BLUE",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -183,7 +777,34 @@
       "sheetName": "BLACK ORCHID",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -191,7 +812,34 @@
       "sheetName": "SILVER SENT",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -199,7 +847,34 @@
       "sheetName": "LACOST WHITE",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -207,7 +882,34 @@
       "sheetName": "HUGO BOSS",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -215,7 +917,34 @@
       "sheetName": "VERSACE",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -223,7 +952,34 @@
       "sheetName": "VERSACE EROSS",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -231,7 +987,34 @@
       "sheetName": "212 SEXY MEN",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -239,15 +1022,69 @@
       "sheetName": "BOMSHELL",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
       "number": 31,
-      "sheetName": "MARCO",
+      "sheetName": "BULGURI BLACK",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -255,7 +1092,34 @@
       "sheetName": "CK 1",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -263,7 +1127,34 @@
       "sheetName": "MOUNT BLANK LEGEND",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -271,7 +1162,34 @@
       "sheetName": "Z DEO",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -279,15 +1197,69 @@
       "sheetName": "X DEO",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
       "number": 36,
-      "sheetName": "TULIP",
+      "sheetName": "IMM INTENCE",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -295,15 +1267,69 @@
       "sheetName": "24 CARET",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
       "number": 38,
-      "sheetName": "TITAN SKIN RAW",
+      "sheetName": "ALLUR SPORTS",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -311,7 +1337,34 @@
       "sheetName": "ICE BURG",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -319,7 +1372,34 @@
       "sheetName": "POISON",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -327,7 +1407,34 @@
       "sheetName": "FARARI RED",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -335,15 +1442,69 @@
       "sheetName": "C K SUMMER",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
       "number": 43,
-      "sheetName": "AMERIGE",
+      "sheetName": "GUCCI BLOOM",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -351,7 +1512,34 @@
       "sheetName": "WHITE OUD",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -359,7 +1547,34 @@
       "sheetName": "RED ROSE",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -367,31 +1582,139 @@
       "sheetName": "ATTARFUL",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
       "number": 47,
-      "sheetName": "ORANGE",
+      "sheetName": "GUCCI FLORA",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
       "number": 48,
-      "sheetName": "SIGNATURE",
+      "sheetName": "ROYAL BLACK",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
       "number": 49,
-      "sheetName": "ARROW MAGNET",
+      "sheetName": "LOMANI",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -399,7 +1722,34 @@
       "sheetName": "555",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -407,23 +1757,104 @@
       "sheetName": "SWEET HEART",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
       "number": 52,
-      "sheetName": "SHARARAT",
+      "sheetName": "BRIGHT CRYSTAL",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
       "number": 53,
-      "sheetName": "LONDON NIGHT",
+      "sheetName": "T ROSE",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -431,7 +1862,34 @@
       "sheetName": "DEVID OFF CHAMPION",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -439,7 +1897,34 @@
       "sheetName": "BLUE LADY",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -447,7 +1932,34 @@
       "sheetName": "ROYAL MIRAJ BROWN",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -455,7 +1967,34 @@
       "sheetName": "DOVE",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
@@ -463,183 +2002,937 @@
       "sheetName": "C 5",
       "company": null,
       "quantity": null,
-      "price": null
-    },
-    {
-      "category": "regular",
-      "number": 59,
-      "sheetName": "PRIDE",
-      "company": null,
-      "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "regular",
       "number": 60,
-      "sheetName": "ROMANTIC MOOD",
+      "sheetName": "RUH GULAB",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
+    },
+    {
+      "category": "regular",
+      "number": 61,
+      "sheetName": "DIOR SAUVAGE",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
+    },
+    {
+      "category": "regular",
+      "number": 62,
+      "sheetName": "BLUE D CHENNAL",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
+    },
+    {
+      "category": "regular",
+      "number": 63,
+      "sheetName": "CREED AVENTUS",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
+    },
+    {
+      "category": "regular",
+      "number": 64,
+      "sheetName": "TERRE D HERMES",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
+    },
+    {
+      "category": "regular",
+      "number": 65,
+      "sheetName": "VERSACCE DALAN BLUE",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
+    },
+    {
+      "category": "regular",
+      "number": 66,
+      "sheetName": "ROYAL PROFECCY",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
+    },
+    {
+      "category": "regular",
+      "number": 67,
+      "sheetName": "ONE MILLION",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
+    },
+    {
+      "category": "regular",
+      "number": 69,
+      "sheetName": "BOSS NIGHT",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
+    },
+    {
+      "category": "regular",
+      "number": 70,
+      "sheetName": "CHOCLATE",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
+    },
+    {
+      "category": "regular",
+      "number": 71,
+      "sheetName": "BISCUTE",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
+    },
+    {
+      "category": "regular",
+      "number": 72,
+      "sheetName": "TOM F OMBER LEATHER",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
+    },
+    {
+      "category": "regular",
+      "number": 73,
+      "sheetName": "LOCOST",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
+    },
+    {
+      "category": "regular",
+      "number": 74,
+      "sheetName": "LACOST ALLURE P HOME",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
+    },
+    {
+      "category": "regular",
+      "number": 75,
+      "sheetName": "ICON",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": [
+        {
+          "type": "perfume",
+          "ml": 30,
+          "price": 250
+        },
+        {
+          "type": "perfume",
+          "ml": 50,
+          "price": 400
+        },
+        {
+          "type": "perfume",
+          "ml": 100,
+          "price": 900
+        },
+        {
+          "type": "attar",
+          "ml": 6,
+          "price": 150
+        },
+        {
+          "type": "attar",
+          "ml": 12,
+          "price": 250
+        }
+      ]
     },
     {
       "category": "premium",
       "number": 1,
-      "sheetName": "VICTORIA SECRET COCO SERO",
+      "sheetName": "T.F FUCKING FABOULOS",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "premium",
       "number": 2,
-      "sheetName": "CAFÉ ROSE",
+      "sheetName": "BULGARI TIGER",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "premium",
       "number": 3,
-      "sheetName": "ONE MILLION GOLD",
+      "sheetName": "DUBAI CHOCLATE",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "premium",
       "number": 4,
-      "sheetName": "ZUBRA",
+      "sheetName": "LAVEDER OUD",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "premium",
       "number": 5,
-      "sheetName": "KESAR CHANDAN",
+      "sheetName": "VANILLA",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "premium",
       "number": 6,
-      "sheetName": "MUKHALLAT EMRITES",
+      "sheetName": "LATAFA KHAMRA",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "premium",
       "number": 7,
-      "sheetName": "BADAR",
+      "sheetName": "LATAFA NAJDIYA",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "premium",
       "number": 8,
-      "sheetName": "NOPOLINE",
+      "sheetName": "SINGNETURE",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "premium",
       "number": 9,
-      "sheetName": "TOM FORD OUD WOOD",
+      "sheetName": "9PM",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "premium",
       "number": 10,
-      "sheetName": "L V IMAGINATION",
+      "sheetName": "SMOKE WISKY",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "premium",
       "number": 11,
-      "sheetName": "YSL TUXEDO",
+      "sheetName": "AQUA KISS",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "premium",
       "number": 12,
-      "sheetName": "BLOOD VEMPIRE",
+      "sheetName": "OT PARIS",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "premium",
       "number": 13,
-      "sheetName": "REPLICA FIRE PLACE",
+      "sheetName": "RAPLICA FIRE PLACE",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "premium",
       "number": 14,
-      "sheetName": "T.F FUCKING FABOULOS",
+      "sheetName": "ARMANI STRONGAR WITH YOU",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "premium",
       "number": 15,
-      "sheetName": "GUCCI FLORA",
+      "sheetName": "THE ONE",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "premium",
       "number": 16,
-      "sheetName": "DIOR SAVAGE",
+      "sheetName": "OUD INTENCE",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "premium",
       "number": 17,
-      "sheetName": "TABACCO VENILLA",
+      "sheetName": "MARSH MALLOW",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "premium",
       "number": 18,
-      "sheetName": "MOST WANTED",
+      "sheetName": "MADAWI GOLD",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "premium",
       "number": 19,
-      "sheetName": "COLLECTION OUD",
+      "sheetName": "LATAFA YARA",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "premium",
       "number": 20,
-      "sheetName": "ARBAB WARDAT 21",
+      "sheetName": "YSL Y",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 21,
+      "sheetName": "RM GOLD",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 22,
+      "sheetName": "ULTARA SUNESUA",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 23,
+      "sheetName": "AJMAL BLUE",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 24,
+      "sheetName": "T LEATHER",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 25,
+      "sheetName": "CK. GOLD",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 26,
+      "sheetName": "NEROLI PORTOFINO",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 27,
+      "sheetName": "NUDE SKIN",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 28,
+      "sheetName": "ONE MILLION GOLD",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 29,
+      "sheetName": "ONE MILLION PRIVE",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 30,
+      "sheetName": "SECRET MUSK",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 31,
+      "sheetName": "TITATAN RAW SKIN",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 32,
+      "sheetName": "CREAM D MUSK",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 34,
+      "sheetName": "GOLD SANDEL",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 35,
+      "sheetName": "KASTURI SANDEL",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 36,
+      "sheetName": "KESAR CHANDAN",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 37,
+      "sheetName": "HEENA",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 38,
+      "sheetName": "COPPER",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 39,
+      "sheetName": "SWISS ARABIAN FIRDOOS",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 40,
+      "sheetName": "GOOD GIRL",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 41,
+      "sheetName": "BULGURI AQUA",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 42,
+      "sheetName": "AQUA DGO",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "premium",
+      "number": 43,
+      "sheetName": "YSL MYSELF",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
     },
     {
       "category": "luxury",
@@ -647,7 +2940,8 @@
       "sheetName": "MADINA",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "luxury",
@@ -655,7 +2949,8 @@
       "sheetName": "ROUGER 540",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "luxury",
@@ -663,7 +2958,8 @@
       "sheetName": "RASASI HAWAS",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "luxury",
@@ -671,7 +2967,8 @@
       "sheetName": "ZARA AMBER",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "luxury",
@@ -679,7 +2976,8 @@
       "sheetName": "GREEN AJMERI",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "luxury",
@@ -687,15 +2985,17 @@
       "sheetName": "LV OMBER NOMARD",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "luxury",
       "number": 7,
-      "sheetName": "TOMFORD OMBER LEATHER",
+      "sheetName": "TOM FORD OUD SATIN MOOD",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "luxury",
@@ -703,23 +3003,26 @@
       "sheetName": "PURPLE OUD",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "luxury",
       "number": 9,
-      "sheetName": "KASTURI CHANDAN",
+      "sheetName": "COLLECTION OUD",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "luxury",
       "number": 10,
-      "sheetName": "AQUA KISS",
+      "sheetName": "OUD MOOD",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "luxury",
@@ -727,7 +3030,8 @@
       "sheetName": "TAM DAO",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "luxury",
@@ -735,31 +3039,170 @@
       "sheetName": "MUSK RIZALI",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "luxury",
       "number": 13,
-      "sheetName": "LEVENDER OUD",
+      "sheetName": "AFTERNOON SWIM",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "luxury",
       "number": 14,
-      "sheetName": "MONTAL HONEY OUD",
+      "sheetName": "RASASI HAWAS BLACK",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
     },
     {
       "category": "luxury",
       "number": 15,
-      "sheetName": "KHUS",
+      "sheetName": "AZARO MOST WANTED",
       "company": null,
       "quantity": null,
-      "price": null
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "luxury",
+      "number": 16,
+      "sheetName": "CAREMAL OUD",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "luxury",
+      "number": 17,
+      "sheetName": "L V IMAGINATION",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "luxury",
+      "number": 18,
+      "sheetName": "ARMAF CLUB D NOIT",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "luxury",
+      "number": 19,
+      "sheetName": "LATAFA KHAMRA QHAWA",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "luxury",
+      "number": 20,
+      "sheetName": "LATAFA WAHA",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "luxury",
+      "number": 21,
+      "sheetName": "KACCHA GULAB",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "luxury",
+      "number": 22,
+      "sheetName": "BIN SHAIKH",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "luxury",
+      "number": 23,
+      "sheetName": "AURUM",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "luxury",
+      "number": 24,
+      "sheetName": "RASASI HAWAS ICE",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "luxury",
+      "number": 25,
+      "sheetName": "EL ROJA AMBER EX",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "luxury",
+      "number": 26,
+      "sheetName": "GUCCI OUD",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "luxury",
+      "number": 27,
+      "sheetName": "GREATNESS OF OUD",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "luxury",
+      "number": 28,
+      "sheetName": "TURKISH OUD",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "luxury",
+      "number": 29,
+      "sheetName": "MAFIA",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
+    },
+    {
+      "category": "luxury",
+      "number": 30,
+      "sheetName": "VEMPIRE BLOOD",
+      "company": null,
+      "quantity": null,
+      "price": null,
+      "variants": []
     }
   ]
 }

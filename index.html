@@ -15,7 +15,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Raza Perfume" />
   <meta property="og:title" content="Raza Perfume — Scents That Tell Stories" />
-  <meta property="og:description" content="Since 1986: rare attars, ouds and perfumes from the House of Raza. Browse 95 fragrances and order on WhatsApp." />
+  <meta property="og:description" content="Since 1986: rare attars, ouds and perfumes from the House of Raza. Browse __PRODUCT_COUNT__ fragrances and order on WhatsApp." />
   <meta property="og:url" content="__SITE_URL__/" />
   <meta property="og:image" content="__SITE_URL__/og.jpg" />
   <meta property="og:image:width" content="1200" />
@@ -296,8 +296,19 @@
         </div>
         <p class="qv__tag" data-qv-tag>Inspired impression</p>
         <p class="qv__desc" data-qv-desc></p>
+        <div class="qv__options" data-qv-options hidden>
+          <div class="qv__opt" data-qv-types-wrap>
+            <p class="qv__opt-label" id="qv-type-label">Choose</p>
+            <div class="seg" role="radiogroup" aria-labelledby="qv-type-label" data-qv-types></div>
+          </div>
+          <div class="qv__opt">
+            <p class="qv__opt-label" id="qv-size-label">Size</p>
+            <div class="sizes" role="radiogroup" aria-labelledby="qv-size-label" data-qv-sizes></div>
+          </div>
+        </div>
         <div class="qv__pricing">
           <p class="qv__price" data-qv-price></p>
+          <p class="qv__unit" data-qv-unit></p>
           <p class="qv__stock" data-qv-stock></p>
         </div>
         <p class="qv__priceinfo" data-qv-priceinfo>Price and availability are confirmed with you on WhatsApp.</p>
@@ -376,7 +387,7 @@
           <a class="btn" href="#collection" data-scrollto data-magnetic data-cursor-label="Explore">
             <span class="btn__label">Explore Collection</span><span class="btn__arrow" aria-hidden="true">→</span>
           </a>
-          <a class="link-quiet hero__shop" href="#shop" data-scrollto>Shop all 95 fragrances</a>
+          <a class="link-quiet hero__shop" href="#shop" data-scrollto>Shop all __PRODUCT_COUNT__ fragrances</a>
         </div>
         <div class="hero__pager" role="tablist" aria-label="Featured fragrance" data-hero-pager>
           <button type="button" role="tab" class="is-active" data-hero-go="0" aria-selected="true"><span>01</span><i><b></b></i></button>
@@ -619,7 +630,7 @@
             <span class="display__line">fragrance</span>
           </h2>
         </div>
-        <p class="shop__lede">From everyday classics to rare ouds: <span data-shop-total>95</span> fragrances from the House of Raza. Add your favourites to the bag and send your order in a single WhatsApp message.</p>
+        <p class="shop__lede">From everyday classics to rare ouds: <span data-shop-total>__PRODUCT_COUNT__</span> fragrances from the House of Raza. Add your favourites to the bag and send your order in a single WhatsApp message.</p>
       </header>
 
       <div class="shop__controls" data-shop-controls>
@@ -631,7 +642,7 @@
         <div class="shop__row shop__row--tools">
           <label class="shop__search">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 21 21" /></svg>
-            <input type="search" placeholder="Search 95 fragrances" aria-label="Search fragrances" autocomplete="off" spellcheck="false" enterkeyhint="search" data-shop-search />
+            <input type="search" placeholder="Search __PRODUCT_COUNT__ fragrances" aria-label="Search fragrances" autocomplete="off" spellcheck="false" enterkeyhint="search" data-shop-search />
             <kbd class="shop__kbd" aria-hidden="true">/</kbd>
             <button class="shop__clear" type="button" aria-label="Clear search" data-shop-clear hidden>×</button>
           </label>

@@ -137,7 +137,7 @@ async function boot() {
   const land = () => {
     if (productId) {
       jumpTo(document.querySelector('#shop'));
-      story.shop.view(productId);
+      story.shop.view(productId, params.get('size'));
     } else if (hashTarget) {
       jumpTo(hashTarget);
     }

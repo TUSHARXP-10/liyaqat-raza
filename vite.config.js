@@ -1,5 +1,9 @@
 import { defineConfig } from 'vite';
+import { readFileSync } from 'node:fs';
 import { licensePage } from './scripts/license-page.mjs';
+
+// "Browse 145 fragrances" in link previews and page copy follows the spreadsheet
+const productCount = () => JSON.parse(readFileSync(new URL('./src/shop/catalog.json', import.meta.url), 'utf8')).products.length;
 
 // Public site address for link previews, canonical URL and sitemap.
 // On Vercel this comes from VERCEL_PROJECT_PRODUCTION_URL automatically;
@@ -10,7 +14,7 @@ const site = (process.env.SITE_URL
 function siteMeta() {
   return {
     name: 'raza-site-meta',
-    transformIndexHtml: (html) => html.replaceAll('__SITE_URL__', site),
+    transformIndexHtml: (html) => html.replaceAll('__SITE_URL__', site).replaceAll('__PRODUCT_COUNT__', productCount()),
     // /license.html is rendered from LICENSE.md, live in dev and at build
     configureServer(server) {
       server.middlewares.use('/license.html', (req, res) => {

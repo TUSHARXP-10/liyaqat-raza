@@ -36,7 +36,9 @@ const index = new WeakMap();
 function haystack(p) {
   let h = index.get(p);
   if (!h) {
-    const words = norm(`${p.name} ${p.sheetName || ''} ${CATEGORY_LABEL[p.category] || ''} ${p.inspired ? 'inspired' : 'raza original'}`);
+    // every fragrance is a perfume, so only other kinds (attar) help a search
+    const kinds = [...new Set((p.variants || []).map((v) => v.type).filter((t) => t && t !== 'perfume'))].join(' ');
+    const words = norm(`${p.name} ${p.sheetName || ''} ${CATEGORY_LABEL[p.category] || ''} ${p.inspired ? 'inspired' : 'raza original'} ${kinds}`);
     h = { text: ` ${words} `, words: [...new Set(words.split(' '))], name: norm(p.name) };
     index.set(p, h);
   }

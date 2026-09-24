@@ -9,6 +9,15 @@ const ORDER = { luxury: 0, premium: 1, regular: 2, house: 3 };
 export const catalog = {
   get: (id) => byId.get(id),
 
+  // by id, or by name for links shared before a fragrance moved collection
+  // (premium-dior-sauvage → regular-dior-sauvage)
+  resolve(id) {
+    const hit = byId.get(id);
+    if (hit?.active) return hit;
+    const name = String(id).replace(/^[a-z]+-/, '');
+    return catalog.list().find((p) => p.id.replace(/^[a-z]+-/, '') === name) || hit;
+  },
+
   // shop grid: most exclusive first
   list: () =>
     [...byId.values()]
@@ -18,7 +27,7 @@ export const catalog = {
   merge(rows) {
     const live = new Set(rows.map((r) => r.id));
     for (const r of rows) {
-      // Supabase is the source of truth for price/size; blank photo or
+      // Supabase is the source of truth for price/size/stock; blank photo or
       // description fields keep the bundled render and copy
       const fields = Object.fromEntries(Object.entries(r).filter(([k, v]) => v != null || k === 'price' || k === 'sizeMl' || k === 'stock'));
       byId.set(r.id, { ...byId.get(r.id), ...fields, active: true });

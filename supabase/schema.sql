@@ -30,6 +30,11 @@ alter table public.products add column if not exists image_url text;
 alter table public.products add column if not exists description text;
 -- units in stock; null = not tracked, 0 = sold out (orders refused)
 alter table public.products add column if not exists stock integer check (stock is null or stock >= 0);
+-- sizes a product is sold in, each with its own price (from the spreadsheet), e.g.
+--   [{"id": "perfume-30ml", "type": "perfume", "ml": 30, "price": 250, "label": "Perfume · 30 ml"}, …]
+-- empty = sold in one size, priced by `price`. For products with sizes, `price` is the lowest ("from") price.
+alter table public.products add column if not exists variants jsonb not null default '[]'::jsonb
+  check (jsonb_typeof(variants) = 'array');
 
 alter table public.products enable row level security;
 
@@ -67,6 +72,8 @@ create table if not exists public.order_items (
   unit_price    numeric(10, 2),
   quantity      integer not null check (quantity between 1 and 99)
 );
+-- the size ordered, e.g. "Attar · 12 ml" (null for products sold in one size)
+alter table public.order_items add column if not exists variant text;
 
 create index if not exists order_items_order_id_idx on public.order_items (order_id);
 create index if not exists orders_created_at_idx on public.orders (created_at desc);
@@ -80,7 +87,8 @@ revoke all on public.orders, public.order_items from anon, authenticated;
 
 -- --------------------------------------------------------------- place_order
 -- customer: {"name": "...", "phone": "...", "city": "...", "note": "..."}
--- items:    [{"id": "premium-dior-sauvage", "qty": 2}, ...]
+-- items:    [{"id": "regular-dior-sauvage", "v": "attar-12ml", "qty": 2}, {"id": "luxury-madina", "qty": 1}, ...]
+--           "v" = the size, for products sold in sizes
 create or replace function public.place_order(customer jsonb, items jsonb)
 returns table (order_id uuid, order_number bigint, subtotal numeric, has_unpriced boolean)
 language plpgsql
@@ -119,11 +127,21 @@ begin
   values (v_name, v_phone, v_city, v_note)
   returning * into v_order;
 
-  -- prices always come from the products table, never from the browser
-  insert into public.order_items (order_id, product_id, product_name, unit_price, quantity)
-  select v_order.id, p.id, p.name, p.price, least(greatest((i ->> 'qty')::int, 1), 99, coalesce(p.stock, 99))
+  -- prices always come from the products table, never from the browser; a
+  -- product sold in sizes is priced by the size chosen, and needs one
+  insert into public.order_items (order_id, product_id, product_name, variant, unit_price, quantity)
+  select v_order.id, p.id, p.name, s.label,
+         case when s.id is not null then s.price else p.price end,
+         least(greatest((i ->> 'qty')::int, 1), 99, coalesce(p.stock, 99))
   from jsonb_array_elements(items) as i
-  join public.products p on p.id = i ->> 'id' and p.active and (p.stock is null or p.stock > 0);
+  join public.products p on p.id = i ->> 'id' and p.active and (p.stock is null or p.stock > 0)
+  left join lateral (
+    select x ->> 'id' as id, coalesce(x ->> 'label', x ->> 'id') as label, (x ->> 'price')::numeric as price
+    from jsonb_array_elements(p.variants) as x
+    where x ->> 'id' = i ->> 'v'
+    limit 1
+  ) s on true
+  where jsonb_array_length(p.variants) = 0 or s.id is not null;
 
   get diagnostics v_lines = row_count;
   if v_lines = 0 then
@@ -190,7 +208,7 @@ select
   o.customer_city,
   o.subtotal,
   o.has_unpriced,
-  string_agg(oi.product_name || ' × ' || oi.quantity, ', ' order by oi.id) as items,
+  string_agg(oi.product_name || coalesce(' (' || oi.variant || ')', '') || ' × ' || oi.quantity, ', ' order by oi.id) as items,
   o.note
 from public.orders o
 join public.order_items oi on oi.order_id = o.id

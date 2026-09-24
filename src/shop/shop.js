@@ -1,7 +1,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SHOP } from '../content.js';
-import { CATEGORY_LABEL } from './products.js';
+import { CATEGORY_LABEL, TYPE_NOTE, typeLabel, hasSizes, variantOf, unitPrice } from './products.js';
 import { catalog } from './catalog.js';
 import { cart, limitFor } from './cart.js';
 import { wishlist } from './wishlist.js';
@@ -14,9 +14,10 @@ import { backendEnabled, fetchCatalog, submitOrder } from './backend.js';
 // Browsing: collection tabs + originals / inspired / saved filters, forgiving
 // search ("did you mean"), sort, grid or list layout; every filter is kept in
 // the address bar so a filtered view can be shared or bookmarked.
-// Buying: add / quantity steppers capped by stock, "Ask price" on WhatsApp
-// for anything not priced yet, and checkout that saves the order to Supabase
-// (when configured) and opens WhatsApp with the order written out.
+// Buying: add / quantity steppers capped by stock, a Perfume / Attar and size
+// picker for fragrances sold in sizes, "Ask price" on WhatsApp for anything
+// not priced yet, and checkout that saves the order to Supabase (when
+// configured) and opens WhatsApp with the order written out.
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -44,6 +45,17 @@ const collectionOf = (p) => (p.category === 'house' ? 'House signature' : `${CAT
 const soldOut = (p) => p.stock === 0;
 const lowStock = (p) => p.stock != null && p.stock > 0 && p.stock <= LOW_STOCK;
 const priceText = (p) => (p.price != null ? fmt(p.price) : 'Price on request');
+// "Perfume & Attar · 5 sizes"
+const sizesText = (p) => {
+  const types = [...new Set(p.variants.map((v) => v.type).filter(Boolean))].map(typeLabel);
+  const n = p.variants.length;
+  return `${types.length ? `${types.join(' & ')} · ` : ''}${n} size${n === 1 ? '' : 's'}`;
+};
+// the size a product opens on: the one last picked (same kind and ml) when it has it
+const pickSize = (p, pref) =>
+  p.variants.find((v) => v.type === pref?.type && v.ml === pref?.ml)
+  || p.variants.find((v) => v.type === pref?.type)
+  || p.variants[0];
 const store = {
   get: (k) => { try { return localStorage.getItem(k); } catch { return null; } },
   set: (k, v) => { try { localStorage.setItem(k, v); } catch { /* storage unavailable */ } },
@@ -105,13 +117,22 @@ function stockBadge(p) {
 }
 
 function priceBlock(p) {
-  if (p.price != null && !soldOut(p)) return `<span class="product__price">${fmt(p.price)}</span>`;
+  if (p.price != null && !soldOut(p)) {
+    const from = hasSizes(p) && new Set(p.variants.map((v) => v.price)).size > 1;
+    return `<span class="product__price">${from ? '<small>From</small> ' : ''}${fmt(p.price)}</span>`;
+  }
   return `<a class="product__ask" href="${esc(askUrl(p))}" target="_blank" rel="noopener" aria-label="Ask the price of ${esc(p.name)} on WhatsApp">${ICON_WA}<span>${soldOut(p) ? 'Ask availability' : 'Ask price'}</span></a>`;
 }
 
 function buyControl(p) {
   if (soldOut(p)) return '<button class="product__add" type="button" disabled>Sold out</button>';
   const q = cart.qtyOf(p.id);
+  // sold in sizes: the size is chosen in quick view
+  if (hasSizes(p)) {
+    return q
+      ? `<button class="product__add is-in" type="button" data-choose="${esc(p.id)}" aria-label="${q} in your bag. Choose another size of ${esc(p.name)}"><span class="product__check" aria-hidden="true">✓</span>${q} in bag</button>`
+      : `<button class="product__add" type="button" data-choose="${esc(p.id)}" aria-label="Choose a size of ${esc(p.name)}">Choose</button>`;
+  }
   if (!q) return `<button class="product__add" type="button" data-add="${esc(p.id)}" aria-label="Add ${esc(p.name)} to bag"><span aria-hidden="true">+</span> Add</button>`;
   const atMax = q >= limitFor(p.id);
   return `<div class="stepper" role="group" aria-label="${esc(p.name)} in your bag">
@@ -132,7 +153,7 @@ function productCard(p, query = '') {
   ${heartButton(p, 'heart product__heart')}
   <div class="product__body">
     <h3 class="product__name"><button type="button" data-view="${esc(p.id)}">${highlight(p.name, query, esc)}</button></h3>
-    <p class="product__meta"><span class="dot dot--${p.category}" aria-hidden="true"></span>${collectionOf(p)}${p.inspired ? '<span class="product__tag">Inspired</span>' : ''}</p>
+    <p class="product__meta"><span class="dot dot--${p.category}" aria-hidden="true"></span>${collectionOf(p)}${p.inspired ? '<span class="product__tag">Inspired</span>' : ''}${hasSizes(p) ? `<span class="product__sizes">${sizesText(p)}</span>` : ''}</p>
     <div class="product__foot">
       <div class="product__pricebox">${priceBlock(p)}</div>
       <div class="product__buy" data-buy="${esc(p.id)}">${buyControl(p)}</div>
@@ -159,10 +180,11 @@ function toast(p, message, { cta = 'View bag' } = {}) {
   toastTimer = setTimeout(() => el.classList.remove('is-on'), 2800);
 }
 
-function added(p, qty = 1) {
-  const got = cart.add(p.id, qty);
+function added(p, qty = 1, v = null) {
+  const got = cart.add(p.id, qty, v);
   if (!got) return toast(p, soldOut(p) ? `${p.name} is sold out` : `All ${limitFor(p.id)} in stock are in your bag`);
-  toast(p, got > 1 ? `${got} × ${p.name} added` : `${p.name} added to your bag`);
+  const what = v ? `${p.name}, ${variantOf(p, v)?.label}` : p.name;
+  toast(p, got > 1 ? `${got} × ${what} added` : `${what} added to your bag`);
   // bump the nav badge; clearProps hands scale back to CSS so an empty bag hides it
   gsap.fromTo('[data-bag-count], [data-bag-fab-count]', { scale: 1.9 }, { scale: 1, duration: 0.9, ease: 'elastic.out(1, 0.4)', clearProps: 'transform' });
 }
@@ -177,8 +199,8 @@ function toggleSaved(id) {
 // keep keyboard focus on the same control when a stepper re-renders
 function withFocus(fn) {
   const a = document.activeElement;
-  const id = a?.dataset?.inc || a?.dataset?.dec || a?.dataset?.add;
-  const kind = a?.dataset?.inc ? 'inc' : a?.dataset?.dec ? 'dec' : a?.dataset?.add ? 'add' : null;
+  const kind = ['inc', 'dec', 'add', 'choose'].find((k) => a?.dataset?.[k]);
+  const id = kind && a.dataset[kind];
   fn();
   if (!id) return;
   const scope = a.closest('[data-qv]') ? $('[data-qv]') : document;
@@ -335,7 +357,7 @@ function initGrid({ lenis, quickView }) {
     clearTimeout(urlTimer);
     urlTimer = setTimeout(() => {
       const u = new URL(location.href);
-      ['c', 'o', 'q', 'saved', 's', 'v', 'p'].forEach((k) => u.searchParams.delete(k));
+      ['c', 'o', 'q', 'saved', 's', 'v', 'p', 'size'].forEach((k) => u.searchParams.delete(k));
       if (state.cat !== 'all') u.searchParams.set('c', state.cat);
       if (state.origin !== 'all') u.searchParams.set('o', state.origin);
       if (state.q) u.searchParams.set('q', state.q);
@@ -477,6 +499,8 @@ function initGrid({ lenis, quickView }) {
     if (save) return toggleSaved(save.dataset.save);
     const view = e.target.closest('[data-view]');
     if (view) return quickView.open(view.dataset.view, results());
+    const choose = e.target.closest('[data-choose]');
+    if (choose) return quickView.open(choose.dataset.choose, results(), { toSizes: true });
     const addBtn = e.target.closest('[data-add]');
     if (addBtn) return added(catalog.get(addBtn.dataset.add));
     const inc = e.target.closest('[data-inc]');
@@ -523,8 +547,36 @@ function initQuickView({ lenis }) {
   const root = $('[data-qv]');
   const media = $('[data-qv-media]', root);
   const relatedWrap = $('[data-qv-related-wrap]', root);
-  const q = { list: [], index: 0, qty: 1, lastFocus: null };
+  const options = $('[data-qv-options]', root);
+  // v: the size shown · pref: the last kind + ml picked, carried to the next fragrance
+  const q = { list: [], index: 0, qty: 1, v: null, pref: null, lastFocus: null };
   const current = () => q.list[q.index];
+
+  // Perfume / Attar, then that kind's sizes, each with its price
+  function renderOptions(p, size) {
+    options.hidden = !size;
+    if (!size) return;
+    const types = [...new Set(p.variants.map((v) => v.type))];
+    $('[data-qv-types-wrap]', root).hidden = types.length < 2;
+    $('[data-qv-types]', root).innerHTML = types.map((t) => {
+      const on = t === size.type;
+      return `<button type="button" role="radio" class="seg__opt${on ? ' is-on' : ''}" aria-checked="${on}" tabindex="${on ? 0 : -1}" data-type="${esc(t ?? '')}"><b>${esc(typeLabel(t))}</b>${TYPE_NOTE[t] ? `<small>${esc(TYPE_NOTE[t])}</small>` : ''}</button>`;
+    }).join('');
+    $('[data-qv-sizes]', root).innerHTML = p.variants.filter((v) => v.type === size.type).map((v) => {
+      const on = v.id === size.id;
+      const n = cart.qtyOf(p.id, v.id);
+      const price = v.price != null ? fmt(v.price) : 'Ask';
+      return `<button type="button" role="radio" class="size${on ? ' is-on' : ''}" aria-checked="${on}" tabindex="${on ? 0 : -1}" data-size="${esc(v.id)}" aria-label="${v.ml} ml, ${price}${n ? `, ${n} in your bag` : ''}"><b>${v.ml} ml</b><span>${price}</span>${n ? `<i class="size__in" aria-hidden="true">${n}</i>` : ''}</button>`;
+    }).join('');
+  }
+
+  function choose(p, v) {
+    if (!v) return;
+    q.v = v.id;
+    q.pref = { type: v.type, ml: v.ml };
+    q.qty = 1;
+    render();
+  }
 
   function renderRelated(p) {
     if (p.category === 'house') {
@@ -543,19 +595,27 @@ function initQuickView({ lenis }) {
 
   function render() {
     const p = current();
+    const size = hasSizes(p) ? variantOf(p, q.v) || pickSize(p, q.pref) : null;
+    q.v = size?.id ?? null;
     const inBag = cart.qtyOf(p.id);
     const room = Math.max(0, limitFor(p.id) - inBag);
     q.qty = Math.max(1, Math.min(q.qty, room || 1));
-    media.innerHTML = photo(p, 'qv__img', { eager: true, alt: p.name });
-    markLoaded(media);
+    const photoId = media.firstElementChild?.dataset.photo;
+    if (photoId !== p.id) {
+      media.innerHTML = photo(p, 'qv__img', { eager: true, alt: p.name });
+      markLoaded(media);
+    }
     $('[data-qv-eyebrow]', root).textContent = `${collectionOf(p)} · No. ${pad(p.number)}`;
     $('[data-qv-title]', root).textContent = p.name;
     $('[data-qv-tag]', root).hidden = !p.inspired;
     $('[data-qv-desc]', root).textContent = describe(p);
+    renderOptions(p, size);
+    const unit = size ? size.price : p.price;
     const price = $('[data-qv-price]', root);
-    price.textContent = priceText(p);
-    price.classList.toggle('is-request', p.price == null);
-    $('[data-qv-priceinfo]', root).hidden = p.price != null;
+    price.textContent = unit != null ? fmt(unit) : 'Price on request';
+    price.classList.toggle('is-request', unit == null);
+    $('[data-qv-unit]', root).textContent = size ? size.label : '';
+    $('[data-qv-priceinfo]', root).hidden = unit != null;
     $('[data-qv-stock]', root).textContent = soldOut(p) ? 'Sold out' : lowStock(p) ? `Only ${p.stock} left` : p.stock != null ? 'In stock' : '';
     $('[data-qv-stock]', root).className = `qv__stock${soldOut(p) ? ' is-out' : lowStock(p) ? ' is-low' : ''}`;
     $('[data-qv-qty]', root).textContent = q.qty;
@@ -572,19 +632,23 @@ function initQuickView({ lenis }) {
     save.classList.toggle('is-on', on);
     save.setAttribute('aria-pressed', on);
     save.setAttribute('aria-label', on ? 'Remove from wishlist' : 'Save to wishlist');
-    $('[data-qv-inbag]', root).textContent = inBag ? `${inBag} in your bag` : '';
+    $('[data-qv-inbag]', root).textContent = !inBag ? ''
+      : size ? `In your bag: ${cart.linesOf(p.id).map((l) => `${variantOf(p, l.v)?.label} × ${l.qty}`).join(' · ')}`
+        : `${inBag} in your bag`;
     $('[data-qv-prev]', root).disabled = q.index === 0;
     $('[data-qv-next]', root).disabled = q.index === q.list.length - 1;
     $('[data-qv-pos]', root).textContent = q.list.length > 1 ? `${q.index + 1} / ${q.list.length}` : '';
     renderRelated(p);
   }
 
-  function open(id, list) {
+  // v: open on this size (shared links) · toSizes: focus the size picker
+  function open(id, list, { v = null, toSizes = false } = {}) {
     const p = catalog.get(id);
     if (!p) return;
     q.list = list?.some((x) => x.id === id) ? list : [p];
     q.index = q.list.findIndex((x) => x.id === id);
     q.qty = 1;
+    q.v = variantOf(p, v)?.id ?? null;
     if (!root.classList.contains('is-open')) q.lastFocus = document.activeElement;
     render();
     root.classList.add('is-open');
@@ -592,7 +656,13 @@ function initQuickView({ lenis }) {
     document.documentElement.classList.add('qv-open');
     lenis?.stop();
     $('.qv__info', root).scrollTop = 0;
-    setTimeout(() => ($('[data-qv-add]', root).disabled ? $('[data-qv-ask]', root) : $('[data-qv-add]', root)).focus(), 60);
+    setTimeout(() => {
+      const target = toSizes && !options.hidden ? $('.size.is-on', options)
+        : $('[data-qv-add]', root).disabled ? $('[data-qv-ask]', root) : $('[data-qv-add]', root);
+      target?.focus({ preventScroll: true });
+      // phones: bring the picker into view
+      if (toSizes && !options.hidden && isTouch()) options.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }, 60);
   }
 
   function close() {
@@ -608,6 +678,7 @@ function initQuickView({ lenis }) {
     if (i < 0 || i >= q.list.length) return;
     q.index = i;
     q.qty = 1;
+    q.v = null; // the next fragrance opens on the kind + size last picked
     render();
     gsap.fromTo(media.firstElementChild, { autoAlpha: 0, x: 30 * d }, { autoAlpha: 1, x: 0, duration: 0.6, ease: 'expo.out' });
   };
@@ -618,9 +689,36 @@ function initQuickView({ lenis }) {
   $('[data-qv-minus]', root).addEventListener('click', () => { q.qty = Math.max(1, q.qty - 1); render(); });
   $('[data-qv-plus]', root).addEventListener('click', () => { q.qty += 1; render(); });
   $('[data-qv-add]', root).addEventListener('click', () => {
-    added(current(), q.qty);
+    added(current(), q.qty, q.v);
     q.qty = 1;
     render();
+  });
+  options.addEventListener('click', (e) => {
+    const p = current();
+    const t = e.target.closest('[data-type]');
+    if (t) {
+      const type = t.dataset.type || null;
+      const ml = variantOf(p, q.v)?.ml;
+      // same ml in the other kind if it has one, else its first size
+      choose(p, p.variants.find((v) => v.type === type && v.ml === ml) || p.variants.find((v) => v.type === type));
+      return $('.seg__opt.is-on', options)?.focus();
+    }
+    const s = e.target.closest('[data-size]');
+    if (s) {
+      choose(p, variantOf(p, s.dataset.size));
+      $('.size.is-on', options)?.focus();
+    }
+  });
+  // radio groups: arrow keys move the choice (and don't page to the next fragrance)
+  options.addEventListener('keydown', (e) => {
+    const group = e.target.closest('[role="radiogroup"]');
+    const d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+    if (!group || !d) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const radios = $$('[role="radio"]', group);
+    const i = radios.indexOf(group.querySelector('[aria-checked="true"]'));
+    radios[(i + d + radios.length) % radios.length].click();
   });
   $('[data-qv-save]', root).addEventListener('click', () => toggleSaved(current().id));
   $('[data-qv-related]', root).addEventListener('click', (e) => {
@@ -649,7 +747,7 @@ function initQuickView({ lenis }) {
   // share a direct link to this fragrance (opens straight into quick view)
   $('[data-qv-share]', root).addEventListener('click', async () => {
     const p = current();
-    const url = `${location.origin}${location.pathname}?p=${encodeURIComponent(p.id)}`;
+    const url = `${location.origin}${location.pathname}?p=${encodeURIComponent(p.id)}${q.v ? `&size=${encodeURIComponent(q.v)}` : ''}`;
     const data = { title: `${p.name} · Raza Perfume`, text: `${p.name} from the House of Raza`, url };
     try {
       if (navigator.share) await navigator.share(data);
@@ -695,23 +793,27 @@ function initDrawer({ lenis }) {
   function render() {
     const items = cart.items;
     const count = cart.count();
-    list.innerHTML = items.map(({ id, qty }) => {
+    list.innerHTML = items.map(({ id, v, qty }) => {
       const p = catalog.get(id);
       if (!p) return '';
-      const line = p.price != null ? fmt(p.price * qty) : 'On request';
-      const atMax = qty >= limitFor(id);
-      return `<li class="cart__item" data-id="${esc(id)}">
+      const size = variantOf(p, v);
+      const unit = unitPrice(p, v);
+      const line = unit != null ? fmt(unit * qty) : 'On request';
+      const atMax = cart.qtyOf(id) >= limitFor(id);
+      const what = esc(size ? `${p.name}, ${size.label}` : p.name);
+      return `<li class="cart__item" data-id="${esc(id)}" data-v="${esc(v ?? '')}">
         <div class="cart__thumb">${photo(p, 'cart__img')}</div>
         <div class="cart__info">
           <p class="cart__name">${esc(p.name)}</p>
+          ${size ? `<p class="cart__variant">${esc(size.label)}${unit != null && qty > 1 ? ` <span>· ${fmt(unit)} each</span>` : ''}</p>` : ''}
           <p class="cart__meta">${collectionOf(p)}${lowStock(p) ? ` · <span class="cart__low">only ${p.stock} left</span>` : ''}</p>
-          <div class="stepper stepper--sm" role="group" aria-label="Quantity of ${esc(p.name)}">
+          <div class="stepper stepper--sm" role="group" aria-label="Quantity of ${what}">
             <button type="button" data-dec aria-label="One less">−</button><span>${qty}</span><button type="button" data-inc aria-label="One more"${atMax ? ' disabled' : ''}>+</button>
           </div>
         </div>
         <div class="cart__side">
           <span class="cart__line">${line}</span>
-          <button type="button" class="cart__remove" data-remove aria-label="Remove ${esc(p.name)}">Remove</button>
+          <button type="button" class="cart__remove" data-remove aria-label="Remove ${what}">Remove</button>
         </div>
       </li>`;
     }).join('');
@@ -761,9 +863,10 @@ function initDrawer({ lenis }) {
     const li = e.target.closest('[data-id]');
     if (!li) return;
     const id = li.dataset.id;
-    if (e.target.closest('[data-inc]')) cart.set(id, cart.qtyOf(id) + 1);
-    else if (e.target.closest('[data-dec]')) cart.set(id, cart.qtyOf(id) - 1);
-    else if (e.target.closest('[data-remove]')) cart.set(id, 0);
+    const v = li.dataset.v || null;
+    if (e.target.closest('[data-inc]')) cart.set(id, cart.qtyOf(id, v) + 1, v);
+    else if (e.target.closest('[data-dec]')) cart.set(id, cart.qtyOf(id, v) - 1, v);
+    else if (e.target.closest('[data-remove]')) cart.set(id, 0, v);
   });
 
   // remember contact details on this device for next time
@@ -786,7 +889,7 @@ function initDrawer({ lenis }) {
     const digits = customer.phone.replace(/\D/g, '');
     if (digits.length < 7 || digits.length > 15) return fail('Please enter a valid phone number.', 'phone');
 
-    const lines = cart.items.map((i) => ({ id: i.id, qty: i.qty }));
+    const lines = cart.items.map((i) => (i.v ? { id: i.id, v: i.v, qty: i.qty } : { id: i.id, qty: i.qty }));
     // desktop: open the WhatsApp tab inside the click so it isn't popup-blocked
     const popup = isTouch() ? null : window.open('', '_blank');
     submitBtn.disabled = true;
@@ -842,10 +945,12 @@ function orderMessage(customer, order) {
   const lines = ['Hello Raza Perfume! I would like to place an order.'];
   if (order) lines.push(`Order #${order.number}`);
   lines.push('');
-  cart.items.forEach(({ id, qty }, i) => {
+  cart.items.forEach(({ id, v, qty }, i) => {
     const p = catalog.get(id);
-    const price = p.price != null ? ` — ${fmt(p.price * qty)}` : ' — price on request';
-    lines.push(`${i + 1}. ${p.name} (${collectionOf(p)}, No. ${pad(p.number)}) × ${qty}${price}`);
+    const size = variantOf(p, v);
+    const unit = unitPrice(p, v);
+    const price = unit != null ? ` — ${fmt(unit * qty)}` : ' — price on request';
+    lines.push(`${i + 1}. ${p.name}${size ? `, ${size.label}` : ''} (${collectionOf(p)}, No. ${pad(p.number)}) × ${qty}${price}`);
   });
   const { subtotal, unpriced } = cart.totals();
   lines.push('');
@@ -890,9 +995,14 @@ export function initShop({ lenis }) {
   return {
     add(id) {
       const p = catalog.get(id);
-      if (p) added(p);
+      if (!p) return;
+      if (hasSizes(p)) quickView.open(id, catalog.list(), { toSizes: true });
+      else added(p);
     },
-    // deep links (?p=<id>) open with the whole catalogue for prev/next
-    view: (id) => quickView.open(id, catalog.list()),
+    // deep links (?p=<id>&size=<size>) open with the whole catalogue for prev/next
+    view: (id, v) => {
+      const p = catalog.resolve(id);
+      if (p) quickView.open(p.id, catalog.list(), { v });
+    },
   };
 }

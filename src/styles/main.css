@@ -1645,6 +1645,38 @@ html:not(.nav-away) .shop__controls { top: var(--nav-h); }
 .qv__rel-img.is-loaded { opacity: 1; }
 .qv__rel-img.is-fallback { width: 22px; height: auto; opacity: 1; }
 
+/* sizes: Perfume / Attar and ml, each with its own price */
+.product__sizes { flex-basis: 100%; font-size: 11px; letter-spacing: 0.03em; color: var(--dim); }
+.is-list .product__sizes { flex-basis: auto; }
+.is-list .product__sizes::before { content: '·'; margin-right: 8px; }
+.product__price small { margin-right: 3px; font-family: var(--f-body); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); }
+.product__add.is-in { border-color: var(--gold); background: rgba(201, 164, 92, 0.12); }
+.product__check { color: var(--gold-hi); }
+.qv__options { display: flex; flex-direction: column; gap: 16px; padding-top: 16px; border-top: 1px solid var(--line-soft); }
+.qv__options[hidden], .qv__opt[hidden] { display: none; }
+.qv__opt-label { margin-bottom: 9px; font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--dim); }
+.seg { display: grid; grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; border: 1px solid var(--line); }
+.seg__opt { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 11px 12px 10px; transition: background 0.35s, color 0.35s; }
+.seg__opt + .seg__opt { border-left: 1px solid var(--line); }
+.seg__opt b { font-family: var(--f-display); font-weight: 400; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-hi); }
+.seg__opt small { font-size: 10.5px; letter-spacing: 0.04em; color: var(--dim); }
+.seg__opt:hover:not(.is-on) { background: rgba(201, 164, 92, 0.08); }
+.seg__opt.is-on { background: var(--gold-grad); }
+.seg__opt.is-on b, .seg__opt.is-on small { color: var(--ink); }
+.sizes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.size { position: relative; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 11px 8px 10px; border: 1px solid var(--line-soft); transition: border-color 0.3s, background 0.3s, box-shadow 0.3s; }
+.size b { font-family: var(--f-display); font-weight: 400; font-size: 15px; letter-spacing: 0.06em; color: var(--gold-hi); }
+.size span { font-size: 12px; color: var(--muted); }
+.size:hover:not(.is-on) { border-color: var(--line); }
+.size.is-on { border-color: var(--gold); background: rgba(201, 164, 92, 0.12); box-shadow: inset 0 0 0 1px var(--gold); }
+.size.is-on span { color: var(--gold-hi); }
+.size__in { position: absolute; top: -8px; right: -8px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--gold-grad); font: normal 500 10px/18px var(--f-body); color: var(--ink); }
+.qv__unit { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+.qv__unit:empty { display: none; }
+.cart__variant { margin-top: 3px; font-size: 11.5px; letter-spacing: 0.04em; color: var(--gold); }
+.cart__variant span { color: var(--dim); }
+.cart__variant + .cart__meta { margin-top: 0; }
+
 /* the sound toggle steps aside in the shop so it never covers a product */
 .sound { transition: opacity 0.4s; }
 html.in-shop .sound { opacity: 0; pointer-events: none; }
@@ -1811,6 +1843,8 @@ html.cart-open .bag-fab { opacity: 0; pointer-events: none; }
   .qv__info { padding: 22px 20px 26px; overflow: visible; }
   .qv__close { top: 12px; right: 12px; }
   .qv__rel-img { width: 48px; height: 48px; }
+  .product__sizes { font-size: 10px; }
+  .size { padding: 12px 6px 11px; }
   .cart__head, .cart__foot { padding-left: 20px; padding-right: 20px; }
   .cart__body { padding: 4px 20px; }
   .cart__form { grid-template-columns: 1fr; }
