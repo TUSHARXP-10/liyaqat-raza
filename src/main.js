@@ -57,21 +57,34 @@ async function boot() {
   intro.set('fonts', 0, 1);
   intro.set('stage', 0, 4);
   intro.set('build', 0, 1);
-  await loadFonts();
-  intro.set('fonts', 1, 1);
-  intro.start();
-  buildBackdrops();
-
-  // the site loads while the intro plays
+  // Create the WebGL context before the clock starts: context creation can
+  // briefly occupy the GPU, and here it happens on a black screen.
   let stage = null;
-  try {
-    stage = new Stage(document.querySelector('[data-webgl]'));
-    await stage.load((p) => intro.set('stage', p, 4));
-  } catch (err) {
+  const noWebGL = (err) => {
     console.warn('[raza] 3D stage unavailable — continuing without WebGL.', err);
     document.documentElement.classList.add('no-webgl');
     stage = null;
     intro.set('stage', 1, 4);
+  };
+  try {
+    stage = new Stage(document.querySelector('[data-webgl]'));
+  } catch (err) {
+    noWebGL(err);
+  }
+  // the sequence starts as soon as its renderer is ready (logo is vector paths, no fonts needed)
+  const fontsReady = loadFonts();
+  await intro.start();
+  await fontsReady;
+  intro.set('fonts', 1, 1);
+  buildBackdrops();
+
+  // the site loads while the intro plays
+  if (stage) {
+    try {
+      await stage.load((p) => intro.set('stage', p, 4));
+    } catch (err) {
+      noWebGL(err);
+    }
   }
 
   const lenis = new Lenis({ lerp: reduced ? 1 : 0.085, smoothWheel: !reduced, wheelMultiplier: 0.9 });
@@ -95,12 +108,14 @@ async function boot() {
   initCursor();
 
   if (stage) {
-    stage.warm();
+    // upload textures + first frames while the intro still covers the screen
+    await stage.warm();
     window.addEventListener('pointermove', (e) => {
       stage.setPointer((e.clientX / innerWidth) * 2 - 1, (e.clientY / innerHeight) * 2 - 1);
     }, { passive: true });
     window.addEventListener('resize', () => stage.resize());
     gsap.ticker.add((time, deltaMs) => {
+      if (stage.hold) return; // nothing to draw under the intro; leave the GPU to it
       const dt = Math.min(deltaMs / 1000, 0.1);
       const state = director.update(window.scrollY, dt, stage.mobile);
       stage.update(state, time, dt, lenis.velocity || 0);
@@ -115,6 +130,8 @@ async function boot() {
     sessionStorage.setItem('raza-intro-seen', '1');
   } catch { /* storage unavailable */ }
   if (intro.soundOn) story.setSound(true);
+  // measure scroll positions now, while covered, not during the curtain
+  ScrollTrigger.refresh();
 
   // pinned chapters sit inside a pin-spacer; aim for its start. The position
   // is measured now (absolute), because the browser may already have jumped
@@ -133,20 +150,21 @@ async function boot() {
       jumpTo(hashTarget);
     }
   };
+  // Everything heavy happens here, while the curtain is still closed; the
+  // curtain itself is a CSS transition, so it glides regardless.
   const unlock = () => {
-    document.documentElement.classList.remove('is-loading');
+    document.documentElement.classList.remove('is-loading', 'is-covered');
     lenis.start();
-    ScrollTrigger.refresh();
     land();
   };
+  if (stage) stage.hold = false;
+  unlock();
   if (skip) {
     intro.dispose();
     story.intro.progress(1);
-    unlock();
   } else {
-    const reveal = intro.reveal();
-    reveal.add(() => story.intro.play(), 0.5);
-    reveal.add(unlock, 1.0);
+    intro.reveal();
+    setTimeout(() => story.intro.play(), 500);
   }
 
   window.__raza = { lenis, stage, director, ScrollTrigger };

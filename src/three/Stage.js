@@ -14,7 +14,9 @@ const CAM_Z = 12;
 
 // A warm product-photography studio, baked to a PMREM so glass and gold
 // pick up long softbox reflections instead of a generic room.
-export function studioEnvironment(renderer) {
+// The site loads a pre-baked copy (public/media/env/studio.hdr, made by
+// `npm run bake:env`) because generating it live blocks the GPU.
+export function studioEnvironmentTarget(renderer) {
   const env = new THREE.Scene();
   env.add(new THREE.Mesh(
     new THREE.SphereGeometry(30, 32, 16),
@@ -36,8 +38,24 @@ export function studioEnvironment(renderer) {
   panel(3, 1.5, '#fff4e2', 1.2, [5, 4, 11]);
   panel(16, 2, '#b86a22', 1.1, [0, -9, 1]);
   const pmrem = new THREE.PMREMGenerator(renderer);
-  const tex = pmrem.fromScene(env, 0.035).texture;
+  const target = pmrem.fromScene(env, 0.035);
   pmrem.dispose();
+  return target;
+}
+
+export const studioEnvironment = (renderer) => studioEnvironmentTarget(renderer).texture;
+
+// Loads the baked studio environment (already in PMREM "cube UV" layout).
+async function loadStudioEnvironment() {
+  const { HDRLoader } = await import('three/addons/loaders/HDRLoader.js');
+  const tex = await new HDRLoader().setDataType(THREE.HalfFloatType).loadAsync(`${import.meta.env.BASE_URL}media/env/studio.hdr`);
+  tex.mapping = THREE.CubeUVReflectionMapping;
+  tex.colorSpace = THREE.LinearSRGBColorSpace;
+  tex.minFilter = THREE.LinearFilter;
+  tex.magFilter = THREE.LinearFilter;
+  tex.generateMipmaps = false;
+  tex.flipY = false;
+  tex.needsUpdate = true;
   return tex;
 }
 
@@ -58,6 +76,9 @@ export class Stage {
     r.toneMapping = THREE.ACESFilmicToneMapping;
     r.toneMappingExposure = 1.08;
     r.transmissionResolutionScale = 0.75;
+    // shader-log queries force the driver to finish compiling synchronously
+    r.debug.checkShaderErrors = Boolean(import.meta.env.DEV);
+    this.hold = true; // no frames until the intro hands over
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 100);
@@ -113,6 +134,11 @@ export class Stage {
   }
 
   async load(onProgress = () => {}) {
+    // fetch + decode the baked environment alongside the texture painting
+    const envPromise = loadStudioEnvironment().catch((err) => {
+      console.warn('[raza] baked environment unavailable, generating it live', err);
+      return null;
+    });
     const noise = createNoise(1989);
     const labels = await makeLabelTextures(VARIANTS.map((v) => v.name));
     onProgress(0.12);
@@ -125,7 +151,7 @@ export class Stage {
     const glow = makeGlowTexture();
     this.tex = { labels, cap, coin, swirl, marble, glow };
 
-    this.scene.environment = studioEnvironment(this.renderer);
+    this.scene.environment = (await envPromise) ?? studioEnvironment(this.renderer);
     this.scene.environmentIntensity = 1;
 
     const key = new THREE.DirectionalLight('#ffe2b0', 1.6);
@@ -155,17 +181,44 @@ export class Stage {
 
     this.resize();
     onProgress(0.88);
-    // compile every shader up front (in parallel where the GPU driver allows)
+    // Compile every shader before the first frame, in the background
+    // (KHR_parallel_shader_compile): a program used before it's ready makes
+    // the browser wait for the GPU driver, which freezes everything.
+    //  · with the bottle exploded, so the coin/vessel variants are included
+    //  · once for the screen and once for an offscreen target: the glass
+    //    refraction pass renders into a texture without tone mapping, which
+    //    needs its own shader variants
+    this.bottle.setExplode(1);
     await this.renderer.compileAsync(this.scene, this.camera);
+    onProgress(0.94);
+    const target = new THREE.WebGLRenderTarget(4, 4, { type: THREE.HalfFloatType });
+    this.renderer.setRenderTarget(target);
+    await this.renderer.compileAsync(this.scene, this.camera);
+    this.renderer.setRenderTarget(null);
+    target.dispose();
+    this.bottle.setExplode(0);
     onProgress(1);
   }
 
-  // First real frames, exploded and assembled, so the first scroll never
-  // hitches. Called during a calm moment of the intro.
-  warm() {
+  // Uploads textures one per frame, then draws the first real frames
+  // (exploded + assembled) so the first scroll never hitches. Runs while the
+  // intro still covers the screen.
+  async warm() {
     if (!this.bottle) return;
+    const textures = new Set();
+    this.scene.traverse((o) => {
+      for (const m of [].concat(o.material || [])) {
+        for (const v of Object.values(m)) if (v?.isTexture) textures.add(v);
+      }
+    });
+    if (this.scene.environment) textures.add(this.scene.environment);
+    for (const tex of textures) {
+      this.renderer.initTexture(tex);
+      await new Promise((r) => requestAnimationFrame(r));
+    }
     this.bottle.setExplode(1);
     this.renderer.render(this.scene, this.camera);
+    await new Promise((r) => requestAnimationFrame(r));
     this.bottle.setExplode(0);
     this.renderer.render(this.scene, this.camera);
   }

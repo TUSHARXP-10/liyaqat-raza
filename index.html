@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="is-loading">
+<html lang="en" class="is-loading is-covered">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -77,11 +77,13 @@
       <span class="intro__pct" data-intro-pct>0%</span>
     </div>
 
-    <button class="intro__sound" type="button" data-intro-sound aria-pressed="false">
-      <span class="sound__bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
-      <span data-intro-sound-label>Sound off</span>
-    </button>
-    <button class="intro__skip" type="button" data-intro-skip>Skip intro <span aria-hidden="true">→</span></button>
+    <div class="intro__ui">
+      <button class="intro__sound" type="button" data-intro-sound aria-pressed="false">
+        <span class="sound__bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        <span data-intro-sound-label>Sound off</span>
+      </button>
+      <button class="intro__skip" type="button" data-intro-skip>Skip intro <span aria-hidden="true">→</span></button>
+    </div>
   </div>
 
   <!-- ============================================================ BACKDROPS (fixed film set, behind the 3D stage) -->

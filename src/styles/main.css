@@ -174,9 +174,21 @@ ol, ul { list-style: none; }
 .link-quiet:hover { color: var(--gold-hi); }
 .link-quiet:hover::after { transform: scaleX(1); }
 
+/* While the intro covers the screen, nothing underneath paints or animates,
+   so the intro has the whole GPU. (Layout still happens: the page is built
+   and measured in the background.) */
+html.is-covered body > :not(.intro) { opacity: 0 !important; }
+html.is-covered body > :not(.intro),
+html.is-covered body > :not(.intro) * { animation-play-state: paused !important; }
+
 /* ================================================================== INTRO */
+/* Everything that moves here is either the worker-drawn canvas or a CSS
+   animation of opacity / transform / filter, which browsers run on the
+   compositor. Nothing the page loads on the main thread can make it stutter. */
 
 .intro {
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-expo-io: cubic-bezier(0.87, 0, 0.13, 1);
   position: fixed;
   inset: 0;
   z-index: 200;
@@ -191,6 +203,7 @@ ol, ul { list-style: none; }
   left: 0; right: 0;
   height: 50.5%;
   background: radial-gradient(120% 140% at 50% 100%, #150d07 0%, #050302 62%);
+  will-change: transform;
 }
 .intro__half--top { top: 0; }
 .intro__half--bottom { bottom: 0; transform: scaleY(-1); }
@@ -215,7 +228,6 @@ ol, ul { list-style: none; }
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  visibility: hidden;
 }
 .intro__domain {
   margin-top: 14px;
@@ -224,11 +236,9 @@ ol, ul { list-style: none; }
   padding-left: 0.5em;
   text-transform: uppercase;
   color: var(--text);
-  visibility: hidden;
 }
 
 .intro__credits { position: absolute; left: 0; right: 0; bottom: 12vh; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 0 24px; }
-.intro__credits > * { visibility: hidden; }
 .intro__label {
   display: flex;
   align-items: center;
@@ -246,12 +256,13 @@ ol, ul { list-style: none; }
 .intro__loading { position: absolute; left: 50%; bottom: 6vh; display: flex; align-items: center; gap: 16px; transform: translateX(-50%); opacity: 0; transition: opacity 0.5s; }
 .intro.is-waiting .intro__loading { opacity: 1; }
 .intro__bar { position: relative; width: min(220px, 50vw); height: 1px; background: var(--line-soft); overflow: hidden; }
-.intro__bar span { position: absolute; inset: 0; background: var(--gold-grad); transform: scaleX(0); transform-origin: left; }
+.intro__bar span { position: absolute; inset: 0; background: var(--gold-grad); transform: scaleX(0); transform-origin: left; transition: transform 0.4s var(--ease-out); }
 .intro__pct { min-width: 3em; font-family: var(--f-display); font-size: 11px; letter-spacing: 0.16em; color: var(--gold); text-align: left; font-variant-numeric: tabular-nums; }
 
+.intro__ui { position: absolute; left: 0; right: 0; bottom: 30px; }
 .intro__sound, .intro__skip {
   position: absolute;
-  bottom: 30px;
+  bottom: 0;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -260,7 +271,6 @@ ol, ul { list-style: none; }
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--muted);
-  visibility: hidden;
   transition: color 0.3s;
 }
 .intro__sound { left: var(--gutter); }
@@ -272,14 +282,53 @@ ol, ul { list-style: none; }
 .intro__sound.is-on .sound__bars i:nth-child(4) { animation-delay: -0.15s; }
 .intro__sound.is-on .sound__bars i:nth-child(5) { animation-delay: -0.5s; }
 
+/* the text beats: hidden until the timeline reaches them (delays set from JS) */
+.intro__year, .intro__domain, .intro__label, .intro__built, .intro__studio, .intro__rights, .intro__sound, .intro__skip { opacity: 0; }
+.intro.is-playing .intro__sound, .intro.is-playing .intro__skip { animation: introFade 0.6s ease var(--t-ui) both; }
+.intro.is-playing .intro__year { animation: introFocus 1.3s var(--ease-expo) var(--t-since) both; }
+.intro.is-playing .intro__domain { animation: introRise 1s var(--ease-expo) var(--t-domain) both; }
+.intro.is-playing .intro__label { animation: introRise 0.8s var(--ease-expo) var(--t-label) both; }
+.intro.is-playing .intro__built { animation: introRise 0.8s var(--ease-expo) var(--t-built) both; }
+.intro.is-playing .intro__studio { animation: introFocusSm 1.1s var(--ease-expo) var(--t-studio) both; }
+.intro.is-playing .intro__rights { animation: introFade 0.9s ease var(--t-rights) both; }
+/* Skip: jump straight to the final state */
+.intro.is-skipped .intro__year, .intro.is-skipped .intro__domain, .intro.is-skipped .intro__label, .intro.is-skipped .intro__built,
+.intro.is-skipped .intro__studio, .intro.is-skipped .intro__rights, .intro.is-skipped .intro__sound, .intro.is-skipped .intro__skip {
+  animation: none;
+  opacity: 1;
+}
+
+@keyframes introFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes introRise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes introFocus { from { opacity: 0; transform: scale(1.3); filter: blur(8px); } to { opacity: 1; transform: none; filter: blur(0); } }
+@keyframes introFocusSm { from { opacity: 0; transform: scale(1.18); filter: blur(6px); } to { opacity: 1; transform: none; filter: blur(0); } }
+
+/* the curtain: content fades, a seam of light, the halves part */
+.intro__canvas, .intro__since, .intro__credits, .intro__ui { transition: opacity 0.45s cubic-bezier(0.55, 0, 1, 0.45); }
+.intro.is-revealing .intro__canvas, .intro.is-revealing .intro__since, .intro.is-revealing .intro__credits,
+.intro.is-revealing .intro__ui, .intro.is-revealing .intro__loading { opacity: 0; }
+.intro.is-revealing { pointer-events: none; }
+.intro.is-revealing .intro__seam { animation: introSeam 1.3s var(--ease-expo-io) 0.1s both; }
+.intro.is-revealing .intro__half--top { transform: translateY(-100%); transition: transform 1.2s var(--ease-expo-io) 0.45s; }
+.intro.is-revealing .intro__half--bottom { transform: translateY(100%) scaleY(-1); transition: transform 1.2s var(--ease-expo-io) 0.45s; }
+@keyframes introSeam {
+  0% { transform: scaleX(0); opacity: 0.9; }
+  35% { transform: scaleX(1); opacity: 0.9; }
+  100% { transform: scale(1, 30); opacity: 0; }
+}
+
 /* returning in the same session: just the curtain */
-.intro.is-quick .intro__since, .intro.is-quick .intro__credits, .intro.is-quick .intro__sound, .intro.is-quick .intro__skip { display: none; }
+.intro.is-quick .intro__since, .intro.is-quick .intro__credits, .intro.is-quick .intro__ui { display: none; }
 
 @media (max-width: 819px) {
   .intro__since { top: 33%; }
   .intro__credits { bottom: 14vh; }
   .intro__rights { font-size: 10px; }
-  .intro__sound, .intro__skip { bottom: 18px; }
+  .intro__ui { bottom: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro.is-playing .intro__year, .intro.is-playing .intro__studio { animation-name: introFade; }
 }
 
 @keyframes shimmer { to { background-position: -200% 0; } }

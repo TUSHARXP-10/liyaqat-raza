@@ -9,11 +9,13 @@ import { drawLogo } from '../brand/logo.js';
 //   pbr   — packed ORM-style map: G = roughness, B = metalness
 //   bump  — height for engraving
 
+// CPU-backed canvases: painting them never competes with the intro for the
+// GPU, and they upload straight from memory when the textures are initialised.
 function makeCanvas(w, h) {
   const c = document.createElement('canvas');
   c.width = w;
   c.height = h;
-  return [c, c.getContext('2d')];
+  return [c, c.getContext('2d', { willReadFrequently: true })];
 }
 
 function toTexture(canvas, { color = true, wrap = false, anisotropy = 8 } = {}) {

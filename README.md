@@ -117,3 +117,19 @@ needed. Everything is procedural, so it stays sharp at any resolution.
 
 Performance: the pixel ratio is capped and steps down automatically if frames slow down. The canvas
 stops rendering while it's off screen. Smoke only runs while visible, and `prefers-reduced-motion` disables smooth scrolling.
+
+**Intro smoothness.** The site loads during the intro, so the intro is built so that loading can't
+touch it:
+
+- The particle and black-hole canvas runs in a Web Worker (`src/ui/intro.worker.js` + OffscreenCanvas).
+  Browsers without OffscreenCanvas run the same renderer on the main thread.
+- The text beats and the curtain are CSS animations of opacity, transform and blur, so the compositor
+  runs them.
+- Nothing under the intro paints or animates until the curtain opens (`html.is-covered`).
+- The 3D engine never blocks the GPU:
+  - The studio reflection map is pre-baked (`public/media/env/studio.hdr`, `npm run bake:env`).
+  - Every shader variant is compiled in the background before first use, including the
+    glass-refraction pass.
+  - Textures upload one per frame while the intro still covers the page.
+
+Measured in Chrome: intro frames p95 ≈ 7 ms, with no multi-second stalls (previously up to 1.9 s).
