@@ -1646,9 +1646,10 @@ html:not(.nav-away) .shop__controls { top: var(--nav-h); }
 .qv__rel-img.is-fallback { width: 22px; height: auto; opacity: 1; }
 
 /* sizes: Perfume / Attar and ml, each with its own price */
-.product__sizes { flex-basis: 100%; font-size: 11px; letter-spacing: 0.03em; color: var(--dim); }
-.is-list .product__sizes { flex-basis: auto; }
-.is-list .product__sizes::before { content: '·'; margin-right: 8px; }
+.product__kinds { display: flex; flex-basis: 100%; gap: 6px; margin-top: 4px; }
+.is-list .product__kinds { flex-basis: auto; margin: 0 0 0 4px; }
+.kind { padding: 5px 10px 4px; border: 1px solid var(--line-soft); border-radius: 999px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); transition: color 0.3s, border-color 0.3s, background 0.3s; }
+.kind:hover { color: var(--gold-hi); border-color: var(--gold); background: rgba(201, 164, 92, 0.08); }
 .product__price small { margin-right: 3px; font-family: var(--f-body); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); }
 .product__add.is-in { border-color: var(--gold); background: rgba(201, 164, 92, 0.12); }
 .product__check { color: var(--gold-hi); }
@@ -1843,7 +1844,7 @@ html.cart-open .bag-fab { opacity: 0; pointer-events: none; }
   .qv__info { padding: 22px 20px 26px; overflow: visible; }
   .qv__close { top: 12px; right: 12px; }
   .qv__rel-img { width: 48px; height: 48px; }
-  .product__sizes { font-size: 10px; }
+  .kind { padding: 6px 9px 5px; font-size: 8.5px; letter-spacing: 0.14em; }
   .size { padding: 12px 6px 11px; }
   .cart__head, .cart__foot { padding-left: 20px; padding-right: 20px; }
   .cart__body { padding: 4px 20px; }

@@ -27,12 +27,14 @@ view, the bag and the footer.
    The columns after the name are read from their heading, so they can be in any order:
    - **Sizes:** columns headed `30ML`, `50ML`, `100ML`, `6ML`, `12ML` … hold one price per size.
      A label on the row above the headings (`PERFUME`, `ATTAR`) sets the kind for the size columns
-     under it and to its right. The shop shows "From ₹150", and customers choose Perfume or Attar,
-     then the size, in quick view. Today every Regular fragrance comes in Perfume 30/50/100 ml
-     (₹250/₹400/₹900) and Attar 6/12 ml (₹150/₹250).
+     under it and to its right. The sizes apply to every section below the heading row, so every
+     fragrance (Regular, Premium and Luxury) is offered as Perfume 30/50/100 ml and Attar 6/12 ml.
+     Customers pick Perfume or Attar (on the card or in quick view), then the size.
+   - **Prices:** Regular is priced (Perfume ₹250/₹400/₹900, Attar ₹150/₹250), and the card shows
+     "From ₹150". To price Premium or Luxury, type the prices in the same five columns on their
+     rows. An empty cell means that size is **on request**: customers can still choose it, add it
+     to the bag, and ask its price on WhatsApp.
    - **PRICE:** a single price, for products sold in one size. `499`, `₹ 499` or `499/-` all work.
-   - **No price:** a product without prices offers **Ask price on WhatsApp**. Premium and Luxury
-     are like this for now.
    - **QUANTITY** (optional): leave it empty for "not tracked". `0` shows **Sold out** (add
      disabled, ask availability instead). `1–5` shows **Only n left**, and customers can't add
      more than you have.
@@ -60,9 +62,9 @@ With Supabase connected, the same prices and stock can also be changed live in t
   exist; sold-out items sink to the end.
 - **Shareable views:** active filters appear as removable pills and are kept in the address bar,
   so a filtered view can be shared.
-- **Product cards:** photo, number, collection, Inspired tag, sizes ("Perfume & Attar · 5 sizes"),
-  stock badge, and a price ("From ₹150") or "Ask price". The button is "Choose" for fragrances
-  sold in sizes, and Add (which turns into a quantity stepper) for the rest.
+- **Product cards:** photo, number, collection, Inspired tag, Perfume / Attar pills (each opens
+  the size picker on that kind), stock badge, and a price ("From ₹150") or "Ask price". The button
+  is "Choose" for fragrances sold in sizes, and Add (which turns into a quantity stepper) for the rest.
 - **Quick view:** Perfume / Attar and size picker with each size's price. It remembers the last
   size picked when moving to the next fragrance, and shows a count on sizes already in the bag.
   Also quantity and stock, Ask on WhatsApp, share link (including the size), save, prev/next with

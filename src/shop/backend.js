@@ -27,15 +27,8 @@ export async function fetchCatalog() {
     .order('category')
     .order('number');
   if (error) throw error;
-  return data.map((r) => ({
-    id: r.id,
-    name: r.name,
-    sheetName: r.sheet_name,
-    category: r.category,
-    number: r.number,
-    inspired: r.inspired,
-    price: r.price === null ? null : Number(r.price),
-    variants: Array.isArray(r.variants)
+  return data.map((r) => {
+    const variants = Array.isArray(r.variants)
       ? r.variants.filter((v) => v?.id).map((v) => ({
         id: String(v.id),
         type: v.type ?? null,
@@ -43,12 +36,24 @@ export async function fetchCatalog() {
         price: v.price == null ? null : Number(v.price),
         label: v.label || String(v.id),
       }))
-      : null,
-    stock: r.stock === null || r.stock === undefined ? null : Number(r.stock),
-    sizeMl: r.size_ml,
-    image: r.image_url || null,
-    description: r.description || null,
-  }));
+      : null;
+    const sizePrices = (variants || []).map((v) => v.price).filter((n) => n != null);
+    return {
+      id: r.id,
+      name: r.name,
+      sheetName: r.sheet_name,
+      category: r.category,
+      number: r.number,
+      inspired: r.inspired,
+      // with sizes, the "from" price follows the size prices (staff may price sizes in the dashboard)
+      price: sizePrices.length ? Math.min(...sizePrices) : r.price === null ? null : Number(r.price),
+      variants,
+      stock: r.stock === null || r.stock === undefined ? null : Number(r.stock),
+      sizeMl: r.size_ml,
+      image: r.image_url || null,
+      description: r.description || null,
+    };
+  });
 }
 
 export class OrderError extends Error {

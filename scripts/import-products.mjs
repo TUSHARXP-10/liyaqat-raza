@@ -9,7 +9,10 @@
 // from the heading row, so they can come in any order:
 //   30ML · 50ML · 100ML …  one price per size. A label on the row above the
 //                          headings (PERFUME, ATTAR) names the kind of product
-//                          for the size columns under and after it.
+//                          for the size columns under and after it. The sizes
+//                          apply to every section below the heading row, so
+//                          every fragrance is offered in every size; an empty
+//                          price cell means "price on request" for that size.
 //   PRICE                  a single price (products sold in one size)
 //   QUANTITY               units in stock
 //   COMPANY                the maker
@@ -125,7 +128,7 @@ rows.forEach((row, i) => {
       const price = money(cell);
       if (text(cell) && price === null) problems.push(`row ${line}: price "${text(cell)}" not understood — left empty`);
       if (col.kind === 'price') entry.price = price;
-      else if (price !== null) entry.variants.push({ type: col.type, ml: col.ml, price });
+      else entry.variants.push({ type: col.type, ml: col.ml, price });
     }
   });
   // SR NO as typed; a row without one continues after the section's last number
@@ -139,9 +142,11 @@ writeFileSync(out, `${JSON.stringify({ source: path.basename(source), products }
 const by = (k) => products.filter((p) => p.category === k).length;
 const sized = products.filter((p) => p.variants.length);
 const sizes = [...new Set(sized.flatMap((p) => p.variants.map((v) => `${v.type ? `${v.type} ` : ''}${v.ml} ml`)))];
+const priced = products.filter((p) => p.price !== null || p.variants.some((v) => v.price !== null));
 console.log(`${path.basename(source)} → src/shop/catalog.json`);
 console.log(`  ${products.length} products: ${by('regular')} regular · ${by('premium')} premium · ${by('luxury')} luxury`);
-console.log(`  priced by size: ${sized.length}${sizes.length ? ` (${sizes.join(', ')})` : ''} · single price: ${products.filter((p) => p.price !== null).length} · ask price: ${products.filter((p) => !p.variants.length && p.price === null).length}`);
+if (sizes.length) console.log(`  sold in sizes: ${sized.length} (${sizes.join(', ')})`);
+console.log(`  priced: ${priced.length} · price on request: ${products.length - priced.length}`);
 console.log(`  with quantity: ${products.filter((p) => p.quantity !== null).length}`);
 if (unnamed) console.log(`  skipped ${unnamed} row(s) with prices but no product name`);
 problems.forEach((p) => console.log(`  ! ${p}`));

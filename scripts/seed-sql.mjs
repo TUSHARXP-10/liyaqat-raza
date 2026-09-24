@@ -25,7 +25,13 @@ on conflict (id) do update set
   number      = excluded.number,
   inspired    = excluded.inspired,
   price       = coalesce(excluded.price, public.products.price),
-  variants    = case when jsonb_array_length(excluded.variants) > 0 then excluded.variants else public.products.variants end,
+  -- sizes follow the sheet; a size the sheet leaves unpriced keeps a price set in the dashboard
+  variants    = case when jsonb_array_length(excluded.variants) = 0 then public.products.variants else (
+                  select jsonb_agg(case when jsonb_typeof(e.v -> 'price') = 'number' then e.v
+                                        else e.v || jsonb_build_object('price', o.v -> 'price') end order by e.i)
+                  from jsonb_array_elements(excluded.variants) with ordinality as e(v, i)
+                  left join jsonb_array_elements(public.products.variants) as o(v) on o.v ->> 'id' = e.v ->> 'id'
+                ) end,
   stock       = coalesce(excluded.stock, public.products.stock),
   description = coalesce(public.products.description, excluded.description);
 `;

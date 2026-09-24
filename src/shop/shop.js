@@ -45,12 +45,15 @@ const collectionOf = (p) => (p.category === 'house' ? 'House signature' : `${CAT
 const soldOut = (p) => p.stock === 0;
 const lowStock = (p) => p.stock != null && p.stock > 0 && p.stock <= LOW_STOCK;
 const priceText = (p) => (p.price != null ? fmt(p.price) : 'Price on request');
-// "Perfume & Attar · 5 sizes"
-const sizesText = (p) => {
-  const types = [...new Set(p.variants.map((v) => v.type).filter(Boolean))].map(typeLabel);
-  const n = p.variants.length;
-  return `${types.length ? `${types.join(' & ')} · ` : ''}${n} size${n === 1 ? '' : 's'}`;
-};
+// "Perfume" · "Attar" pills on a card; each opens the size picker on that kind
+function kindPills(p) {
+  const kinds = [...new Set(p.variants.map((v) => v.type))];
+  return `<span class="product__kinds">${kinds.map((t) => {
+    const mls = p.variants.filter((v) => v.type === t).map((v) => v.ml).join(', ');
+    const label = typeLabel(t) || `${p.variants.length} sizes`;
+    return `<button type="button" class="kind" data-kind-of="${esc(p.id)}" data-kind="${esc(t ?? '')}" title="${esc(label)}: ${mls} ml" aria-label="${esc(p.name)} as ${esc(label)}: ${mls} ml">${esc(label)}</button>`;
+  }).join('')}</span>`;
+}
 // the size a product opens on: the one last picked (same kind and ml) when it has it
 const pickSize = (p, pref) =>
   p.variants.find((v) => v.type === pref?.type && v.ml === pref?.ml)
@@ -68,9 +71,14 @@ function whatsappUrl(text) {
   const base = SHOP.whatsapp ? `https://wa.me/${SHOP.whatsapp}` : 'https://wa.me/';
   return `${base}?text=${encodeURIComponent(text)}`;
 }
-const askUrl = (p) => whatsappUrl(p.price == null || soldOut(p)
-  ? `Hello Raza Perfume! Could you share the price${soldOut(p) ? ' and availability' : ''} of ${p.name} (${collectionOf(p)}, No. ${pad(p.number)})?`
-  : `Hello Raza Perfume! I'd like to know more about ${p.name} (${collectionOf(p)}, No. ${pad(p.number)}).`);
+// a WhatsApp question about a fragrance, or one size of it
+const askUrl = (p, size = null) => {
+  const what = `${p.name}${size ? `, ${size.label}` : ''} (${collectionOf(p)}, No. ${pad(p.number)})`;
+  const unit = size ? size.price : p.price;
+  if (soldOut(p)) return whatsappUrl(`Hello Raza Perfume! Could you share the price and availability of ${what}?`);
+  if (unit == null) return whatsappUrl(`Hello Raza Perfume! Could you share the ${hasSizes(p) && !size ? 'prices' : 'price'} of ${what}?`);
+  return whatsappUrl(`Hello Raza Perfume! I'd like to know more about ${what}.`);
+};
 
 /* ------------------------------------------------------------------ visuals */
 
@@ -153,7 +161,7 @@ function productCard(p, query = '') {
   ${heartButton(p, 'heart product__heart')}
   <div class="product__body">
     <h3 class="product__name"><button type="button" data-view="${esc(p.id)}">${highlight(p.name, query, esc)}</button></h3>
-    <p class="product__meta"><span class="dot dot--${p.category}" aria-hidden="true"></span>${collectionOf(p)}${p.inspired ? '<span class="product__tag">Inspired</span>' : ''}${hasSizes(p) ? `<span class="product__sizes">${sizesText(p)}</span>` : ''}</p>
+    <p class="product__meta"><span class="dot dot--${p.category}" aria-hidden="true"></span>${collectionOf(p)}${p.inspired ? '<span class="product__tag">Inspired</span>' : ''}${hasSizes(p) ? kindPills(p) : ''}</p>
     <div class="product__foot">
       <div class="product__pricebox">${priceBlock(p)}</div>
       <div class="product__buy" data-buy="${esc(p.id)}">${buyControl(p)}</div>
@@ -501,6 +509,8 @@ function initGrid({ lenis, quickView }) {
     if (view) return quickView.open(view.dataset.view, results());
     const choose = e.target.closest('[data-choose]');
     if (choose) return quickView.open(choose.dataset.choose, results(), { toSizes: true });
+    const kind = e.target.closest('[data-kind-of]');
+    if (kind) return quickView.open(kind.dataset.kindOf, results(), { toSizes: true, kind: kind.dataset.kind || null });
     const addBtn = e.target.closest('[data-add]');
     if (addBtn) return added(catalog.get(addBtn.dataset.add));
     const inc = e.target.closest('[data-inc]');
@@ -565,7 +575,7 @@ function initQuickView({ lenis }) {
     $('[data-qv-sizes]', root).innerHTML = p.variants.filter((v) => v.type === size.type).map((v) => {
       const on = v.id === size.id;
       const n = cart.qtyOf(p.id, v.id);
-      const price = v.price != null ? fmt(v.price) : 'Ask';
+      const price = v.price != null ? fmt(v.price) : 'On request';
       return `<button type="button" role="radio" class="size${on ? ' is-on' : ''}" aria-checked="${on}" tabindex="${on ? 0 : -1}" data-size="${esc(v.id)}" aria-label="${v.ml} ml, ${price}${n ? `, ${n} in your bag` : ''}"><b>${v.ml} ml</b><span>${price}</span>${n ? `<i class="size__in" aria-hidden="true">${n}</i>` : ''}</button>`;
     }).join('');
   }
@@ -625,8 +635,10 @@ function initQuickView({ lenis }) {
     addBtn.disabled = soldOut(p) || room === 0;
     $('.btn__label', addBtn).textContent = soldOut(p) ? 'Sold out' : room === 0 ? 'All in your bag' : 'Add to bag';
     const ask = $('[data-qv-ask]', root);
-    ask.href = askUrl(p);
-    $('[data-qv-ask-label]', root).textContent = soldOut(p) ? 'Ask about availability on WhatsApp' : p.price == null ? 'Ask the price on WhatsApp' : 'Ask about this fragrance on WhatsApp';
+    ask.href = askUrl(p, size);
+    $('[data-qv-ask-label]', root).textContent = soldOut(p) ? 'Ask about availability on WhatsApp'
+      : unit == null ? `Ask the price${size ? ` of ${size.ml} ml ${typeLabel(size.type).toLowerCase()}`.trimEnd() : ''} on WhatsApp`
+        : 'Ask about this fragrance on WhatsApp';
     const save = $('[data-qv-save]', root);
     const on = wishlist.has(p.id);
     save.classList.toggle('is-on', on);
@@ -641,14 +653,22 @@ function initQuickView({ lenis }) {
     renderRelated(p);
   }
 
-  // v: open on this size (shared links) · toSizes: focus the size picker
-  function open(id, list, { v = null, toSizes = false } = {}) {
+  // v: open on this size (shared links) · kind: on this kind, e.g. 'attar' (card pills)
+  // toSizes: focus the size picker
+  function open(id, list, { v = null, kind, toSizes = false } = {}) {
     const p = catalog.get(id);
     if (!p) return;
     q.list = list?.some((x) => x.id === id) ? list : [p];
     q.index = q.list.findIndex((x) => x.id === id);
     q.qty = 1;
     q.v = variantOf(p, v)?.id ?? null;
+    if (!q.v && kind !== undefined && hasSizes(p)) {
+      const pick = p.variants.find((x) => x.type === kind && x.ml === q.pref?.ml) || p.variants.find((x) => x.type === kind);
+      if (pick) {
+        q.v = pick.id;
+        q.pref = { type: pick.type, ml: pick.ml };
+      }
+    }
     if (!root.classList.contains('is-open')) q.lastFocus = document.activeElement;
     render();
     root.classList.add('is-open');
@@ -670,7 +690,11 @@ function initQuickView({ lenis }) {
     root.setAttribute('aria-hidden', 'true');
     document.documentElement.classList.remove('qv-open');
     lenis?.start();
-    q.lastFocus?.focus?.();
+    // the card's button may have been redrawn while the panel was open (bag count)
+    const back = q.lastFocus;
+    if (back?.isConnected) back.focus();
+    else if (back?.dataset?.choose) $(`[data-buy="${CSS.escape(back.dataset.choose)}"] button`)?.focus();
+    else if (back?.dataset?.kindOf) $(`[data-kind-of="${CSS.escape(back.dataset.kindOf)}"][data-kind="${CSS.escape(back.dataset.kind)}"]`)?.focus();
   }
 
   const step = (d) => {
