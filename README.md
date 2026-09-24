@@ -75,6 +75,19 @@ Every push to `main` then redeploys automatically. Hashed build assets are cache
 | Ambient sound (generative, no audio files) | `src/ui/sound.js` |
 | Styles & responsive rules | `src/styles/main.css` |
 
+## Brand logo
+
+The Raza Perfume NX2 logo (`brand-source/raza-logo-original.png`) is traced into vector art so it
+stays sharp at any size:
+
+- `public/brand/raza-logo.svg`: original black & gold, for light backgrounds and print.
+- `public/brand/raza-logo-light.svg`, `raza-mark-light.svg`, `raza-wordmark-light.svg`: gold
+  versions for the dark site. They're used in the nav, footer and 404 page.
+- `src/brand/logo.js`: the same art as canvas paths. It's used in the intro particles and on the
+  3D bottle label, and therefore in every product photo.
+
+If the logo changes, re-trace it, then run `npm run render:products` and `npm run brand:assets`.
+
 ## Assets
 
 - `public/media/yasinali-sayyad-1986.jpg`: the founder, Yasinali Sayyad, at the first Raza counter (Origins chapter).

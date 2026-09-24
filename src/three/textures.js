@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { nextFrame } from '../lib/math.js';
 import { paintMarbleBuffers } from './marble.js';
+import { drawLogo } from '../brand/logo.js';
 
 // Every surface on the bottle is painted procedurally in canvas: no image
 // assets, crisp at any DPR. Each painter can run in three modes:
@@ -184,17 +185,10 @@ export async function makeLabelTextures(entries) {
       ctx.fill();
     });
 
-    ctx.font = '700 200px "Aref Ruqaa"';
-    ctx.textAlign = 'center';
-    if (!pbr) {
-      ctx.fillStyle = 'rgba(0,0,0,0.9)';
-      ctx.fillText('رضا', W / 2 + 4, 344);
-    }
-    ctx.fillStyle = gold;
-    ctx.fillText('رضا', W / 2, 340);
-
-    text('RAZA', '500 190px Cinzel', 590, 16);
-    text('PERFUME', '400 50px Cinzel', 688, 34);
+    // the brand logo (Raza Perfume NX2) printed in gold foil
+    const LW = 780, LX = (W - LW) / 2, LY = 250;
+    if (!pbr) drawLogo(ctx, LX + 4, LY + 4, LW, 'rgba(0,0,0,0.9)');
+    drawLogo(ctx, LX, LY, LW, pbr ? gold : { ink: gold, gold: '#a87a34' });
 
     ctx.strokeStyle = gold;
     ctx.lineWidth = 3;

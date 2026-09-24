@@ -22,13 +22,12 @@
       color: #ecd49a;
     }
     .og::after { content: ''; position: absolute; inset: 22px; border: 1px solid rgba(201, 164, 92, 0.35); pointer-events: none; }
-    .og__ar { font-family: 'Aref Ruqaa', serif; font-weight: 700; font-size: 110px; line-height: 1; background: linear-gradient(100deg, #93672a, #f2dca1 45%, #b5873d 70%, #e6c987); -webkit-background-clip: text; color: transparent; }
-    .og__word { margin-top: 8px; font-family: 'Cinzel', serif; font-size: 96px; letter-spacing: 0.2em; line-height: 1; }
     .og__sub { margin-top: 18px; font-family: 'Cinzel', serif; font-size: 20px; letter-spacing: 0.55em; color: #c9a45c; }
     .og__rule { width: 90px; height: 1px; margin: 34px 0 30px; background: linear-gradient(90deg, #c9a45c, transparent); }
     .og__line { font-family: 'Jost', sans-serif; font-weight: 300; font-size: 27px; line-height: 1.45; color: #eadfca; max-width: 560px; }
     .og__line b { font-weight: 400; color: #ecd49a; }
-    .og img { width: 470px; filter: drop-shadow(0 40px 50px rgba(0, 0, 0, 0.7)); }
+    .og > img { width: 470px; filter: drop-shadow(0 40px 50px rgba(0, 0, 0, 0.7)); }
+    .og__logo { width: 470px; display: block; margin-left: -8px; }
 
     .icon {
       --s: 512px;
@@ -36,27 +35,19 @@
       display: grid; place-items: center;
       background: radial-gradient(70% 70% at 50% 35%, #2a190b, #0a0705 70%);
     }
-    .icon span {
-      font-family: 'Cinzel', serif; font-weight: 500;
-      font-size: calc(var(--s) * 0.56); line-height: 1;
-      transform: translateY(4%);
-      background: linear-gradient(160deg, #f3dea4, #c1913f 45%, #f2dca1 62%, #9d6c28);
-      -webkit-background-clip: text; color: transparent;
-    }
-    .icon::before { content: ''; position: absolute; width: calc(var(--s) * 0.8); height: calc(var(--s) * 0.8); border-radius: 50%; border: calc(var(--s) * 0.012) solid rgba(201, 164, 92, 0.55); }
+    .icon__mark { height: calc(var(--s) * 0.74); width: auto; }
   </style>
 </head>
 <body>
   <div class="og" id="og">
     <div>
-      <div class="og__ar">رضا</div>
-      <div class="og__word">RAZA</div>
-      <div class="og__sub">PERFUME · SINCE 1986</div>
+      <img class="og__logo" src="/brand/raza-logo-light.svg" alt="" />
+      <div class="og__sub">SINCE 1986</div>
       <div class="og__rule"></div>
       <p class="og__line">Rare attars, ouds &amp; perfumes from the House of Raza. <b>95 fragrances. Order on WhatsApp.</b></p>
     </div>
     <img src="/media/products/house-base.webp" alt="" />
   </div>
-  <div class="icon" id="icon" style="position: relative"><span>R</span></div>
+  <div class="icon" id="icon" style="position: relative"><img class="icon__mark" src="/brand/raza-mark-light.svg" alt="" /></div>
 </body>
 </html>

@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import { spacedText } from '../three/textures.js';
+import { LOGO, drawLogo } from '../brand/logo.js';
 import { clamp, smoothstep, lerp } from '../lib/math.js';
 
 // Opening title sequence (~7.7 s), played while the site loads behind it:
@@ -173,21 +173,13 @@ export class Intro {
 
   // Samples the logo's pixels into particle targets, and keeps a crisp gold copy.
   buildLogo() {
-    const W = Math.round(Math.min(this.w * (this.w < 820 ? 0.94 : 0.84), 960, this.h * 1.2));
-    const H = Math.round(W * 0.62);
+    const aspect = LOGO.height / LOGO.width;
+    const W = Math.round(Math.min(this.w * (this.w < 820 ? 0.9 : 0.62), 820, (this.h * 0.62) / aspect));
+    const H = Math.round(W * aspect);
     this.lw = W;
     this.lh = H;
-    const draw = (ctx, fill) => {
-      ctx.fillStyle = fill;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'alphabetic';
-      ctx.font = `700 ${Math.round(W * 0.25)}px "Aref Ruqaa", serif`;
-      ctx.fillText('رضا', W / 2, H * 0.37);
-      ctx.font = `500 ${Math.round(W * 0.2)}px Cinzel, serif`;
-      spacedText(ctx, 'RAZA', W / 2, H * 0.75, W * 0.035);
-      ctx.font = `400 ${Math.round(W * 0.046)}px Cinzel, serif`;
-      spacedText(ctx, 'PERFUME', W / 2, H * 0.93, W * 0.03);
-    };
+    // the brand logo (Raza Perfume NX2), traced vector art
+    const draw = (ctx, fill) => drawLogo(ctx, 0, 0, W, fill);
 
     const mask = document.createElement('canvas');
     mask.width = W;
@@ -248,7 +240,8 @@ export class Intro {
     grad.addColorStop(0.55, '#b5873d');
     grad.addColorStop(0.8, '#f3dea4');
     grad.addColorStop(1, '#9d6f2e');
-    draw(gctx, grad);
+    // champagne-gold ink, with the logo's own gold details a shade deeper
+    draw(gctx, { ink: grad, gold: '#c9a45c' });
     this.gold = gold;
     [this.sweepCanvas, this.sweepCtx] = make();
   }
