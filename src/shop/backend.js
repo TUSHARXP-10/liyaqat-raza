@@ -23,7 +23,7 @@ export async function fetchCatalog() {
   if (!sb) return null;
   const { data, error } = await sb
     .from('products')
-    .select('id, name, sheet_name, category, number, inspired, price, size_ml, image_url, description')
+    .select('id, name, sheet_name, category, number, inspired, price, stock, size_ml, image_url, description')
     .order('category')
     .order('number');
   if (error) throw error;
@@ -35,6 +35,7 @@ export async function fetchCatalog() {
     number: r.number,
     inspired: r.inspired,
     price: r.price === null ? null : Number(r.price),
+    stock: r.stock === null || r.stock === undefined ? null : Number(r.stock),
     sizeMl: r.size_ml,
     image: r.image_url || null,
     description: r.description || null,

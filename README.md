@@ -16,16 +16,46 @@ Open with `?skip` (e.g. `http://localhost:5173/?skip`) to bypass the preloader w
 
 ## The Atelier (store)
 
-Chapter VI (`#shop`) lists all 95 fragrances from the client's `ONLINE LIST.xlsx` (`src/shop/products.js`).
-It has photos, tabs, search, sort, quick view, in-card quantity steppers and a bag drawer.
-Checkout opens WhatsApp to **+91 89760 35333** with the order written out. The call number
-**+91 90295 04320** appears in quick view, the bag and the footer.
+Chapter VI (`#shop`) lists every fragrance from the client's spreadsheet. Checkout opens WhatsApp to
+**+91 89760 35333** with the order written out. The call number **+91 90295 04320** appears in quick
+view, the bag and the footer.
 
-- **Photos:** studio renders of the Raza bottle in `public/media/products/`. Regenerate with
-  `npm run render:products` (needs Google Chrome). A real photo can replace any render via
+**Updating products, prices and stock: the spreadsheet is the source of truth.**
+
+1. Edit `src/lib/ONLINE LIST.xlsx`, keeping the sections REGULAR / PREMIUM COLLECTION / LUXURY
+   COLLECTION and the columns SR NO · MATERIAL DISCRIPTION · COMPANY · QUANTITY · PRICE.
+   - PRICE: `499`, `₹ 499` or `499/-` all work. Leave it empty and the site offers
+     **Ask price on WhatsApp**.
+   - QUANTITY: leave it empty for "not tracked". `0` shows **Sold out** (add disabled, ask
+     availability instead). `1–5` shows **Only n left**, and customers can't add more than you have.
+2. Run `npm run import:products`. It writes `src/shop/catalog.json` and refreshes
+   `supabase/seed.sql`, then reports counts plus anything it couldn't read (e.g. a price typed as
+   text) and any new product names.
+3. For a new product, add a tidy display name in `NAMES` (`src/shop/products.js`); until then it
+   shows the sheet spelling in title case. Then run `npm run render:products -- <id>` for its photo,
+   and commit.
+
+With Supabase connected, the same prices and stock can also be changed live in the dashboard
+(`products` table). Re-running the seed never wipes a dashboard value with an empty spreadsheet cell.
+
+**What shoppers get:**
+
+- **Browse:** collection tabs, Raza originals / Inspired filters, and a ♥ wishlist with a "Saved"
+  filter, all with live counts.
+- **Search:** tolerates typos ("savage" → Dior Sauvage, "levender" → Lavender Oud), matches
+  collection numbers ("16"), highlights matches, and shows "Did you mean …" when nothing matches.
+  Press `/` to jump to it.
+- **Layout and sorting:** grid or list layout (remembered); sort by name, and by price once prices
+  exist; sold-out items sink to the end.
+- **Shareable views:** active filters appear as removable pills and are kept in the address bar,
+  so a filtered view can be shared.
+- **Product cards:** photo, number, collection, Inspired tag, stock badge, price or "Ask price",
+  and Add turning into a quantity stepper.
+- **Quick view:** quantity and stock, Ask on WhatsApp, share link, save, prev/next with keys or
+  swipe, and "More from this collection".
+- **Photos:** studio renders of the Raza bottle in `public/media/products/`
+  (`npm run render:products`, needs Google Chrome). A real photo can replace any render via
   `image_url` in Supabase.
-- **Prices:** until a product has a price it shows "Price on request". Set prices in Supabase
-  (Table Editor → `products` → `price`), or append a number to the row in `src/shop/products.js`.
 
 ### Supabase setup (one time)
 

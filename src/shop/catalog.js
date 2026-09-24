@@ -20,7 +20,7 @@ export const catalog = {
     for (const r of rows) {
       // Supabase is the source of truth for price/size; blank photo or
       // description fields keep the bundled render and copy
-      const fields = Object.fromEntries(Object.entries(r).filter(([k, v]) => v != null || k === 'price' || k === 'sizeMl'));
+      const fields = Object.fromEntries(Object.entries(r).filter(([k, v]) => v != null || k === 'price' || k === 'sizeMl' || k === 'stock'));
       byId.set(r.id, { ...byId.get(r.id), ...fields, active: true });
     }
     for (const p of byId.values()) if (!live.has(p.id)) p.active = false;

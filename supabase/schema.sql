@@ -28,6 +28,8 @@ create table if not exists public.products (
 -- for databases created before these columns existed
 alter table public.products add column if not exists image_url text;
 alter table public.products add column if not exists description text;
+-- units in stock; null = not tracked, 0 = sold out (orders refused)
+alter table public.products add column if not exists stock integer check (stock is null or stock >= 0);
 
 alter table public.products enable row level security;
 
@@ -119,9 +121,9 @@ begin
 
   -- prices always come from the products table, never from the browser
   insert into public.order_items (order_id, product_id, product_name, unit_price, quantity)
-  select v_order.id, p.id, p.name, p.price, least(greatest((i ->> 'qty')::int, 1), 99)
+  select v_order.id, p.id, p.name, p.price, least(greatest((i ->> 'qty')::int, 1), 99, coalesce(p.stock, 99))
   from jsonb_array_elements(items) as i
-  join public.products p on p.id = i ->> 'id' and p.active;
+  join public.products p on p.id = i ->> 'id' and p.active and (p.stock is null or p.stock > 0);
 
   get diagnostics v_lines = row_count;
   if v_lines = 0 then
