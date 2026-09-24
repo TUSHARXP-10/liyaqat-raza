@@ -9,7 +9,7 @@ import { Director } from './story/Director.js';
 import { KEYFRAMES } from './story/keyframes.js';
 import { Callouts } from './story/Callouts.js';
 import { buildChapters } from './story/chapters.js';
-import { Preloader } from './ui/preloader.js';
+import { Intro } from './ui/intro.js';
 import { buildBackdrops } from './ui/backdrops.js';
 import { initCursor } from './ui/cursor.js';
 import { Ambient } from './ui/sound.js';
@@ -34,22 +34,44 @@ async function boot() {
   window.scrollTo(0, 0);
   const reduced = prefersReducedMotion();
 
-  const pre = new Preloader();
-  pre.set('fonts', 0, 1);
-  pre.set('stage', 0, 4);
+  const params = new URLSearchParams(location.search);
+  const skip = params.has('skip'); // QA hook: no intro at all
+  const productId = params.get('p'); // shared product link
+  let hashTarget = null;
+  try {
+    hashTarget = location.hash.length > 1 ? document.querySelector(location.hash) : null;
+  } catch { /* not a valid selector */ }
+  // the full title sequence plays once per visit; reloads in the same session
+  // (e.g. coming back from WhatsApp) go straight to the curtain
+  let seenThisSession = false;
+  try {
+    seenThisSession = sessionStorage.getItem('raza-intro-seen') === '1';
+  } catch { /* storage unavailable */ }
+
+  const ambient = new Ambient();
+  const intro = new Intro({
+    quick: skip || seenThisSession,
+    reduced,
+    onSound: (on) => (on ? ambient.start() : ambient.stop()),
+  });
+  intro.set('fonts', 0, 1);
+  intro.set('stage', 0, 4);
+  intro.set('build', 0, 1);
   await loadFonts();
-  pre.set('fonts', 1, 1);
+  intro.set('fonts', 1, 1);
+  intro.start();
   buildBackdrops();
 
+  // the site loads while the intro plays
   let stage = null;
   try {
     stage = new Stage(document.querySelector('[data-webgl]'));
-    await stage.load((p) => pre.set('stage', p, 4));
+    await stage.load((p) => intro.set('stage', p, 4));
   } catch (err) {
     console.warn('[raza] 3D stage unavailable — continuing without WebGL.', err);
     document.documentElement.classList.add('no-webgl');
     stage = null;
-    pre.set('stage', 1, 4);
+    intro.set('stage', 1, 4);
   }
 
   const lenis = new Lenis({ lerp: reduced ? 1 : 0.085, smoothWheel: !reduced, wheelMultiplier: 0.9 });
@@ -58,7 +80,9 @@ async function boot() {
   gsap.ticker.add((t) => lenis.raf(t * 1000));
   gsap.ticker.lagSmoothing(0);
 
-  const ambient = new Ambient();
+  // heavy one-off work (page build, first 3D frames) waits for the intro's
+  // calm credits moment so the animation never stutters
+  await intro.calm.promise;
   const triggers = {};
   const director = new Director(triggers, KEYFRAMES);
   const story = buildChapters({ stage, lenis, ambient, director, triggers });
@@ -71,6 +95,7 @@ async function boot() {
   initCursor();
 
   if (stage) {
+    stage.warm();
     window.addEventListener('pointermove', (e) => {
       stage.setPointer((e.clientX / innerWidth) * 2 - 1, (e.clientY / innerHeight) * 2 - 1);
     }, { passive: true });
@@ -84,25 +109,44 @@ async function boot() {
     });
   }
 
-  // debug / QA hook: jump straight in with ?skip
-  const skip = new URLSearchParams(location.search).has('skip');
-  await pre.complete();
-  const mode = skip ? 'silent' : await pre.waitForEnter();
-  if (mode === 'sound') story.setSound(true);
+  intro.set('build', 1, 1);
+  await intro.finished();
+  try {
+    sessionStorage.setItem('raza-intro-seen', '1');
+  } catch { /* storage unavailable */ }
+  if (intro.soundOn) story.setSound(true);
 
+  // pinned chapters sit inside a pin-spacer; aim for its start. The position
+  // is measured now (absolute), because the browser may already have jumped
+  // to the #hash natively before the pins existed.
+  const pinAware = (el) => (el?.parentElement?.classList.contains('pin-spacer') ? el.parentElement : el);
+  const jumpTo = (el) => {
+    lenis.resize(); // the pins just added page length; don't clamp to the old height
+    const y = pinAware(el).getBoundingClientRect().top + window.scrollY;
+    lenis.scrollTo(y, { immediate: true, force: true });
+  };
+  const land = () => {
+    if (productId) {
+      jumpTo(document.querySelector('#shop'));
+      story.shop.view(productId);
+    } else if (hashTarget) {
+      jumpTo(hashTarget);
+    }
+  };
   const unlock = () => {
     document.documentElement.classList.remove('is-loading');
     lenis.start();
     ScrollTrigger.refresh();
+    land();
   };
   if (skip) {
-    pre.el.remove();
+    intro.dispose();
     story.intro.progress(1);
     unlock();
   } else {
-    const reveal = pre.reveal();
-    reveal.add(() => story.intro.play(), 1.0);
-    reveal.add(unlock, 1.7);
+    const reveal = intro.reveal();
+    reveal.add(() => story.intro.play(), 0.5);
+    reveal.add(unlock, 1.0);
   }
 
   window.__raza = { lenis, stage, director, ScrollTrigger };

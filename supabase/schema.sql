@@ -68,6 +68,7 @@ create table if not exists public.order_items (
 
 create index if not exists order_items_order_id_idx on public.order_items (order_id);
 create index if not exists orders_created_at_idx on public.orders (created_at desc);
+create index if not exists orders_phone_recent_idx on public.orders (customer_phone, created_at desc);
 
 -- RLS on with no policies = the public key can neither read nor write these.
 -- Table rights are revoked as well, so a mistaken policy later can't open them.
@@ -103,6 +104,15 @@ begin
     raise exception 'Your bag is empty.' using errcode = '22023';
   end if;
 
+  -- flood protection: the public key can call this, so cap how fast orders arrive
+  if (select count(*) from public.orders o
+      where o.customer_phone = v_phone and o.created_at > now() - interval '10 minutes') >= 3 then
+    raise exception 'You have placed several orders just now. Please wait a few minutes, or message us on WhatsApp.' using errcode = '22023';
+  end if;
+  if (select count(*) from public.orders o where o.created_at > now() - interval '1 minute') >= 30 then
+    raise exception 'We are receiving many orders right now. Please try again in a minute.' using errcode = '22023';
+  end if;
+
   insert into public.orders (customer_name, customer_phone, customer_city, note)
   values (v_name, v_phone, v_city, v_note)
   returning * into v_order;
@@ -133,6 +143,37 @@ $$;
 
 revoke all on function public.place_order(jsonb, jsonb) from public;
 grant execute on function public.place_order(jsonb, jsonb) to anon, authenticated;
+
+-- --------------------------------------------------------------- newsletter
+create table if not exists public.subscribers (
+  id          bigint generated always as identity primary key,
+  email       text not null unique,
+  created_at  timestamptz not null default now()
+);
+alter table public.subscribers enable row level security;
+revoke all on public.subscribers from anon, authenticated;
+
+create or replace function public.subscribe(p_email text)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_email text := lower(trim(coalesce(p_email, '')));
+begin
+  if length(v_email) > 254 or v_email !~ '^[^@\s]+@[^@\s]+\.[^@\s]+$' then
+    raise exception 'Please enter a valid email address.' using errcode = '22023';
+  end if;
+  if (select count(*) from public.subscribers s where s.created_at > now() - interval '1 minute') >= 20 then
+    raise exception 'Please try again in a minute.' using errcode = '22023';
+  end if;
+  insert into public.subscribers (email) values (v_email) on conflict (email) do nothing;
+end;
+$$;
+
+revoke all on function public.subscribe(text) from public;
+grant execute on function public.subscribe(text) to anon, authenticated;
 
 -- ------------------------------------------------------ staff convenience
 -- A readable order list for the Supabase dashboard (Table Editor → order_overview).

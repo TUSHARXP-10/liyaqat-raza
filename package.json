@@ -9,7 +9,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "seed:sql": "node scripts/seed-sql.mjs",
-    "render:products": "node scripts/render-products.mjs"
+    "render:products": "node scripts/render-products.mjs",
+    "brand:assets": "node scripts/brand-assets.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.1",

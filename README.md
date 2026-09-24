@@ -53,7 +53,7 @@ Every push to `main` then redeploys automatically. Hashed build assets are cache
 
 | # | Chapter | What happens |
 |---|---------|--------------|
-| — | Preloader | "رضا" is written right-to-left in gold while real assets load. The visitor chooses *Enter with sound* or *Enter in silence*, then the curtain splits. |
+| — | Title sequence (`src/ui/intro.js`, ~7.7 s) | The site loads during the sequence. Gold particles spiral in and form the Raza logo, a light sweep crosses it, then a black hole opens and swallows it. After a flash: "Since 1986 · razaperfume.com", then the license credit for Webzoo Innovation, and the curtain opens. It has Skip and a sound toggle, and plays once per visit. Returning in the same session, shared product links (`?p=…`) and `?skip` go straight in. |
 | I | Prologue (`#hero`) | The bottle rises onto a marble plinth in a Moorish colonnade while liquid-gold ribbons pour around it. Slides 01/02/03 switch the headline and turn the bottle into Base, Oud or Musk. |
 | II | Anatomy (`#anatomy`, pinned) | The bottle comes apart piece by piece: cap, R seal, spray, collar, glass, fragrance, base. Each label is attached to the actual 3D part and follows it. It then snaps back together. |
 | III | Origins (`#story`, pinned) | The screen turns to sepia film and an odometer rewinds 2026 → 1986. The counter lands in "Established in 1986", then the real photograph of founder **Yasinali Sayyad** at his counter drops in and develops. His name and story take over the panel, and his words *"Sugandh se rishte bante hain"* write themselves in script, signed. Colour then returns over a dusk skyline. |
@@ -88,6 +88,13 @@ Every push to `main` then redeploys automatically. Hashed build assets are cache
 - **Liyaqat & Yasmeen Sayyad's "about"** (Chapter IV) is a draft. It presents them as equal partners and founders & owners of Raza Perfume today, carrying forward what Yasinali began in 1986 (he is credited as "The first founder · Est. 1986"). Their shared quote, "True luxury is not seen, it is felt.", comes from the original wireframe.
 - **Fragrance notes and descriptions** in the Collection chapter are placeholder copy written for the layout.
 - Social links, the "Add to bag" counter and the newsletter form are front-end only. Connect them to the shop/CRM.
+
+## License
+
+`LICENSE.md` is the Website License Agreement between Webzoo Innovation (licensor, owns the design and
+code) and Raza Perfume (licensee, owns its brand, photos, products and customer data). It is published as
+`/license.html` and linked from the footer. Fill in the `[bracketed]` fields (addresses, date, city,
+invoice reference) and have it signed.
 
 ## Tech
 

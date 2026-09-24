@@ -48,6 +48,13 @@ export class OrderError extends Error {
   }
 }
 
+export async function subscribe(email) {
+  const sb = await client();
+  if (!sb) throw new OrderError('Sign-ups are not open yet.');
+  const { error } = await sb.rpc('subscribe', { p_email: email });
+  if (error) throw new OrderError(error.code === '22023' ? error.message : 'Something went wrong. Please try again.');
+}
+
 // Saves the order through the place_order RPC (prices are set server-side).
 // Returns null when no backend is configured.
 export async function submitOrder(customer, items) {

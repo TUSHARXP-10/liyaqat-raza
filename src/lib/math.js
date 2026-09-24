@@ -20,5 +20,5 @@ export const ease = {
 export const isTouch = () => window.matchMedia('(hover: none), (pointer: coarse)').matches;
 export const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// Yield to the browser so long synchronous work doesn't freeze the preloader.
+// Yield to the browser so long synchronous work doesn't freeze the intro.
 export const nextFrame = () => new Promise((r) => requestAnimationFrame(() => r()));

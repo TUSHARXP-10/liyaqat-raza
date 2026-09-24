@@ -4,6 +4,8 @@ import { SplitText } from 'gsap/SplitText';
 import { Odometer } from '../ui/odometer.js';
 import { Smoke } from '../ui/smoke.js';
 import { initShop } from '../shop/shop.js';
+import { backendEnabled, subscribe } from '../shop/backend.js';
+import { SHOP } from '../content.js';
 import { heroState } from './keyframes.js';
 
 // Every chapter's choreography. Pinned chapters scrub their timelines with
@@ -27,7 +29,7 @@ export function buildChapters(ctx) {
   setupJourney();
   setupBackdropFades();
   const { setSound } = setupChrome(ctx);
-  return { intro, setSound };
+  return { intro, setSound, shop };
 }
 
 /* ------------------------------------------------------------------- HERO */
@@ -330,6 +332,13 @@ function setupCollection({ triggers: T, lenis, ambient, shop }) {
     clearTimeout(add._t);
     add._t = setTimeout(() => (addLabel.textContent = 'Add to bag'), 1800);
   });
+
+  // "Request a sample" opens WhatsApp already naming the fragrance on screen
+  $('[data-sample]')?.addEventListener('click', (e) => {
+    const name = articles[current].querySelector('[data-variant-name]').textContent.trim();
+    const text = `Hello Raza Perfume! I would like to request a sample of ${name}.`;
+    e.currentTarget.href = `https://wa.me/${SHOP.whatsapp}?text=${encodeURIComponent(text)}`;
+  });
 }
 
 /* ---------------------------------------------------------------- PROMISE */
@@ -362,16 +371,28 @@ function setupJourney() {
 
   const form = $('[data-subscribe]');
   const status = $('[data-subscribe-status]');
-  form.addEventListener('submit', (e) => {
+  // without a backend there is nowhere to keep emails: point to Instagram instead
+  if (!backendEnabled()) form.classList.add('is-offline');
+  const shake = () => gsap.fromTo(form.querySelector('.subscribe__row'), { x: -8 }, { x: 0, duration: 0.6, ease: 'elastic.out(1, 0.3)' });
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const input = form.querySelector('input');
+    const button = form.querySelector('[type="submit"]');
     if (!input.checkValidity() || !input.value) {
       status.textContent = 'Please enter a valid email address.';
-      gsap.fromTo(form.querySelector('.subscribe__row'), { x: -8 }, { x: 0, duration: 0.6, ease: 'elastic.out(1, 0.3)' });
-      return;
+      return shake();
     }
-    status.textContent = 'Welcome to the journey. Your first story is on its way.';
-    input.value = '';
+    button.disabled = true;
+    try {
+      await subscribe(input.value.trim());
+      status.textContent = 'Welcome to the journey. You’ll hear from us first.';
+      input.value = '';
+    } catch (err) {
+      status.textContent = err.message || 'Something went wrong. Please try again.';
+      shake();
+    } finally {
+      button.disabled = false;
+    }
   });
 }
 

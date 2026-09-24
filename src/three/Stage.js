@@ -68,9 +68,30 @@ export class Stage {
     this.visible = true;
     this.mobile = window.innerWidth < 820;
     this._v = new THREE.Vector3();
-    // adaptive resolution: step the pixel ratio down if frames run slow
+    // adaptive quality: step the pixel ratio down, then the glass effects,
+    // whenever frames run slow. Weak phones start one step down.
     this.prCap = 2;
+    this.quality = 0;
     this.perf = { acc: 0, frames: 0, windows: 0 };
+    const mem = navigator.deviceMemory || 8;
+    const cores = navigator.hardwareConcurrency || 8;
+    this.lowEnd = this.mobile && (mem <= 4 || cores <= 4);
+    if (this.lowEnd) this.prCap = 1.25;
+  }
+
+  // 1: no colour dispersion, cheaper refraction · 2: coarser refraction, no bokeh
+  #lighten(level) {
+    if (level <= this.quality || !this.bottle) return;
+    this.quality = level;
+    const m = this.bottle.mat;
+    if (level >= 1) {
+      for (const mat of [m.glass, m.crystal, m.vessel]) mat.dispersion = 0;
+      this.renderer.transmissionResolutionScale = 0.5;
+    }
+    if (level >= 2) {
+      this.renderer.transmissionResolutionScale = 0.35;
+      this.dust.bokeh.visible = false;
+    }
   }
 
   #monitor(dt) {
@@ -82,9 +103,12 @@ export class Stage {
     p.acc = 0;
     p.frames = 0;
     p.windows += 1;
-    if (p.windows > 2 && avg > 1 / 45 && this.prCap > 1) {
+    if (p.windows <= 2 || avg <= 1 / 45) return;
+    if (this.prCap > 1) {
       this.prCap = Math.max(1, Math.min(this.renderer.getPixelRatio(), this.prCap) - 0.25);
       this.resize();
+    } else if (this.quality < 2) {
+      this.#lighten(this.quality + 1);
     }
   }
 
@@ -97,7 +121,7 @@ export class Stage {
     onProgress(0.2);
     const swirl = makeSwirlTexture(noise);
     onProgress(0.26);
-    const marble = await makeMarbleTextures(noise, (p) => onProgress(0.26 + p * 0.56));
+    const marble = await makeMarbleTextures(1989, (p) => onProgress(0.26 + p * 0.56));
     const glow = makeGlowTexture();
     this.tex = { labels, cap, coin, swirl, marble, glow };
 
@@ -127,15 +151,23 @@ export class Stage {
     this.scene.add(this.bottle.root);
     this.dust = new Dust(noise.rand, this.mobile);
     this.scene.add(this.dust.group);
+    if (this.lowEnd) this.#lighten(1);
 
     this.resize();
     onProgress(0.88);
-    // warm every shader up front so the first scroll never hitches
+    // compile every shader up front (in parallel where the GPU driver allows)
     await this.renderer.compileAsync(this.scene, this.camera);
+    onProgress(1);
+  }
+
+  // First real frames, exploded and assembled, so the first scroll never
+  // hitches. Called during a calm moment of the intro.
+  warm() {
+    if (!this.bottle) return;
     this.bottle.setExplode(1);
     this.renderer.render(this.scene, this.camera);
     this.bottle.setExplode(0);
-    onProgress(1);
+    this.renderer.render(this.scene, this.camera);
   }
 
   resize() {

@@ -360,6 +360,22 @@ function initQuickView({ lenis }) {
     if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
     x0 = null;
   });
+  // share a direct link to this fragrance (opens straight into quick view)
+  $('[data-qv-share]', root).addEventListener('click', async () => {
+    const p = q.list[q.index];
+    const url = `${location.origin}${location.pathname}?p=${encodeURIComponent(p.id)}`;
+    const data = { title: `${p.name} · Raza Perfume`, text: `${p.name} from the House of Raza`, url };
+    try {
+      if (navigator.share) await navigator.share(data);
+      else {
+        await navigator.clipboard.writeText(url);
+        toast(p, 'Link copied, ready to share');
+      }
+    } catch (err) {
+      if (err?.name !== 'AbortError') toast(p, url);
+    }
+  });
+
   cart.subscribe(() => root.classList.contains('is-open') && render());
   return { open };
 }
@@ -569,6 +585,11 @@ export function initShop({ lenis }) {
   if (!SHOP.whatsapp) console.warn('[raza] VITE_WHATSAPP_NUMBER is not set — orders open WhatsApp without a recipient.');
   else $$('a[aria-label="WhatsApp"]').forEach((a) => (a.href = `https://wa.me/${SHOP.whatsapp}`));
 
+  // nav "Search" jumps into the Atelier and focuses the search field
+  $$('[data-shop-jump]').forEach((b) => b.addEventListener('click', () => {
+    lenis?.scrollTo('#shop', { duration: 1.6, onComplete: () => $('[data-shop-search]').focus({ preventScroll: true }) });
+  }));
+
   // live prices, photos & products from Supabase, when configured
   if (backendEnabled()) {
     fetchCatalog()
@@ -587,6 +608,7 @@ export function initShop({ lenis }) {
       const p = catalog.get(id);
       if (p) added(p);
     },
-    view: (id) => quickView.open(id),
+    // deep links (?p=<id>) open with the whole catalogue for prev/next
+    view: (id) => quickView.open(id, catalog.list()),
   };
 }

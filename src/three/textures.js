@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { nextFrame } from '../lib/math.js';
+import { paintMarbleBuffers } from './marble.js';
 
 // Every surface on the bottle is painted procedurally in canvas: no image
 // assets, crisp at any DPR. Each painter can run in three modes:
@@ -359,52 +360,58 @@ export function makeCoinTextures() {
 
 /* ----------------------------------------------------------------- Marble */
 
-// Black marble with fractured gold veins. Pixel-by-pixel noise, chunked across
-// frames so the preloader keeps animating while it paints.
-async function paintMarble(noise, w, h, pxPerUnit, seedOffset, onRows) {
+// Black marble with fractured gold veins. The per-pixel maths runs in a Web
+// Worker so the intro keeps animating; main-thread fallback if workers fail.
+function marbleOnWorker(spec, onProgress) {
+  return new Promise((resolve, reject) => {
+    const worker = new Worker(new URL('./marble.worker.js', import.meta.url), { type: 'module' });
+    worker.onmessage = ({ data }) => {
+      if (data.done) {
+        worker.terminate();
+        resolve(data);
+      } else onProgress(data.progress);
+    };
+    worker.onerror = (e) => {
+      worker.terminate();
+      reject(e);
+    };
+    worker.postMessage(spec);
+  });
+}
+
+// rare fallback (workers blocked): paint in one go
+async function marbleOnMainThread(spec, onProgress) {
+  await nextFrame();
+  const buffers = paintMarbleBuffers(spec);
+  onProgress(1);
+  return buffers;
+}
+
+async function paintMarble(seed, w, h, pxPerUnit, seedOffset, onProgress) {
+  const spec = { seed, w, h, pxPerUnit, seedOffset };
+  let buffers;
+  try {
+    buffers = await marbleOnWorker(spec, onProgress);
+  } catch {
+    buffers = await marbleOnMainThread(spec, onProgress);
+  }
   const [c, ctx] = makeCanvas(w, h);
   const [cp, ctxp] = makeCanvas(w, h);
-  const img = ctx.createImageData(w, h);
-  const imgp = ctxp.createImageData(w, h);
-  const d = img.data, dp = imgp.data;
-  for (let y = 0; y < h; y++) {
-    for (let x = 0; x < w; x++) {
-      const wx = x / pxPerUnit + seedOffset, wy = y / pxPerUnit;
-      const n = noise.fbm3(wx * 1.1, wy * 1.1, 0.3, 5);
-      const cloud = noise.fbm3(wx * 0.6 + 9, wy * 0.6, 1.7, 3);
-      const v1 = Math.abs(Math.sin((wx * 0.9 + wy * 1.7 + n * 3.4) * 2.6));
-      const vein1 = 1 - Math.min(1, v1 / 0.05);
-      const crack = Math.abs(noise.noise3(wx * 2.4, wy * 2.4, 3.1) + n * 0.25);
-      const vein2 = 1 - Math.min(1, crack / 0.022);
-      const hair = Math.abs(noise.noise3(wx * 5.5, wy * 5.5, 7.7));
-      const vein3 = (1 - Math.min(1, hair / 0.012)) * 0.45;
-      let gold = Math.max(vein1 * 0.95, vein2 * 0.8, vein3);
-      gold *= 0.55 + 0.45 * (noise.noise3(wx * 3, wy * 3, 5) * 0.5 + 0.5);
-      const base = 10 + 16 * (n * 0.5 + 0.5) + 26 * Math.max(0, cloud) ** 2;
-      const i = (y * w + x) * 4;
-      d[i] = base * 1.02 + (214 - base) * gold;
-      d[i + 1] = base + (160 - base) * gold;
-      d[i + 2] = base * 0.94 + (78 - base) * gold;
-      d[i + 3] = 255;
-      dp[i] = 0;
-      dp[i + 1] = 255 * (0.42 - 0.14 * gold);
-      dp[i + 2] = 255 * Math.min(1, gold * 1.4);
-      dp[i + 3] = 255;
-    }
-    if (y % 10 === 0) await onRows(y / h);
-  }
-  ctx.putImageData(img, 0, 0);
-  ctxp.putImageData(imgp, 0, 0);
+  ctx.putImageData(new ImageData(buffers.color, w, h), 0, 0);
+  ctxp.putImageData(new ImageData(buffers.pbr, w, h), 0, 0);
   return [c, ctx, cp, ctxp];
 }
 
-export async function makeMarbleTextures(noise, onProgress = () => {}) {
+export async function makeMarbleTextures(seed, onProgress = () => {}) {
   // side: octagon with 8 faces 1.19 wide, 0.7 tall -> keep texels square
   const SW = 3072, SH = 225, P = SW / 8;
-  const [side, sctx, sideP, sctxp] = await paintMarble(noise, SW, SH, 322, 0, async (p) => {
-    onProgress(p * 0.7);
-    await nextFrame();
-  });
+  // side and top paint in parallel on two workers
+  let pSide = 0, pTop = 0;
+  const report = () => onProgress(pSide * 0.7 + pTop * 0.3);
+  const [[side, sctx, sideP, sctxp], [top, , topP]] = await Promise.all([
+    paintMarble(seed, SW, SH, 322, 0, (p) => { pSide = p; report(); }),
+    paintMarble(seed, 512, 512, 165, 17.3, (p) => { pTop = p; report(); }),
+  ]);
 
   // engraved RAZA on the front face
   const engrave = (ctx, pbr) => {
@@ -422,11 +429,6 @@ export async function makeMarbleTextures(noise, onProgress = () => {}) {
   };
   engrave(sctx, false);
   engrave(sctxp, true);
-
-  const [top, , topP] = await paintMarble(noise, 512, 512, 165, 17.3, async (p) => {
-    onProgress(0.7 + p * 0.3);
-    await nextFrame();
-  });
 
   onProgress(1);
   return {
