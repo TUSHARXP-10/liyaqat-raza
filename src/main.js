@@ -41,16 +41,11 @@ async function boot() {
   try {
     hashTarget = location.hash.length > 1 ? document.querySelector(location.hash) : null;
   } catch { /* not a valid selector */ }
-  // the full title sequence plays once per visit; reloads in the same session
-  // (e.g. coming back from WhatsApp) go straight to the curtain
-  let seenThisSession = false;
-  try {
-    seenThisSession = sessionStorage.getItem('raza-intro-seen') === '1';
-  } catch { /* storage unavailable */ }
 
+  // the full title sequence plays on every load, refreshes included
   const ambient = new Ambient();
   const intro = new Intro({
-    quick: skip || seenThisSession,
+    quick: skip,
     reduced,
     onSound: (on) => (on ? ambient.start() : ambient.stop()),
   });
@@ -126,9 +121,6 @@ async function boot() {
 
   intro.set('build', 1, 1);
   await intro.finished();
-  try {
-    sessionStorage.setItem('raza-intro-seen', '1');
-  } catch { /* storage unavailable */ }
   if (intro.soundOn) story.setSound(true);
   // measure scroll positions now, while covered, not during the curtain
   ScrollTrigger.refresh();
