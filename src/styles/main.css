@@ -992,7 +992,7 @@ html.is-covered body > :not(.intro) * { animation-play-state: paused !important;
   box-shadow: inset 0 0 60px rgba(7, 5, 4, 0.55);
   pointer-events: none;
 }
-.founder__photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+.founder__photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 35% 30%; }
 .founder__photo.is-missing { display: none; }
 .founder__arabic {
   position: absolute;
@@ -1050,7 +1050,6 @@ html.is-covered body > :not(.intro) * { animation-play-state: paused !important;
 
 .founder__copy .eyebrow { margin-bottom: 26px; }
 .founder__name { font-size: clamp(32px, 3.4vw, 62px); letter-spacing: 0.14em; }
-.founder__amp { font-family: var(--f-serif); font-style: italic; font-weight: 300; text-transform: none; letter-spacing: 0; color: var(--gold); margin-right: 0.12em; }
 .founder__surname { margin-top: 14px; font-family: var(--f-display); font-size: 15px; letter-spacing: 0.42em; text-transform: uppercase; color: var(--gold); }
 .founder__surname span { display: inline-block; font-family: var(--f-body); font-size: 10.5px; letter-spacing: 0.3em; color: var(--muted); }
 .founder__text { color: var(--muted); margin-bottom: 42px; max-width: 420px; }
