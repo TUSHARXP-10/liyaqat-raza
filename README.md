@@ -86,8 +86,8 @@ Every push to `main` then redeploys automatically. Hashed build assets are cache
 | — | Title sequence (`src/ui/intro.js`, ~7.7 s) | The site loads during the sequence. Gold particles spiral in and form the Raza logo, a light sweep crosses it, then a black hole opens and swallows it. After a flash: "Since 1986 · razaperfume.com", then the license credit for Webzoo Innovation, and the curtain opens. It has Skip and a sound toggle, and plays on every page load, refreshes included. Only `?skip` (for development) goes straight in. |
 | I | Prologue (`#hero`) | The bottle rises onto a marble plinth in a Moorish colonnade while liquid-gold ribbons pour around it. Slides 01/02/03 switch the headline and turn the bottle into Base, Oud or Musk. |
 | II | Anatomy (`#anatomy`, pinned) | The bottle comes apart piece by piece: cap, R seal, spray, collar, glass, fragrance, base. Each label is attached to the actual 3D part and follows it. It then snaps back together. |
-| III | Origins (`#story`, pinned) | The screen turns to sepia film and an odometer rewinds 2026 → 1986. The counter lands in "Established in 1986", then the real photograph of founder **Yasinali Sayad** at his counter drops in and develops. His name and story take over the panel, and his words *"Sugandh se rishte bante hain"* write themselves in script, signed. Colour then returns over a dusk skyline. |
-| IV | The House Today (`#founder`) | **Liyaqat Sayad**, founder and owner of Raza Perfume today and Yasinali's son. His portrait sits in a wide Mughal arch beside incense smoke from a brass burner, and his quote lights up word by word as you scroll. |
+| III | Origins (`#story`, pinned) | The screen turns to sepia film and an odometer rewinds 2026 → 1986. The counter lands in "Established in 1986", then the real photograph of founder **Yasinali Sayed** at his counter drops in and develops. His name and story take over the panel, and his words *"Sugandh se rishte bante hain"* write themselves in script, signed. Colour then returns over a dusk skyline. |
+| IV | The House Today (`#founder`) | **Liyaqat Sayed**, founder and owner of Raza Perfume today and Yasinali's son. His portrait sits in a wide Mughal arch beside incense smoke from a brass burner, and his quote lights up word by word as you scroll. |
 | V | Collection (`#collection`, pinned) | The bottle spins through Base → Oud → Musk. Liquid, glass tint, label, splash colour and backdrop grade all change with it. |
 | — | Promises / Journey | Line icons draw themselves. A giant RAZA rises from the footer and the gold follows the cursor. |
 
@@ -120,15 +120,15 @@ If the logo changes, re-trace it, then run `npm run render:products` and `npm ru
 
 ## Assets
 
-- `public/media/yasinali-sayad-1986.jpg`: the founder, Yasinali Sayad, at the first Raza counter (Origins chapter).
-- `public/media/liyaqat-sayad.jpg`: Liyaqat Sayad (Chapter IV, landscape, about 1.4:1).
+- `public/media/yasinali-sayed-1986.jpg`: the founder, Yasinali Sayed, at the first Raza counter (Origins chapter).
+- `public/media/liyaqat-sayed.jpg`: Liyaqat Sayed (Chapter IV, landscape, about 1.4:1).
   It appears inside the arch automatically. If the file is missing, a candle shows in its place.
 - `public/media/anatomy.jpg` is only shown if a visitor's device can't run WebGL.
 
 ## Content to confirm with the client
 
-- **Yasinali Sayad's "about"** (Origins chapter) is a draft written from his photograph. "Bombay" and the oud / musk / amber / rose / sandal blends come from the signage in that photo.
-- **Liyaqat Sayad's "about"** (Chapter IV) is a draft. It presents him as founder and owner of Raza Perfume today, carrying forward what his father Yasinali began in 1986 (credited as "The first founder · Est. 1986"). His quote, "True luxury is not seen, it is felt.", comes from the original wireframe.
+- **Yasinali Sayed's "about"** (Origins chapter) is a draft written from his photograph. "Bombay" and the oud / musk / amber / rose / sandal blends come from the signage in that photo.
+- **Liyaqat Sayed's "about"** (Chapter IV) is a draft. It presents him as founder and owner of Raza Perfume today, carrying forward what his father Yasinali began in 1986 (credited as "The first founder · Est. 1986"). His quote, "True luxury is not seen, it is felt.", comes from the original wireframe.
 - **Fragrance notes and descriptions** in the Collection chapter are placeholder copy written for the layout.
 - Social links, the "Add to bag" counter and the newsletter form are front-end only. Connect them to the shop/CRM.
 

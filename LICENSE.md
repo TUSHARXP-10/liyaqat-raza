@@ -5,7 +5,7 @@
 This Website License Agreement (the "Agreement") is made on **[Effective Date]** between:
 
 - **Webzoo Innovation**, [registered address], website [webzooinnovation.com](https://webzooinnovation.com) (the "Licensor"); and
-- **Raza Perfume**, represented by its proprietor **Liyaqat Sayad**, [registered address] (the "Licensee").
+- **Raza Perfume**, represented by its proprietor **Liyaqat Sayed**, [registered address] (the "Licensee").
 
 The Licensor and the Licensee are each a "Party" and together the "Parties".
 
@@ -121,7 +121,7 @@ Name: ______________________ Signature: ______________________ Date: ___________
 
 **For Raza Perfume (Licensee)**
 
-Name: Liyaqat Sayad ______________ Signature: ______________________ Date: ____________
+Name: Liyaqat Sayed ______________ Signature: ______________________ Date: ____________
 
 ---
 
