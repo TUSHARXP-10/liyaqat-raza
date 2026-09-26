@@ -1647,7 +1647,7 @@ html:not(.nav-away) .shop__controls { top: var(--nav-h); }
 .qv__rel-img.is-loaded { opacity: 1; }
 .qv__rel-img.is-fallback { width: 22px; height: auto; opacity: 1; }
 
-/* real product photos (product-photos/ → npm run import:photos) fill the frame */
+/* real product photos ("product image/" → npm run import:photos) fill the frame */
 .product__media:has(.is-photo) { background: #0c0906; }
 .product__img.is-photo { width: 100%; height: 100%; object-fit: cover; transform: scale(1.02); }
 .product__img.is-photo.is-loaded { transform: none; }

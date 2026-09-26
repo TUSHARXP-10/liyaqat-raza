@@ -1,10 +1,146 @@
 {
+  "regular-212-sexy-men": [
+    {
+      "alt": "212 Sexy Men",
+      "kind": "photo",
+      "lg": "media/photos/regular-212-sexy-men-1.jpg",
+      "sm": "media/photos/regular-212-sexy-men-1-sm.jpg"
+    }
+  ],
+  "regular-armani-black": [
+    {
+      "alt": "Armani Black",
+      "kind": "photo",
+      "lg": "media/photos/regular-armani-black-1.jpg",
+      "sm": "media/photos/regular-armani-black-1-sm.jpg"
+    }
+  ],
+  "regular-arrow-magnet": [
+    {
+      "alt": "Arrow Magnet",
+      "kind": "photo",
+      "lg": "media/photos/regular-arrow-magnet-1.jpg",
+      "sm": "media/photos/regular-arrow-magnet-1-sm.jpg"
+    }
+  ],
   "luxury-aurum": [
     {
       "alt": "Aurum",
       "kind": "photo",
       "lg": "media/photos/luxury-aurum-1.jpg",
       "sm": "media/photos/luxury-aurum-1-sm.jpg"
+    }
+  ],
+  "regular-be-delicious": [
+    {
+      "alt": "Be Delicious",
+      "kind": "photo",
+      "lg": "media/photos/regular-be-delicious-1.jpg",
+      "sm": "media/photos/regular-be-delicious-1-sm.jpg"
+    }
+  ],
+  "regular-black-excess": [
+    {
+      "alt": "Black Excess",
+      "kind": "photo",
+      "lg": "media/photos/regular-black-excess-1.jpg",
+      "sm": "media/photos/regular-black-excess-1-sm.jpg"
+    }
+  ],
+  "regular-black-london": [
+    {
+      "alt": "Black London",
+      "kind": "photo",
+      "lg": "media/photos/regular-black-london-1.jpg",
+      "sm": "media/photos/regular-black-london-1-sm.jpg"
+    }
+  ],
+  "regular-black-orchid": [
+    {
+      "alt": "Black Orchid",
+      "kind": "photo",
+      "lg": "media/photos/regular-black-orchid-1.jpg",
+      "sm": "media/photos/regular-black-orchid-1-sm.jpg"
+    }
+  ],
+  "regular-bombshell": [
+    {
+      "alt": "Bombshell",
+      "kind": "photo",
+      "lg": "media/photos/regular-bombshell-1.jpg",
+      "sm": "media/photos/regular-bombshell-1-sm.jpg"
+    }
+  ],
+  "regular-bvlgari-black": [
+    {
+      "alt": "Bvlgari Black",
+      "kind": "photo",
+      "lg": "media/photos/regular-bvlgari-black-1.jpg",
+      "sm": "media/photos/regular-bvlgari-black-1-sm.jpg"
+    }
+  ],
+  "regular-charlie": [
+    {
+      "alt": "Charlie",
+      "kind": "photo",
+      "lg": "media/photos/regular-charlie-1.jpg",
+      "sm": "media/photos/regular-charlie-1-sm.jpg"
+    }
+  ],
+  "regular-ck-one": [
+    {
+      "alt": "CK One",
+      "kind": "photo",
+      "lg": "media/photos/regular-ck-one-1.jpg",
+      "sm": "media/photos/regular-ck-one-1-sm.jpg"
+    }
+  ],
+  "regular-cool-girl": [
+    {
+      "alt": "Cool Girl",
+      "kind": "photo",
+      "lg": "media/photos/regular-cool-girl-1.jpg",
+      "sm": "media/photos/regular-cool-girl-1-sm.jpg"
+    }
+  ],
+  "regular-cool-water": [
+    {
+      "alt": "Cool Water",
+      "kind": "photo",
+      "lg": "media/photos/regular-cool-water-1.jpg",
+      "sm": "media/photos/regular-cool-water-1-sm.jpg"
+    }
+  ],
+  "regular-cr7": [
+    {
+      "alt": "CR7",
+      "kind": "photo",
+      "lg": "media/photos/regular-cr7-1.jpg",
+      "sm": "media/photos/regular-cr7-1-sm.jpg"
+    }
+  ],
+  "regular-creed-aventus": [
+    {
+      "alt": "Creed Aventus",
+      "kind": "photo",
+      "lg": "media/photos/regular-creed-aventus-1.jpg",
+      "sm": "media/photos/regular-creed-aventus-1-sm.jpg"
+    }
+  ],
+  "regular-desire": [
+    {
+      "alt": "Desire",
+      "kind": "photo",
+      "lg": "media/photos/regular-desire-1.jpg",
+      "sm": "media/photos/regular-desire-1-sm.jpg"
+    }
+  ],
+  "regular-dior-sauvage": [
+    {
+      "alt": "Dior Sauvage",
+      "kind": "photo",
+      "lg": "media/photos/regular-dior-sauvage-1.jpg",
+      "sm": "media/photos/regular-dior-sauvage-1-sm.jpg"
     }
   ],
   "luxury-el-roja-amber-ex": [
@@ -23,6 +159,14 @@
       "sm": "media/photos/luxury-greatness-of-oud-1-sm.jpg"
     }
   ],
+  "regular-gucci-bamboo": [
+    {
+      "alt": "Gucci Bamboo",
+      "kind": "photo",
+      "lg": "media/photos/regular-gucci-bamboo-1.jpg",
+      "sm": "media/photos/regular-gucci-bamboo-1-sm.jpg"
+    }
+  ],
   "luxury-gucci-oud": [
     {
       "alt": "Gucci Oud",
@@ -37,6 +181,108 @@
       "sm": "media/photos/luxury-gucci-oud-2-sm.jpg"
     }
   ],
+  "regular-helmenton-green": [
+    {
+      "alt": "Helmenton Green",
+      "kind": "photo",
+      "lg": "media/photos/regular-helmenton-green-1.jpg",
+      "sm": "media/photos/regular-helmenton-green-1-sm.jpg"
+    }
+  ],
+  "regular-hugo-boss": [
+    {
+      "alt": "Hugo Boss",
+      "kind": "photo",
+      "lg": "media/photos/regular-hugo-boss-1.jpg",
+      "sm": "media/photos/regular-hugo-boss-1-sm.jpg"
+    }
+  ],
+  "regular-invictus": [
+    {
+      "alt": "Invictus",
+      "kind": "photo",
+      "lg": "media/photos/regular-invictus-1.jpg",
+      "sm": "media/photos/regular-invictus-1-sm.jpg"
+    }
+  ],
+  "regular-jaguar-black": [
+    {
+      "alt": "Jaguar Black",
+      "kind": "photo",
+      "lg": "media/photos/regular-jaguar-black-1.jpg",
+      "sm": "media/photos/regular-jaguar-black-1-sm.jpg"
+    }
+  ],
+  "regular-lacoste-white": [
+    {
+      "alt": "Lacoste White",
+      "kind": "photo",
+      "lg": "media/photos/regular-lacoste-white-1.jpg",
+      "sm": "media/photos/regular-lacoste-white-1-sm.jpg"
+    }
+  ],
+  "regular-lomani-code": [
+    {
+      "alt": "Lomani Code",
+      "kind": "photo",
+      "lg": "media/photos/regular-lomani-code-1.jpg",
+      "sm": "media/photos/regular-lomani-code-1-sm.jpg"
+    },
+    {
+      "alt": "Lomani Code, photo 2",
+      "kind": "photo",
+      "lg": "media/photos/regular-lomani-code-2.jpg",
+      "sm": "media/photos/regular-lomani-code-2-sm.jpg"
+    }
+  ],
+  "regular-m-ponds": [
+    {
+      "alt": "M. Ponds",
+      "kind": "photo",
+      "lg": "media/photos/regular-m-ponds-1.jpg",
+      "sm": "media/photos/regular-m-ponds-1-sm.jpg"
+    }
+  ],
+  "regular-mont-blanc-legend": [
+    {
+      "alt": "Mont Blanc Legend",
+      "kind": "photo",
+      "lg": "media/photos/regular-mont-blanc-legend-1.jpg",
+      "sm": "media/photos/regular-mont-blanc-legend-1-sm.jpg"
+    }
+  ],
+  "regular-polo-red": [
+    {
+      "alt": "Polo Red",
+      "kind": "photo",
+      "lg": "media/photos/regular-polo-red-1.jpg",
+      "sm": "media/photos/regular-polo-red-1-sm.jpg"
+    }
+  ],
+  "regular-polo-sport": [
+    {
+      "alt": "Polo Sport",
+      "kind": "photo",
+      "lg": "media/photos/regular-polo-sport-1.jpg",
+      "sm": "media/photos/regular-polo-sport-1-sm.jpg"
+    }
+  ],
+  "regular-rasasi-royal-blue": [
+    {
+      "alt": "Rasasi Royal Blue",
+      "kind": "photo",
+      "lg": "media/photos/regular-rasasi-royal-blue-1.jpg",
+      "sm": "media/photos/regular-rasasi-royal-blue-1-sm.jpg"
+    }
+  ],
+  "regular-silver-scent": [
+    {
+      "alt": "Silver Scent",
+      "kind": "photo",
+      "lg": "media/photos/regular-silver-scent-1.jpg",
+      "sm": "media/photos/regular-silver-scent-1-sm.jpg"
+    }
+  ],
   "premium-titan-skinn-raw": [
     {
       "alt": "Titan Skinn Raw",
@@ -49,6 +295,46 @@
       "kind": "card",
       "lg": "media/photos/premium-titan-skinn-raw-2.jpg",
       "sm": "media/photos/premium-titan-skinn-raw-2-sm.jpg"
+    }
+  ],
+  "regular-tommy-girl": [
+    {
+      "alt": "Tommy Girl",
+      "kind": "photo",
+      "lg": "media/photos/regular-tommy-girl-1.jpg",
+      "sm": "media/photos/regular-tommy-girl-1-sm.jpg"
+    }
+  ],
+  "regular-versace": [
+    {
+      "alt": "Versace",
+      "kind": "photo",
+      "lg": "media/photos/regular-versace-1.jpg",
+      "sm": "media/photos/regular-versace-1-sm.jpg"
+    }
+  ],
+  "regular-versace-eros": [
+    {
+      "alt": "Versace Eros",
+      "kind": "photo",
+      "lg": "media/photos/regular-versace-eros-1.jpg",
+      "sm": "media/photos/regular-versace-eros-1-sm.jpg"
+    }
+  ],
+  "regular-white-london": [
+    {
+      "alt": "White London",
+      "kind": "photo",
+      "lg": "media/photos/regular-white-london-1.jpg",
+      "sm": "media/photos/regular-white-london-1-sm.jpg"
+    }
+  ],
+  "regular-white-oud": [
+    {
+      "alt": "White Oud",
+      "kind": "photo",
+      "lg": "media/photos/regular-white-oud-1.jpg",
+      "sm": "media/photos/regular-white-oud-1-sm.jpg"
     }
   ]
 }

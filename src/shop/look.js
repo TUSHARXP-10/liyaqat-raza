@@ -19,7 +19,7 @@ export function tintFor(p) {
   return p.category === 'house' ? tints[(p.number - 1) % tints.length] : tints[hash(p.id) % tints.length];
 }
 
-// Real photos first (Supabase image_url, then product-photos/ via
+// Real photos first (Supabase image_url, then "product image/" via
 // `npm run import:photos`), otherwise the studio render.
 // size: 'sm' for cards and thumbnails, 'lg' for quick view.
 const base = () => import.meta.env?.BASE_URL ?? '/';

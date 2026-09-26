@@ -75,8 +75,8 @@ With Supabase connected, the same prices and stock can also be changed live in t
   keys or swipe, and "More from this collection".
 - **Bag and order:** one line per size ("Cool Water, Attar · 12 ml × 3 — ₹750"), in the bag, the
   WhatsApp message and the Supabase order. The database prices each size itself.
-- **Photos:** real photos come first. Drop them in `product-photos/`, named after the fragrance
-  (`Gucci Oud.jpg`, and `Gucci Oud 2.jpg` for a second photo), then run `npm run import:photos`.
+- **Photos:** real photos come first. Drop them in `product image/`, named after the fragrance
+  (`Gucci Oud.jpg`, `raza_perfume_cool_water.jpg`; a second photo ends in a number or `_alt`; a designed notes card has "notes" in its name and is never cropped), then run `npm run import:photos`.
   Each is made square in two sizes; tall phone shots sit on a blurred copy of themselves, with the
   camera watermark strip cropped off. A fragrance with photos shows the first on its card, and all
   of them in quick view with thumbnails. Designed cards (notes, accords) are always shown whole.
