@@ -62,7 +62,7 @@
   "rewrites": [
     {
       "source": "/p/:id",
-      "destination": "/product.html"
+      "destination": "/product"
     }
   ],
   "cleanUrls": true

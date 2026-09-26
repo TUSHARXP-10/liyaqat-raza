@@ -200,6 +200,11 @@ img { display: block; max-width: 100%; }
 .photo.is-drag { opacity: 0.4; }
 .photo.is-over { border-color: var(--gold); transform: scale(1.03); }
 .photo__cover { position: absolute; left: 6px; top: 6px; padding: 1px 7px; border-radius: 10px; background: var(--gold); color: #140d05; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+/* "Shows with": Perfume & Attar → Perfume → Attar */
+.photo__for { display: block; width: 100%; padding: 5px 8px; border: 0; border-top: 1px solid var(--line); background: var(--panel-2); color: var(--muted); font-size: 11px; text-align: left; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.photo__for::before { content: 'Shows with · '; color: var(--dim, var(--muted)); }
+.photo__for.is-set { color: var(--gold-hi); }
+.photo__for:hover, .photo__for:focus-visible { color: var(--gold-hi); background: var(--panel); }
 .photo__tools { display: flex; gap: 2px; justify-content: space-between; padding: 4px; background: var(--panel-2); }
 .photo__tools .icon-btn { width: 28px; height: 28px; }
 .drop { display: grid; place-items: center; gap: 6px; min-height: 118px; padding: 16px; border: 1.5px dashed var(--line-2); border-radius: 10px; color: var(--muted); text-align: center; font-size: 12.5px; cursor: pointer; transition: border-color 0.2s, background 0.2s; }

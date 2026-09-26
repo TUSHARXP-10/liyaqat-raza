@@ -10,7 +10,7 @@ import { PRODUCTS, SIGNATURES } from '../src/shop/products.js';
 const q = (v) => (v === null || v === undefined ? 'null' : `'${String(v).replace(/'/g, "''")}'`);
 const n = (v) => (v === null || v === undefined ? 'null' : Number(v));
 // the site's bundled photos, as site-relative URLs the admin panel can reorder or replace
-const images = (p) => (p.images || []).map((i) => ({ lg: `/${i.lg}`, sm: `/${i.sm}`, alt: i.alt, kind: i.kind || 'photo' }));
+const images = (p) => (p.images || []).map((i) => ({ lg: `/${i.lg}`, sm: `/${i.sm}`, alt: i.alt, kind: i.kind || 'photo', ...(i.for ? { for: i.for } : {}) }));
 const rows = [...PRODUCTS, ...SIGNATURES].map(
   (p) => `  (${q(p.id)}, ${q(p.name)}, ${q(p.sheetName ?? null)}, ${q(p.category)}, ${p.number}, ${p.inspired}, ${n(p.price)}, ${q(JSON.stringify(p.variants || []))}::jsonb, ${n(p.stock)}, ${q(p.description ?? null)}, ${q(JSON.stringify(images(p)))}::jsonb)`,
 );

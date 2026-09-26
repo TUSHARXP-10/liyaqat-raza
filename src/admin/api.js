@@ -27,7 +27,7 @@ export function normaliseSizes(sizes) {
 }
 
 // the site's bundled product → a database row
-const bundledImages = (p) => (p.images || []).map((i) => ({ lg: `/${i.lg}`, sm: `/${i.sm}`, alt: i.alt, kind: i.kind || 'photo' }));
+const bundledImages = (p) => (p.images || []).map((i) => ({ lg: `/${i.lg}`, sm: `/${i.sm}`, alt: i.alt, kind: i.kind || 'photo', ...(i.for ? { for: i.for } : {}) }));
 function rowOf(p) {
   return {
     id: p.id, name: p.name, sheet_name: p.sheetName ?? null, category: p.category, number: p.number, inspired: p.inspired,

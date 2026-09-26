@@ -69,18 +69,25 @@ function films(prod) {
 
 function render(prod) {
   if (prod.id !== wanted) history.replaceState(null, '', `/p/${encodeURIComponent(prod.id)}${location.search}`);
-  const photos = photosOf(prod);
   const reels = films(prod);
-  const gallery = [
-    ...(photos.length ? photos.map((ph, i) => ({ src: imageFor(prod, { size: 'lg', index: i }), thumb: imageFor(prod, { index: i }), alt: ph.alt || prod.name, card: ph.kind === 'card' })) : [{ src: imageFor(prod, { size: 'lg' }), thumb: imageFor(prod), alt: prod.name, render: true }]),
-    ...reels.map((f) => ({ film: f, thumb: f.poster, alt: f.title })),
-  ];
   const state = {
     v: hasSizes(prod) ? (variantOf(prod, new URLSearchParams(location.search).get('size')) || pickSize(prod, null)).id : null,
     qty: 1,
     at: 0,
   };
   const size = () => variantOf(prod, state.v);
+  // the photos of the kind picked (Perfume or Attar), then the films
+  const galleryFor = (kind) => {
+    const photos = photosOf(prod, kind);
+    return [
+      ...(photos.length
+        ? photos.map((ph, i) => ({ src: imageFor(prod, { size: 'lg', index: i, kind }), thumb: imageFor(prod, { index: i, kind }), alt: ph.alt || prod.name, card: ph.kind === 'card' }))
+        : [{ src: imageFor(prod, { size: 'lg', kind }), thumb: imageFor(prod, { kind }), alt: prod.name, render: true }]),
+      ...reels.map((f) => ({ film: f, thumb: f.poster, alt: f.title })),
+    ];
+  };
+  let shownKind = size()?.type ?? null;
+  let gallery = galleryFor(shownKind);
 
   // crumbs + SEO
   $('[data-crumbs]').innerHTML = `<a href="/">Home</a><span>/</span><a href="/#shop">Shop</a><span>/</span><a href="/?c=${prod.category}#shop">${esc(collectionOf(prod))}</a><span>/</span><b>${esc(prod.name)}</b>`;
@@ -103,8 +110,20 @@ function render(prod) {
       b.setAttribute('aria-pressed', j === state.at);
     });
   };
-  thumbs.hidden = gallery.length < 2;
-  thumbs.innerHTML = gallery.map((g, i) => `<button type="button" class="pp__thumb${g.film ? ' is-film' : ''}" data-i="${i}" aria-label="${g.film ? `Film: ${esc(g.film.title)}` : `Photo ${i + 1}`}"><img src="${esc(g.thumb)}" alt="" loading="lazy" /></button>`).join('');
+  const renderThumbs = () => {
+    thumbs.hidden = gallery.length < 2;
+    thumbs.innerHTML = gallery.map((g, i) => `<button type="button" class="pp__thumb${g.film ? ' is-film' : ''}" data-i="${i}" aria-label="${g.film ? `Film: ${esc(g.film.title)}` : `Photo ${i + 1}`}"><img src="${esc(g.thumb)}" alt="" loading="lazy" /></button>`).join('');
+  };
+  // Perfume ⇄ Attar: the gallery follows, leading with that kind's photo
+  const followKind = () => {
+    const kind = size()?.type ?? null;
+    if (kind === shownKind) return;
+    shownKind = kind;
+    gallery = galleryFor(kind);
+    renderThumbs();
+    show(0);
+  };
+  renderThumbs();
   thumbs.addEventListener('click', (e) => {
     const b = e.target.closest('[data-i]');
     if (b) show(Number(b.dataset.i));
@@ -211,6 +230,7 @@ function render(prod) {
     state.v = v.id;
     state.qty = 1;
     renderBuy();
+    followKind();
   };
   info.addEventListener('click', async (e) => {
     const t = e.target.closest('[data-type]');
@@ -304,7 +324,7 @@ function render(prod) {
   if (related.length) {
     $('[data-related-wrap]').hidden = false;
     $('[data-related-title]').textContent = `More from the ${collectionOf(prod).toLowerCase()}`;
-    $('[data-related]').innerHTML = related.map((x) => `<a class="pp__card" href="/p/${encodeURIComponent(x.id)}"><span class="pp__card-img"><img src="${esc(imageFor(x))}" alt="" loading="lazy" /></span><b>${esc(x.name)}</b><span>${x.price != null ? `From ${fmt(x.price)}` : 'Price on request'}</span></a>`).join('');
+    $('[data-related]').innerHTML = related.map((x) => `<a class="pp__card" href="/p/${encodeURIComponent(x.id)}"><span class="pp__card-img"><img src="${esc(imageFor(x, { kind: size()?.type ?? null }))}" alt="" loading="lazy" /></span><b>${esc(x.name)}</b><span>${x.price != null ? `From ${fmt(x.price)}` : 'Price on request'}</span></a>`).join('');
   }
 }
 

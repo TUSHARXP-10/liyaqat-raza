@@ -80,6 +80,11 @@ With Supabase connected, the same prices and stock can also be changed live in t
   Each is made square in two sizes; tall phone shots sit on a blurred copy of themselves, with the
   camera watermark strip cropped off. A fragrance with photos shows the first on its card, and all
   of them in quick view with thumbnails. Designed cards (notes, accords) are always shown whole.
+  **Attar photos:** a name with "attar" in it (`Blue Lady attar.jpg`, `Blue Lady attar 2.jpg`) is
+  shown when the customer picks Attar, on the card, in quick view, on the product page and in the
+  bag. `Attar bottles.jpg` / `Attar bottles 2.jpg` (no fragrance name) are the general attar photos,
+  shown with Attar for every fragrance that has no attar photo of its own. "perfume" works the same
+  way. In the admin panel each photo has a "Shows with" tag (Perfume & Attar, Perfume, Attar).
   Photos whose name isn't in the spreadsheet are kept and reported, and attach once the sheet lists
   that fragrance. Fragrances without photos show a studio render of the Raza bottle from
   `public/media/products/` (`npm run render:products`, needs Google Chrome). `image_url` in

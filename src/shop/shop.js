@@ -134,11 +134,41 @@ export function bottleSVG(p, cls = 'product__bottle') {
 }
 
 // product image: a real photo when there is one (is-photo), else the studio
-// render; falls back to the drawn bottle if the image is missing
-const photo = (p, cls, { eager = false, alt = '', size = 'sm', index = 0 } = {}) => {
-  const kind = hasPhoto(p) ? ` is-photo${photosOf(p)[index]?.kind === 'card' ? ' is-card' : ''}` : '';
-  return `<img class="${cls}${kind}" src="${imageFor(p, { size, index })}" alt="${esc(alt)}" width="800" height="800" loading="${eager ? 'eager' : 'lazy'}" decoding="async" data-photo="${esc(p.id)}" />`;
+// render; falls back to the drawn bottle if the image is missing.
+// kind: 'perfume' | 'attar' — the photos of what the shopper has picked
+const photo = (p, cls, { eager = false, alt = '', size = 'sm', index = 0, kind = null } = {}) => {
+  const look = hasPhoto(p, kind) ? ` is-photo${photosOf(p, kind)[index]?.kind === 'card' ? ' is-card' : ''}` : '';
+  return `<img class="${cls}${look}" src="${imageFor(p, { size, index, kind })}" alt="${esc(alt)}" width="800" height="800" loading="${eager ? 'eager' : 'lazy'}" decoding="async" data-photo="${esc(p.id)}" data-for="${esc(kind ?? '')}" />`;
 };
+// the kind a card (or a bag line) shows
+const cardKind = (p) => (hasSizes(p) ? pickOf(p).type : null);
+const lineKind = (p, v) => variantOf(p, v)?.type ?? null;
+
+// swap a shown photo for another, crossfading once the new one has loaded
+function swapPhoto(old, html) {
+  const tpl = document.createElement('template');
+  tpl.innerHTML = html.trim();
+  const next = tpl.content.firstChild;
+  // drop photos still fading out from an earlier quick switch
+  $$(`.${old.classList[0]}`, old.parentNode).forEach((el) => el !== old && el.remove());
+  if (old.tagName === 'IMG' && old.getAttribute('src') === next.getAttribute('src')) {
+    old.dataset.for = next.dataset.for;
+    return;
+  }
+  old.after(next);
+  const out = () => {
+    old.classList.remove('is-loaded');
+    old.classList.add('is-leaving');
+    setTimeout(() => old.remove(), 700);
+  };
+  if (next.complete && next.naturalWidth) {
+    next.classList.add('is-loaded');
+    out();
+  } else {
+    next.addEventListener('load', out, { once: true });
+    next.addEventListener('error', () => old.remove(), { once: true });
+  }
+}
 
 function watchPhotos() {
   document.addEventListener('load', (e) => {
@@ -196,7 +226,7 @@ function buyControl(p) {
 function productCard(p, query = '') {
   return `<article class="product${soldOut(p) ? ' is-out' : ''}" data-id="${esc(p.id)}">
   <button class="product__media" type="button" data-view="${esc(p.id)}" aria-label="Quick view: ${esc(p.name)}">
-    ${photo(p, 'product__img')}
+    ${photo(p, 'product__img', { kind: cardKind(p) })}
     <span class="product__no">No. ${pad(p.number)}</span>
     ${stockBadge(p)}
     ${filmsOf(p).length ? '<span class="product__film" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Film</span>' : ''}
@@ -224,9 +254,9 @@ function describe(p) {
 /* -------------------------------------------------------------------- toast */
 
 let toastTimer = null;
-function toast(p, message, { cta = 'View bag' } = {}) {
+function toast(p, message, { cta = 'View bag', kind = null } = {}) {
   const el = $('[data-toast]');
-  el.innerHTML = `${p ? photo(p, 'toast__img', { eager: true }) : ''}<span class="toast__text">${esc(message)}</span>${cta ? `<span class="toast__cta">${esc(cta)}</span>` : ''}`;
+  el.innerHTML = `${p ? photo(p, 'toast__img', { eager: true, kind }) : ''}<span class="toast__text">${esc(message)}</span>${cta ? `<span class="toast__cta">${esc(cta)}</span>` : ''}`;
   markLoaded(el);
   el.classList.add('is-on');
   clearTimeout(toastTimer);
@@ -235,9 +265,10 @@ function toast(p, message, { cta = 'View bag' } = {}) {
 
 function added(p, qty = 1, v = null) {
   const got = cart.add(p.id, qty, v);
-  if (!got) return toast(p, soldOut(p) ? `${p.name} is sold out` : `All ${limitFor(p.id)} in stock are in your bag`);
+  const kind = lineKind(p, v);
+  if (!got) return toast(p, soldOut(p) ? `${p.name} is sold out` : `All ${limitFor(p.id)} in stock are in your bag`, { kind });
   const what = v ? `${p.name}, ${variantOf(p, v)?.label}` : p.name;
-  toast(p, got > 1 ? `${got} × ${what} added` : `${what} added to your bag`);
+  toast(p, got > 1 ? `${got} × ${what} added` : `${what} added to your bag`, { kind });
   // bump the nav badge; clearProps hands scale back to CSS so an empty bag hides it
   gsap.fromTo('[data-bag-count], [data-bag-fab-count]', { scale: 1.9 }, { scale: 1, duration: 0.9, ease: 'elastic.out(1, 0.4)', clearProps: 'transform' });
 }
@@ -595,6 +626,10 @@ function initGrid({ lenis, quickView }) {
     if (opts) opts.innerHTML = optionsBlock(p);
     $('[data-price]', card).innerHTML = priceBlock(p);
     $('[data-buy]', card).innerHTML = buyControl(p);
+    // Perfume ⇄ Attar: the photo follows
+    const shown = $$('.product__img', card).at(-1);
+    const kind = cardKind(p);
+    if (shown && (shown.dataset.for || '') !== (kind ?? '')) swapPhoto(shown, photo(p, 'product__img', { kind, eager: true }));
     if (focusSel) $(focusSel, card)?.focus();
   }
 
@@ -648,25 +683,25 @@ function initQuickView({ lenis }) {
   // v: the size shown · pref: the last kind + ml picked, carried to the next fragrance
   const q = { list: [], index: 0, qty: 1, v: null, pref: null, img: 0, lastFocus: null };
 
-  // the gallery: photos (or the studio render), then the fragrance's films
-  const galleryOf = (p) => [
-    ...(photosOf(p).length ? photosOf(p).map((_, i) => ({ i })) : [{ i: 0 }]),
+  // the gallery: photos of the kind picked (or the studio render), then the fragrance's films
+  const galleryOf = (p, kind) => [
+    ...(photosOf(p, kind).length ? photosOf(p, kind).map((_, i) => ({ i })) : [{ i: 0 }]),
     ...filmsOf(p).map((film) => ({ film })),
   ];
   // main image or film + a thumbnail per item when there is more than one
-  function renderMedia(p) {
-    const items = galleryOf(p);
+  function renderMedia(p, kind) {
+    const items = galleryOf(p, kind);
     q.img = Math.min(q.img, items.length - 1);
-    const key = `${p.id}#${q.img}`;
+    const key = `${p.id}#${kind}#${q.img}`;
     if (media.dataset.key === key) return;
     media.dataset.key = key;
     const item = items[q.img];
     const main = item.film
       ? `<video class="qv__film" src="${esc(blogMedia(item.film.video))}" poster="${esc(blogMedia(item.film.poster))}" controls autoplay playsinline aria-label="Film: ${esc(item.film.title)}"></video>`
-      : photo(p, 'qv__img', { eager: true, alt: photosOf(p)[item.i]?.alt || p.name, size: 'lg', index: item.i });
+      : photo(p, 'qv__img', { eager: true, alt: photosOf(p, kind)[item.i]?.alt || p.name, size: 'lg', index: item.i, kind });
     const thumbs = items.map((it, i) => {
       const label = it.film ? `Film: ${it.film.title}` : `Photo ${i + 1}`;
-      const src = it.film ? blogMedia(it.film.poster) : imageFor(p, { index: it.i });
+      const src = it.film ? blogMedia(it.film.poster) : imageFor(p, { index: it.i, kind });
       return `<button type="button" class="qv__thumb${it.film ? ' is-film' : ''}${i === q.img ? ' is-on' : ''}" data-img="${i}" aria-pressed="${i === q.img}" aria-label="${esc(label)}"><img src="${esc(src)}" alt="" width="60" height="60" /></button>`;
     }).join('');
     media.innerHTML = main + (items.length > 1 ? `<div class="qv__thumbs" role="group" aria-label="Photos and films of ${esc(p.name)}">${thumbs}</div>` : '');
@@ -695,6 +730,7 @@ function initQuickView({ lenis }) {
 
   function choose(p, v) {
     if (!v) return;
+    if (v.type !== variantOf(p, q.v)?.type) q.img = 0; // a new kind leads with its own photo
     q.v = v.id;
     q.pref = { type: v.type, ml: v.ml };
     q.qty = 1;
@@ -704,7 +740,7 @@ function initQuickView({ lenis }) {
     document.dispatchEvent(new CustomEvent('raza:pick', { detail: p.id }));
   }
 
-  function renderRelated(p) {
+  function renderRelated(p, kind) {
     if (p.category === 'house') {
       relatedWrap.hidden = true;
       return;
@@ -715,7 +751,7 @@ function initQuickView({ lenis }) {
     relatedWrap.hidden = !picks.length;
     $('[data-qv-related-title]', root).textContent = `More from the ${collectionOf(p).toLowerCase()}`;
     const list = $('[data-qv-related]', root);
-    list.innerHTML = picks.map((x) => `<button type="button" class="qv__rel" data-rel="${esc(x.id)}">${photo(x, 'qv__rel-img')}<span>${esc(x.name)}</span></button>`).join('');
+    list.innerHTML = picks.map((x) => `<button type="button" class="qv__rel" data-rel="${esc(x.id)}">${photo(x, 'qv__rel-img', { kind: hasSizes(x) ? pickSize(x, { type: kind }).type : null })}<span>${esc(x.name)}</span></button>`).join('');
     markLoaded(list);
   }
 
@@ -726,7 +762,7 @@ function initQuickView({ lenis }) {
     const inBag = cart.qtyOf(p.id);
     const room = Math.max(0, limitFor(p.id) - inBag);
     q.qty = Math.max(1, Math.min(q.qty, room || 1));
-    renderMedia(p);
+    renderMedia(p, size?.type ?? null);
     $('[data-qv-eyebrow]', root).textContent = `${collectionOf(p)} · No. ${pad(p.number)}`;
     $('[data-qv-title]', root).textContent = p.name;
     $('[data-qv-tag]', root).hidden = !p.inspired;
@@ -763,7 +799,7 @@ function initQuickView({ lenis }) {
     $('[data-qv-prev]', root).disabled = q.index === 0;
     $('[data-qv-next]', root).disabled = q.index === q.list.length - 1;
     $('[data-qv-pos]', root).textContent = q.list.length > 1 ? `${q.index + 1} / ${q.list.length}` : '';
-    renderRelated(p);
+    renderRelated(p, size?.type ?? null);
   }
 
   // v: open on this size (shared links) · kind: on this kind, e.g. 'attar' (card pills)
@@ -950,7 +986,7 @@ function initDrawer({ lenis }) {
       const atMax = cart.qtyOf(id) >= limitFor(id);
       const what = esc(size ? `${p.name}, ${size.label}` : p.name);
       return `<li class="cart__item" data-id="${esc(id)}" data-v="${esc(v ?? '')}">
-        <div class="cart__thumb">${photo(p, 'cart__img')}</div>
+        <div class="cart__thumb">${photo(p, 'cart__img', { kind: size?.type ?? null })}</div>
         <div class="cart__info">
           <p class="cart__name">${esc(p.name)}</p>
           ${size ? `<p class="cart__variant">${esc(size.label)}${unit != null && qty > 1 ? ` <span>· ${fmt(unit)} each</span>` : ''}</p>` : ''}

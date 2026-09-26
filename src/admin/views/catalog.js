@@ -17,6 +17,9 @@ export const STANDARD_SIZES = [
   { type: 'attar', ml: 6 }, { type: 'attar', ml: 12 },
 ];
 export const thumbOf = (p) => p.images?.[0]?.sm || p.images?.[0]?.lg || `/media/products/${p.id}.webp`;
+// which choice a photo shows with: both, Perfume only, Attar only
+const FOR_NEXT = { '': 'perfume', perfume: 'attar', attar: '' };
+const FOR_LABEL = { '': 'Perfume & Attar', perfume: 'Perfume', attar: 'Attar' };
 const clone = (x) => JSON.parse(JSON.stringify(x));
 
 // "₹150 – ₹900", "On request", "3 of 5 priced"
@@ -215,7 +218,7 @@ export async function productEditor({ page, params, store, guard, setTitle, go }
       </div>
 
       <div class="stack">
-        <section class="card"><header class="card__head"><div><h2>Photos</h2><p>The first photo is the cover. Drag to reorder.</p></div></header>
+        <section class="card"><header class="card__head"><div><h2>Photos</h2><p>The first photo is the cover. Drag to reorder. Tag a photo “Attar” and it shows when the customer picks Attar.</p></div></header>
           <div class="card__body stack">
             <div class="photos" data-photos></div>
             <label class="drop" data-drop>${icon('upload')}<span><b>Add photos</b><br />Drop images here or click. JPG, PNG or WebP. They’re resized for the web automatically.</span><input type="file" accept="image/*" multiple data-file /></label>
@@ -252,6 +255,7 @@ export async function productEditor({ page, params, store, guard, setTitle, go }
       <figure class="photo${im.kind === 'card' ? ' is-card' : ''}" draggable="true" data-p="${i}">
         <img src="${esc(im.sm || im.lg)}" alt="" />
         ${i === 0 ? '<span class="photo__cover">Cover</span>' : ''}
+        <button class="photo__for${im.for ? ' is-set' : ''}" type="button" data-for title="Shown when the customer picks this kind. Click to change." aria-label="Shows with: ${FOR_LABEL[im.for || '']}">${FOR_LABEL[im.for || '']}</button>
         <figcaption class="photo__tools">
           <button class="icon-btn" type="button" data-move="-1" aria-label="Move left"${i === 0 ? ' disabled' : ''}>${icon('left')}</button>
           <button class="icon-btn${im.kind === 'card' ? ' is-on' : ''}" type="button" data-card aria-pressed="${im.kind === 'card'}" title="Show whole (for designed cards with text)" aria-label="Show whole">${icon('cardIcon')}</button>
@@ -310,6 +314,14 @@ export async function productEditor({ page, params, store, guard, setTitle, go }
       im.kind = im.kind === 'card' ? 'photo' : 'card';
       renderPhotos();
       dirty();
+    } else if (t.closest('[data-for]')) {
+      const im = draft.images[Number(t.closest('[data-p]').dataset.p)];
+      const next = FOR_NEXT[im.for || ''];
+      if (next) im.for = next;
+      else delete im.for;
+      renderPhotos();
+      dirty();
+      $(`[data-p="${t.closest('[data-p]').dataset.p}"] [data-for]`, page)?.focus();
     } else if (t.closest('[data-drop-photo]')) {
       draft.images.splice(Number(t.closest('[data-p]').dataset.p), 1);
       renderPhotos();

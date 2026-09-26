@@ -1,5 +1,6 @@
 // How each product looks: liquid colour and image. Shared by the shop UI and
 // the product-render tool so thumbnails and renders always agree.
+import PHOTOS from './photos.json' with { type: 'json' };
 
 export const TINTS = {
   regular: ['#d9a441', '#e7c47d', '#c98a2e', '#b8621c', '#efd9a6', '#a9b98f', '#caa0a0', '#9fb9cf'],
@@ -28,13 +29,40 @@ export const assetBase = () => {
   return b === './' ? '/' : b;
 };
 const base = assetBase;
-export const photosOf = (p) => [
-  ...(p.image ? [{ sm: p.image, lg: p.image, alt: p.name, url: true }] : []),
-  ...(p.images || []),
-];
-export const hasPhoto = (p) => photosOf(p).length > 0;
-export function imageFor(p, { size = 'sm', index = 0 } = {}) {
-  const photo = photosOf(p)[index];
+
+// A photo may be of one kind ("for": 'attar' | 'perfume'). The general photos
+// ("Attar bottles.jpg") stand in for a fragrance with none of that kind; each
+// fragrance leads with a different one so neighbouring cards vary.
+const GENERAL = { attar: PHOTOS['*attar'] || [], perfume: PHOTOS['*perfume'] || [] };
+const general = (p, kind) => {
+  const list = GENERAL[kind] || [];
+  const at = list.length ? hash(p.id) % list.length : 0;
+  return [...list.slice(at), ...list.slice(0, at)];
+};
+
+// The photos for what the shopper has picked (kind: 'perfume' | 'attar';
+// nothing picked counts as perfume):
+//   Attar   → the fragrance's attar photos, else the general attar photos,
+//             then its notes cards (else its other photos)
+//   Perfume → its perfume photos and untagged photos, else the general
+//             perfume photos, else none (the studio render)
+export function photosOf(p, kind = null) {
+  const all = [
+    ...(p.image ? [{ sm: p.image, lg: p.image, alt: p.name, url: true }] : []),
+    ...(p.images || []),
+  ];
+  const plain = all.filter((ph) => !ph.for);
+  if (kind === 'attar') {
+    const lead = all.filter((ph) => ph.for === 'attar');
+    const shots = lead.length ? lead : general(p, 'attar');
+    return shots.length ? [...shots, ...plain.filter((ph) => ph.kind === 'card')] : plain;
+  }
+  const mine = [...all.filter((ph) => ph.for === 'perfume'), ...plain];
+  return mine.some((ph) => ph.kind !== 'card') ? mine : [...general(p, 'perfume'), ...mine];
+}
+export const hasPhoto = (p, kind = null) => photosOf(p, kind).length > 0;
+export function imageFor(p, { size = 'sm', index = 0, kind = null } = {}) {
+  const photo = photosOf(p, kind)[index];
   if (photo) return photo.url ? photo[size] : `${base()}${photo[size]}`;
   return `${base()}media/products/${p.id}.webp`;
 }

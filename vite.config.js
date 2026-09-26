@@ -71,7 +71,9 @@ function productPages() {
         const title = `${p.name} — ${collection} | Raza Perfume`;
         const kinds = [...new Set((p.variants || []).map((v) => v.type))].filter(Boolean).join(' and ');
         const desc = `${p.name} from the ${collection.toLowerCase()} of Raza Perfume NX2, Kalyan.${kinds ? ` Available as ${kinds}.` : ''} Order on WhatsApp.`;
-        const image = p.images?.[0]?.lg ? `/${p.images[0].lg}` : `/media/products/${p.id}.webp`;
+        // the page's own first photo; an attar-only photo still beats the render
+        const shot = p.images?.find((i) => i.for !== 'attar') || p.images?.[0];
+        const image = shot?.lg ? `/${shot.lg}` : `/media/products/${p.id}.webp`;
         const url = `${site}/p/${p.id}`;
         const html = page.source
           .replace(/<title>[^<]*<\/title>/, `<title>${esc(title)}</title>`)

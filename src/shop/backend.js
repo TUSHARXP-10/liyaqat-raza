@@ -54,7 +54,7 @@ export async function fetchCatalog() {
       description: r.description || null,
       // photos managed in the admin panel (none = keep the bundled photo / render)
       images: Array.isArray(r.images) && r.images.length
-        ? r.images.filter((i) => i?.lg || i?.sm).map((i) => ({ lg: i.lg || i.sm, sm: i.sm || i.lg, alt: i.alt || r.name, kind: i.kind === 'card' ? 'card' : 'photo', url: true }))
+        ? r.images.filter((i) => i?.lg || i?.sm).map((i) => ({ lg: i.lg || i.sm, sm: i.sm || i.lg, alt: i.alt || r.name, kind: i.kind === 'card' ? 'card' : 'photo', ...(['attar', 'perfume'].includes(i.for) ? { for: i.for } : {}), url: true }))
         : null,
       featured: Boolean(r.featured),
     };
