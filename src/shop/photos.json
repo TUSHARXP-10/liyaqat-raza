@@ -1,0 +1,54 @@
+{
+  "luxury-aurum": [
+    {
+      "alt": "Aurum",
+      "kind": "photo",
+      "lg": "media/photos/luxury-aurum-1.jpg",
+      "sm": "media/photos/luxury-aurum-1-sm.jpg"
+    }
+  ],
+  "luxury-el-roja-amber-ex": [
+    {
+      "alt": "El Roja Amber Ex",
+      "kind": "photo",
+      "lg": "media/photos/luxury-el-roja-amber-ex-1.jpg",
+      "sm": "media/photos/luxury-el-roja-amber-ex-1-sm.jpg"
+    }
+  ],
+  "luxury-greatness-of-oud": [
+    {
+      "alt": "Greatness of Oud",
+      "kind": "photo",
+      "lg": "media/photos/luxury-greatness-of-oud-1.jpg",
+      "sm": "media/photos/luxury-greatness-of-oud-1-sm.jpg"
+    }
+  ],
+  "luxury-gucci-oud": [
+    {
+      "alt": "Gucci Oud",
+      "kind": "photo",
+      "lg": "media/photos/luxury-gucci-oud-1.jpg",
+      "sm": "media/photos/luxury-gucci-oud-1-sm.jpg"
+    },
+    {
+      "alt": "Gucci Oud, photo 2",
+      "kind": "card",
+      "lg": "media/photos/luxury-gucci-oud-2.jpg",
+      "sm": "media/photos/luxury-gucci-oud-2-sm.jpg"
+    }
+  ],
+  "premium-titan-skinn-raw": [
+    {
+      "alt": "Titan Skinn Raw",
+      "kind": "photo",
+      "lg": "media/photos/premium-titan-skinn-raw-1.jpg",
+      "sm": "media/photos/premium-titan-skinn-raw-1-sm.jpg"
+    },
+    {
+      "alt": "Titan Skinn Raw, photo 2",
+      "kind": "card",
+      "lg": "media/photos/premium-titan-skinn-raw-2.jpg",
+      "sm": "media/photos/premium-titan-skinn-raw-2-sm.jpg"
+    }
+  ]
+}

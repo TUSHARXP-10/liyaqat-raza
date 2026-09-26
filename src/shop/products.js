@@ -1,4 +1,5 @@
 import CATALOG from './catalog.json' with { type: 'json' };
+import PHOTOS from './photos.json' with { type: 'json' };
 
 // Product catalogue.
 //
@@ -195,8 +196,9 @@ export const PRODUCTS = CATALOG.products.map((row) => {
   const [name, inspired = false] = known || [titleCase(row.sheetName)];
   const variants = variantsOf(row);
   const prices = variants.map((v) => v.price).filter((n) => n != null);
+  const id = `${row.category}-${slug(name)}`;
   return {
-    id: `${row.category}-${slug(name)}`,
+    id,
     name,
     sheetName: row.sheetName,
     category: row.category,
@@ -206,6 +208,7 @@ export const PRODUCTS = CATALOG.products.map((row) => {
     price: prices.length ? Math.min(...prices) : row.price,
     variants, // [] = sold in one size
     stock: row.quantity, // units · null = not tracked
+    images: PHOTOS[id] || [], // real photos (npm run import:photos); none = studio render
   };
 });
 
@@ -224,6 +227,8 @@ export const SIGNATURES = [
     description: 'Clean white musk wrapped in soft florals and powdered iris — quiet, luminous and impossibly close to the skin.',
   },
 ];
+
+SIGNATURES.forEach((p) => (p.images = PHOTOS[p.id] || []));
 
 export const BY_ID = Object.fromEntries([...PRODUCTS, ...SIGNATURES].map((p) => [p.id, p]));
 

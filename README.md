@@ -71,9 +71,15 @@ With Supabase connected, the same prices and stock can also be changed live in t
   keys or swipe, and "More from this collection".
 - **Bag and order:** one line per size ("Cool Water, Attar · 12 ml × 3 — ₹750"), in the bag, the
   WhatsApp message and the Supabase order. The database prices each size itself.
-- **Photos:** studio renders of the Raza bottle in `public/media/products/`
-  (`npm run render:products`, needs Google Chrome). A real photo can replace any render via
-  `image_url` in Supabase.
+- **Photos:** real photos come first. Drop them in `product-photos/`, named after the fragrance
+  (`Gucci Oud.jpg`, and `Gucci Oud 2.jpg` for a second photo), then run `npm run import:photos`.
+  Each is made square in two sizes; tall phone shots sit on a blurred copy of themselves, with the
+  camera watermark strip cropped off. A fragrance with photos shows the first on its card, and all
+  of them in quick view with thumbnails. Designed cards (notes, accords) are always shown whole.
+  Photos whose name isn't in the spreadsheet are kept and reported, and attach once the sheet lists
+  that fragrance. Fragrances without photos show a studio render of the Raza bottle from
+  `public/media/products/` (`npm run render:products`, needs Google Chrome). `image_url` in
+  Supabase overrides both.
 
 ### Supabase setup (one time)
 

@@ -6,7 +6,7 @@ import { catalog } from './catalog.js';
 import { cart, limitFor } from './cart.js';
 import { wishlist } from './wishlist.js';
 import { score, suggest, highlight } from './search.js';
-import { tintFor, imageFor } from './look.js';
+import { tintFor, imageFor, photosOf, hasPhoto } from './look.js';
 import { backendEnabled, fetchCatalog, submitOrder } from './backend.js';
 
 // Chapter VI · The Atelier — catalogue, quick view, bag drawer, checkout.
@@ -92,9 +92,12 @@ export function bottleSVG(p, cls = 'product__bottle') {
   return `<svg viewBox="0 0 40 64" aria-hidden="true" class="${cls}" style="--tint:${tintFor(p)}">${cap}<rect class="b-neck" x="17" y="15" width="6" height="4"/><rect class="b-glass" x="5" y="19" width="30" height="42" rx="5"/><rect class="b-liquid" x="8" y="25" width="24" height="33" rx="3"/><rect class="b-label" x="12" y="31" width="16" height="19" rx="1"/><path class="b-shine" d="M10 23v33"/></svg>`;
 }
 
-// product photo; falls back to the drawn bottle if the image is missing
-const photo = (p, cls, { eager = false, alt = '' } = {}) =>
-  `<img class="${cls}" src="${imageFor(p)}" alt="${esc(alt)}" width="800" height="800" loading="${eager ? 'eager' : 'lazy'}" decoding="async" data-photo="${esc(p.id)}" />`;
+// product image: a real photo when there is one (is-photo), else the studio
+// render; falls back to the drawn bottle if the image is missing
+const photo = (p, cls, { eager = false, alt = '', size = 'sm', index = 0 } = {}) => {
+  const kind = hasPhoto(p) ? ` is-photo${photosOf(p)[index]?.kind === 'card' ? ' is-card' : ''}` : '';
+  return `<img class="${cls}${kind}" src="${imageFor(p, { size, index })}" alt="${esc(alt)}" width="800" height="800" loading="${eager ? 'eager' : 'lazy'}" decoding="async" data-photo="${esc(p.id)}" />`;
+};
 
 function watchPhotos() {
   document.addEventListener('load', (e) => {
@@ -559,7 +562,21 @@ function initQuickView({ lenis }) {
   const relatedWrap = $('[data-qv-related-wrap]', root);
   const options = $('[data-qv-options]', root);
   // v: the size shown · pref: the last kind + ml picked, carried to the next fragrance
-  const q = { list: [], index: 0, qty: 1, v: null, pref: null, lastFocus: null };
+  const q = { list: [], index: 0, qty: 1, v: null, pref: null, img: 0, lastFocus: null };
+
+  // main image + a thumbnail per photo when there is more than one
+  function renderMedia(p) {
+    const key = `${p.id}#${q.img}`;
+    if (media.dataset.key === key) return;
+    media.dataset.key = key;
+    const photos = photosOf(p);
+    const alt = photos[q.img]?.alt || p.name;
+    media.innerHTML = photo(p, 'qv__img', { eager: true, alt, size: 'lg', index: q.img })
+      + (photos.length > 1
+        ? `<div class="qv__thumbs" role="group" aria-label="Photos of ${esc(p.name)}">${photos.map((ph, i) => `<button type="button" class="qv__thumb${i === q.img ? ' is-on' : ''}" data-img="${i}" aria-pressed="${i === q.img}" aria-label="Photo ${i + 1} of ${photos.length}"><img src="${esc(imageFor(p, { index: i }))}" alt="" width="60" height="60" /></button>`).join('')}</div>`
+        : '');
+    markLoaded(media);
+  }
   const current = () => q.list[q.index];
 
   // Perfume / Attar, then that kind's sizes, each with its price
@@ -610,11 +627,7 @@ function initQuickView({ lenis }) {
     const inBag = cart.qtyOf(p.id);
     const room = Math.max(0, limitFor(p.id) - inBag);
     q.qty = Math.max(1, Math.min(q.qty, room || 1));
-    const photoId = media.firstElementChild?.dataset.photo;
-    if (photoId !== p.id) {
-      media.innerHTML = photo(p, 'qv__img', { eager: true, alt: p.name });
-      markLoaded(media);
-    }
+    renderMedia(p);
     $('[data-qv-eyebrow]', root).textContent = `${collectionOf(p)} · No. ${pad(p.number)}`;
     $('[data-qv-title]', root).textContent = p.name;
     $('[data-qv-tag]', root).hidden = !p.inspired;
@@ -661,6 +674,7 @@ function initQuickView({ lenis }) {
     q.list = list?.some((x) => x.id === id) ? list : [p];
     q.index = q.list.findIndex((x) => x.id === id);
     q.qty = 1;
+    q.img = 0;
     q.v = variantOf(p, v)?.id ?? null;
     if (!q.v && kind !== undefined && hasSizes(p)) {
       const pick = p.variants.find((x) => x.type === kind && x.ml === q.pref?.ml) || p.variants.find((x) => x.type === kind);
@@ -702,6 +716,7 @@ function initQuickView({ lenis }) {
     if (i < 0 || i >= q.list.length) return;
     q.index = i;
     q.qty = 1;
+    q.img = 0;
     q.v = null; // the next fragrance opens on the kind + size last picked
     render();
     gsap.fromTo(media.firstElementChild, { autoAlpha: 0, x: 30 * d }, { autoAlpha: 1, x: 0, duration: 0.6, ease: 'expo.out' });
@@ -758,6 +773,13 @@ function initQuickView({ lenis }) {
     else if (e.key === 'ArrowLeft') step(-1);
     else if (e.key === 'ArrowRight') step(1);
     else if (e.key === 'Tab') trapFocus(e, $('.qv__panel', root));
+  });
+  media.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-img]');
+    if (!t) return;
+    q.img = Number(t.dataset.img);
+    render();
+    $(`[data-img="${q.img}"]`, media)?.focus();
   });
   // swipe between products on touch screens
   let x0 = null;

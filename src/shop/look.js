@@ -19,11 +19,19 @@ export function tintFor(p) {
   return p.category === 'house' ? tints[(p.number - 1) % tints.length] : tints[hash(p.id) % tints.length];
 }
 
-// A real photo (Supabase image_url) wins; otherwise the studio render.
-export function imageFor(p) {
-  if (p.image) return p.image;
-  const base = import.meta.env?.BASE_URL ?? '/';
-  return `${base}media/products/${p.id}.webp`;
+// Real photos first (Supabase image_url, then product-photos/ via
+// `npm run import:photos`), otherwise the studio render.
+// size: 'sm' for cards and thumbnails, 'lg' for quick view.
+const base = () => import.meta.env?.BASE_URL ?? '/';
+export const photosOf = (p) => [
+  ...(p.image ? [{ sm: p.image, lg: p.image, alt: p.name, url: true }] : []),
+  ...(p.images || []),
+];
+export const hasPhoto = (p) => photosOf(p).length > 0;
+export function imageFor(p, { size = 'sm', index = 0 } = {}) {
+  const photo = photosOf(p)[index];
+  if (photo) return photo.url ? photo[size] : `${base()}${photo[size]}`;
+  return `${base()}media/products/${p.id}.webp`;
 }
 
 // Text printed on the rendered bottle label (never another house's name).

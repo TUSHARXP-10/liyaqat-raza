@@ -12,7 +12,8 @@
     "render:products": "node scripts/render-products.mjs",
     "brand:assets": "node scripts/brand-assets.mjs",
     "bake:env": "node scripts/bake-env.mjs",
-    "import:products": "node scripts/import-products.mjs"
+    "import:products": "node scripts/import-products.mjs",
+    "import:photos": "node scripts/import-photos.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.1",
@@ -23,6 +24,7 @@
   "devDependencies": {
     "playwright-core": "^1.63.0",
     "read-excel-file": "^9.3.10",
+    "sharp": "^0.34.5",
     "vite": "^8.3.0"
   }
 }
