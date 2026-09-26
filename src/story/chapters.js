@@ -6,6 +6,7 @@ import { Smoke } from '../ui/smoke.js';
 import { initShop } from '../shop/shop.js';
 import { backendEnabled, subscribe } from '../shop/backend.js';
 import { SHOP } from '../content.js';
+import { cms } from '../cms/content.js';
 import { heroState } from './keyframes.js';
 
 // Every chapter's choreography. Pinned chapters scrub their timelines with
@@ -41,7 +42,8 @@ function setupHero({ stage, triggers: T, director, ambient }) {
   const eyebrow = $('[data-hero-eyebrow]');
   const pager = $$('[data-hero-go]');
   const bars = pager.map((b) => b.querySelector('b'));
-  const labels = ['Base — The Original Essence', 'Oud — Rich. Bold. Timeless.', 'Musk — Pure. Elegant. Everlasting.'];
+  const labels = [1, 2, 3].map((n) => cms.get(`hero.${n}.label`)); // editable in the admin panel
+  eyebrow.textContent = labels[0];
   gsap.set([chars[1], chars[2]], { yPercent: 110 });
 
   let index = 0;

@@ -3,10 +3,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import Lenis from 'lenis';
 import { initCursor } from '../ui/cursor.js';
+import { assetBase } from '../shop/look.js';
 import { prefersReducedMotion } from '../lib/math.js';
 import { BY_ID } from '../shop/products.js';
 import { REELS, CATEGORIES } from './reels.js';
 import MEDIA from './media.json' with { type: 'json' };
+import { fetchFilms } from '../shop/backend.js';
+import { SHOP } from '../content.js';
+import { loadContent, applyContent } from '../cms/content.js';
 
 // Blogs Raza (/blogs): a tilted wall of films behind the title, the featured
 // rail, the filterable library, the photo wall, and a full-screen player that
@@ -17,21 +21,43 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
-const base = import.meta.env.BASE_URL;
-const media = (f) => `${base}media/blog/${f}`;
+const base = assetBase();
+// bundled film files by name; films uploaded in the admin panel are full URLs
+const media = (f) => (/^(https?:)?\//.test(f) ? f : `${base}media/blog/${f}`);
 const isTouch = () => window.matchMedia('(hover: none), (pointer: coarse)').matches;
 const reduced = prefersReducedMotion();
 const clock = (s) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
 const CAT = Object.fromEntries(CATEGORIES.map((c) => [c.key, c.label]));
-const WHATSAPP = '918976035333';
-
 // films that have their web copies (npm run import:blog), featured first
-const FILMS = REELS.filter((r) => MEDIA.reels[r.slug]).map((r) => ({
+const bundled = REELS.filter((r) => MEDIA.reels[r.slug]).map((r, i) => ({
   ...r,
   ...MEDIA.reels[r.slug],
+  sort: i,
   product: BY_ID[r.product] ? r.product : null,
 }));
+let FILMS = bundled;
 const PHOTOS = MEDIA.photos;
+
+// edits from the admin panel: a row for a bundled film changes its details or
+// hides it; a new row with a video is a film uploaded there
+function mergeFilms(rows) {
+  const bySlug = new Map(bundled.map((f) => [f.slug, { ...f }]));
+  for (const r of rows) {
+    const edit = {
+      title: r.title, text: r.text || '', cat: r.category, featured: r.featured, sort: r.sort ?? 999, active: r.active,
+      product: r.product_id && BY_ID[r.product_id] ? r.product_id : null,
+    };
+    const f = bySlug.get(r.slug);
+    if (f) Object.assign(f, edit);
+    else if (r.video_url) {
+      bySlug.set(r.slug, {
+        slug: r.slug, ...edit, video: r.video_url, preview: r.video_url, poster: r.poster_url || r.video_url,
+        duration: Number(r.duration) || 0, ratio: 0.5625,
+      });
+    }
+  }
+  return [...bySlug.values()].filter((f) => f.active !== false).sort((a, b) => Number(b.featured) - Number(a.featured) || a.sort - b.sort);
+}
 
 /* ---------------------------------------------------------------- scroll */
 
@@ -275,7 +301,7 @@ function buildLibrary() {
         <div class="reel__body">
           <p class="reel__cat"><span class="reel__dot reel__dot--${f.cat}" aria-hidden="true"></span>${esc(CAT[f.cat])}</p>
           <h3 class="reel__title">${esc(f.title)}</h3>
-          ${f.product ? `<a class="reel__shop" href="/?p=${encodeURIComponent(f.product)}" aria-label="Shop ${esc(BY_ID[f.product].name)}">Shop<span class="reel__shop-name"> ${esc(BY_ID[f.product].name)}</span> →</a>` : ''}
+          ${f.product ? `<a class="reel__shop" href="/p/${encodeURIComponent(f.product)}" aria-label="Shop ${esc(BY_ID[f.product].name)}">Shop<span class="reel__shop-name"> ${esc(BY_ID[f.product].name)}</span> →</a>` : ''}
         </div>
       </article>`).join('');
     if (isTouch()) stopGridPreviews = centerPreviews(grid);
@@ -375,7 +401,7 @@ function buildViewer() {
   };
 
   const shareUrl = (f) => `${location.origin}${location.pathname}?v=${encodeURIComponent(f.slug)}`;
-  const askUrl = (f) => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Hello Raza Perfume! I just watched “${f.title}” on your website${f.product ? ` and I'd like to know more about ${BY_ID[f.product].name}` : ''}.`)}`;
+  const askUrl = (f) => `https://wa.me/${SHOP.whatsapp}?text=${encodeURIComponent(`Hello Raza Perfume! I just watched “${f.title}” on your website${f.product ? ` and I'd like to know more about ${BY_ID[f.product].name}` : ''}.`)}`;
 
   const slide = (f, i) => `
     <section class="vslide" data-i="${i}" aria-label="${esc(f.title)}">
@@ -390,7 +416,7 @@ function buildViewer() {
         <h2 class="vslide__title">${esc(f.title)}</h2>
         <p class="vslide__text">${esc(f.text)}</p>
         <div class="vslide__actions">
-          ${f.product ? `<a class="btn btn--solid" href="/?p=${encodeURIComponent(f.product)}"><span class="btn__label">Shop ${esc(BY_ID[f.product].name)}</span><span class="btn__arrow" aria-hidden="true">→</span></a>` : ''}
+          ${f.product ? `<a class="btn btn--solid" href="/p/${encodeURIComponent(f.product)}"><span class="btn__label">Shop ${esc(BY_ID[f.product].name)}</span><span class="btn__arrow" aria-hidden="true">→</span></a>` : ''}
           <a class="vslide__link" href="${esc(askUrl(f))}" target="_blank" rel="noopener">Ask on WhatsApp</a>
           <button class="vslide__link" type="button" data-share="${i}">Share</button>
         </div>
@@ -546,6 +572,14 @@ function buildMarquee() {
 }
 
 /* ------------------------------------------------------------------- go */
+
+// copy and film edits from the admin panel first (never waits more than ~2 s)
+const [, filmRows] = await Promise.all([
+  loadContent({ timeout: 2000 }),
+  Promise.race([fetchFilms().catch(() => null), new Promise((r) => setTimeout(() => r(null), 2000))]),
+]);
+applyContent();
+if (filmRows?.length) FILMS = mergeFilms(filmRows);
 
 buildHero();
 buildRail();

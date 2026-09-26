@@ -216,3 +216,163 @@ group by o.id
 order by o.created_at desc;
 
 revoke all on public.order_overview from anon, authenticated;
+
+-- ============================================================================
+-- CMS · the admin panel (/admin)
+--
+-- Staff sign in with Supabase Auth (email + password). Only emails listed in
+-- public.admins can change anything: the database checks it on every write,
+-- so a signed-in non-admin gets nothing more than the public site shows.
+--   First admin: insert into public.admins (email) values ('owner@example.com');
+--   then create that user in Authentication → Users → Add user.
+-- ============================================================================
+
+create table if not exists public.admins (
+  email     text primary key check (email = lower(email)),
+  added_at  timestamptz not null default now()
+);
+alter table public.admins enable row level security;
+revoke all on public.admins from anon, authenticated;
+
+create or replace function public.is_admin()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1 from public.admins a
+    where a.email = lower(coalesce(auth.jwt() ->> 'email', ''))
+  );
+$$;
+revoke all on function public.is_admin() from public;
+grant execute on function public.is_admin() to anon, authenticated;
+
+grant select, insert, delete on public.admins to authenticated;
+drop policy if exists "Admins manage admins" on public.admins;
+create policy "Admins manage admins"
+  on public.admins for all to authenticated
+  using (public.is_admin()) with check (public.is_admin());
+
+-- ---------------------------------------------------------- products (CMS)
+-- images: [{"lg": url, "sm": url, "alt": "...", "kind": "photo" | "card"}, …]
+--   empty = the site's bundled photo or studio render
+alter table public.products add column if not exists images jsonb not null default '[]'::jsonb
+  check (jsonb_typeof(images) = 'array');
+alter table public.products add column if not exists featured boolean not null default false;
+alter table public.products add column if not exists updated_at timestamptz not null default now();
+
+-- with sizes, `price` is always the lowest size price ("from"), kept in step here
+create or replace function public.products_before_write()
+returns trigger
+language plpgsql
+as $$
+begin
+  if jsonb_array_length(coalesce(new.variants, '[]'::jsonb)) > 0 then
+    new.price := (select min((x ->> 'price')::numeric) from jsonb_array_elements(new.variants) x
+                  where jsonb_typeof(x -> 'price') = 'number');
+  end if;
+  new.updated_at := now();
+  return new;
+end;
+$$;
+drop trigger if exists products_before_write on public.products;
+create trigger products_before_write before insert or update on public.products
+  for each row execute function public.products_before_write();
+
+grant insert, update, delete on public.products to authenticated;
+drop policy if exists "Admins read all products" on public.products;
+create policy "Admins read all products"
+  on public.products for select to authenticated using (public.is_admin());
+drop policy if exists "Admins write products" on public.products;
+create policy "Admins write products"
+  on public.products for all to authenticated
+  using (public.is_admin()) with check (public.is_admin());
+
+-- ------------------------------------------------------------ site content
+-- One row per editable block (key → value); the site falls back to its
+-- built-in copy for any key without a row.
+create table if not exists public.site_content (
+  key         text primary key,
+  value       jsonb not null,
+  updated_at  timestamptz not null default now()
+);
+alter table public.site_content enable row level security;
+revoke all on public.site_content from anon, authenticated;
+grant select on public.site_content to anon, authenticated;
+grant insert, update, delete on public.site_content to authenticated;
+drop policy if exists "Anyone reads site content" on public.site_content;
+create policy "Anyone reads site content"
+  on public.site_content for select to anon, authenticated using (true);
+drop policy if exists "Admins write site content" on public.site_content;
+create policy "Admins write site content"
+  on public.site_content for all to authenticated
+  using (public.is_admin()) with check (public.is_admin());
+
+-- -------------------------------------------------------------------- films
+-- Blogs Raza. A row with the slug of a bundled film overrides its details;
+-- a new slug with video_url is a film uploaded from the admin panel.
+create table if not exists public.films (
+  slug         text primary key check (slug ~ '^[a-z0-9-]+$'),
+  title        text not null,
+  text         text,
+  category     text not null check (category in ('films', 'challenge', 'lab', 'counter')),
+  product_id   text references public.products (id) on delete set null,
+  featured     boolean not null default false,
+  sort         integer not null default 0,
+  active       boolean not null default true,
+  video_url    text,
+  poster_url   text,
+  duration     numeric(6, 1),
+  created_at   timestamptz not null default now()
+);
+alter table public.films enable row level security;
+revoke all on public.films from anon, authenticated;
+grant select on public.films to anon, authenticated;
+grant insert, update, delete on public.films to authenticated;
+drop policy if exists "Anyone reads active films" on public.films;
+create policy "Anyone reads active films"
+  on public.films for select to anon, authenticated using (active or public.is_admin());
+drop policy if exists "Admins write films" on public.films;
+create policy "Admins write films"
+  on public.films for all to authenticated
+  using (public.is_admin()) with check (public.is_admin());
+
+-- ------------------------------------------------- orders & subscribers (CMS)
+grant select, update on public.orders to authenticated;
+grant select on public.order_items to authenticated;
+grant select, delete on public.subscribers to authenticated;
+grant select on public.order_overview to authenticated;
+drop policy if exists "Admins read orders" on public.orders;
+create policy "Admins read orders" on public.orders for select to authenticated using (public.is_admin());
+drop policy if exists "Admins update orders" on public.orders;
+create policy "Admins update orders" on public.orders for update to authenticated
+  using (public.is_admin()) with check (public.is_admin());
+drop policy if exists "Admins read order items" on public.order_items;
+create policy "Admins read order items" on public.order_items for select to authenticated using (public.is_admin());
+drop policy if exists "Admins read subscribers" on public.subscribers;
+create policy "Admins read subscribers" on public.subscribers for select to authenticated using (public.is_admin());
+drop policy if exists "Admins remove subscribers" on public.subscribers;
+create policy "Admins remove subscribers" on public.subscribers for delete to authenticated using (public.is_admin());
+
+-- --------------------------------------------------------- media (Storage)
+-- Public bucket for product photos and films uploaded from the admin panel.
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('media', 'media', true, 52428800,
+        array['image/jpeg', 'image/png', 'image/webp', 'image/avif', 'video/mp4', 'video/webm', 'video/quicktime'])
+on conflict (id) do update
+  set public = true, file_size_limit = excluded.file_size_limit, allowed_mime_types = excluded.allowed_mime_types;
+
+drop policy if exists "Anyone reads media" on storage.objects;
+create policy "Anyone reads media" on storage.objects for select to anon, authenticated
+  using (bucket_id = 'media');
+drop policy if exists "Admins upload media" on storage.objects;
+create policy "Admins upload media" on storage.objects for insert to authenticated
+  with check (bucket_id = 'media' and public.is_admin());
+drop policy if exists "Admins change media" on storage.objects;
+create policy "Admins change media" on storage.objects for update to authenticated
+  using (bucket_id = 'media' and public.is_admin()) with check (bucket_id = 'media' and public.is_admin());
+drop policy if exists "Admins delete media" on storage.objects;
+create policy "Admins delete media" on storage.objects for delete to authenticated
+  using (bucket_id = 'media' and public.is_admin());

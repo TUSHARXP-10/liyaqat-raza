@@ -6,7 +6,7 @@ import { catalog } from './catalog.js';
 import { cart, limitFor } from './cart.js';
 import { wishlist } from './wishlist.js';
 import { score, suggest, highlight } from './search.js';
-import { tintFor, imageFor, photosOf, hasPhoto } from './look.js';
+import { tintFor, imageFor, photosOf, hasPhoto, assetBase } from './look.js';
 import { backendEnabled, fetchCatalog, submitOrder } from './backend.js';
 import { REELS } from '../blog/reels.js';
 import BLOG_MEDIA from '../blog/media.json' with { type: 'json' };
@@ -99,7 +99,7 @@ for (const r of REELS) {
   if (r.product && m) (FILMS[r.product] ||= []).push({ slug: r.slug, title: r.title, video: m.video, poster: m.poster });
 }
 const filmsOf = (p) => FILMS[p.id] || [];
-const blogMedia = (f) => `${import.meta.env?.BASE_URL ?? '/'}media/blog/${f}`;
+const blogMedia = (f) => `${assetBase()}media/blog/${f}`;
 const store = {
   get: (k) => { try { return localStorage.getItem(k); } catch { return null; } },
   set: (k, v) => { try { localStorage.setItem(k, v); } catch { /* storage unavailable */ } },
@@ -321,6 +321,8 @@ function initGrid({ lenis, quickView }) {
     else if (sortKey === 'za') list.sort((a, b) => b.name.localeCompare(a.name));
     else if (sortKey === 'price-asc') list.sort(byPrice(1));
     else if (sortKey === 'price-desc') list.sort(byPrice(-1));
+    // "Featured": the fragrances starred in the admin panel lead
+    else if (!state.q) list.sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)));
     // sold-out fragrances sink to the end, whatever the order (the sort is stable)
     list.sort((a, b) => soldOut(a) - soldOut(b));
     return list;
@@ -754,6 +756,7 @@ function initQuickView({ lenis }) {
     save.classList.toggle('is-on', on);
     save.setAttribute('aria-pressed', on);
     save.setAttribute('aria-label', on ? 'Remove from wishlist' : 'Save to wishlist');
+    $('[data-qv-page]', root).href = `/p/${encodeURIComponent(p.id)}${q.v ? `?size=${encodeURIComponent(q.v)}` : ''}`;
     $('[data-qv-inbag]', root).textContent = !inBag ? ''
       : size ? `In your bag: ${cart.linesOf(p.id).map((l) => `${variantOf(p, l.v)?.label} × ${l.qty}`).join(' · ')}`
         : `${inBag} in your bag`;
@@ -892,7 +895,7 @@ function initQuickView({ lenis }) {
   // share a direct link to this fragrance (opens straight into quick view)
   $('[data-qv-share]', root).addEventListener('click', async () => {
     const p = current();
-    const url = `${location.origin}${location.pathname}?p=${encodeURIComponent(p.id)}${q.v ? `&size=${encodeURIComponent(q.v)}` : ''}`;
+    const url = `${location.origin}/p/${encodeURIComponent(p.id)}${q.v ? `?size=${encodeURIComponent(q.v)}` : ''}`;
     const data = { title: `${p.name} · Raza Perfume`, text: `${p.name} from the House of Raza`, url };
     try {
       if (navigator.share) await navigator.share(data);
@@ -1001,7 +1004,8 @@ function initDrawer({ lenis }) {
   });
   $('[data-cart-browse]', root)?.addEventListener('click', () => {
     close();
-    lenis?.scrollTo('#shop', { duration: 1.8 });
+    if ($('#shop')) lenis?.scrollTo('#shop', { duration: 1.8 });
+    else location.href = '/#shop'; // from a product page
   });
 
   list.addEventListener('click', (e) => {
@@ -1108,6 +1112,15 @@ function orderMessage(customer, order) {
 }
 
 /* --------------------------------------------------------------------- init */
+
+// The bag on its own (product pages): drawer, checkout and photo fallbacks.
+export function initBag() {
+  watchPhotos();
+  const drawer = initDrawer({ lenis: null });
+  if (SHOP.whatsapp) $$('a[aria-label="WhatsApp"]').forEach((a) => (a.href = `https://wa.me/${SHOP.whatsapp}`));
+  return drawer;
+}
+export { added, askUrl, pickSize };
 
 export function initShop({ lenis }) {
   watchPhotos();

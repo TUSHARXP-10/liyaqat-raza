@@ -114,18 +114,72 @@ badge on the card, and a film thumbnail that plays in place).
 Left out on purpose: re-exports of the same clip (each kept once), the expired
 "15% / 25% off, 29–31 May" offer, and a lab clip carrying another brand's watermark (@infiniparfums).
 
-### Supabase setup (one time)
+## Product pages (`/p/<fragrance>`)
 
-1. Supabase → **SQL Editor**: paste and run `supabase/schema.sql`, then `supabase/seed.sql`.
-2. Supabase → **Project Settings → API Keys**: copy the **Publishable key**.
-3. Vercel → **Settings → Environment Variables**, then redeploy:
+Every fragrance has its own page, for example `/p/regular-cool-water` or `/p/luxury-rasasi-hawas?size=attar-12ml`:
+
+- **The page:** a gallery of photos and the fragrance's films, the Perfume / Attar toggle and
+  sizes, the price, quantity, Add to bag (the same bag and WhatsApp checkout as the shop),
+  Ask on WhatsApp for that exact size, Share, and "More from the collection". On phones, a buy
+  bar stays in reach.
+- **SEO and sharing:** the build writes a real page per fragrance (`dist/p/<id>.html`) with its
+  own title, description and photo, so Google and WhatsApp / Instagram link previews show the
+  fragrance. It also adds Google product data (price range, availability) and lists every page
+  in the sitemap.
+- **Links:** old links still land on the right page after a fragrance moves collection. The
+  shop's quick view has "View full details", share links point here, and so does "Shop this
+  fragrance" on the Blogs page.
+
+## Admin panel (`/admin`) — the CMS
+
+The client runs the site from `/admin`: no code, no spreadsheet needed.
+
+| Section | What it does |
+|---|---|
+| Dashboard | Fragrances on the site, % of sizes priced, orders this week, subscribers, and a to-do list ("72 fragrances on request → Set prices", "new orders", "no photo yet"). |
+| Products | Search and filter (collection, hidden, featured, no photo, price on request); show/hide and feature from the list; edit several at once. |
+| Product editor | Name, collection, number, stock, description, Inspired tag; sizes and prices (Perfume / Attar / other, any ml; empty = on request); photos with upload (resized to WebP in the browser), drag to reorder (the first is the cover), "show whole" for designed cards; show on site / featured; live preview; delete (products that were ordered can only be hidden). Unsaved changes are guarded. |
+| Price list | Every size of every fragrance in one grid: type and press Enter down a column, or "Fill" a whole column for the fragrances shown (e.g. all Premium Perfume 30 ml at ₹450), then one Save. |
+| Orders | By status, with search; each order has WhatsApp and Call buttons for the customer and one-tap New → Confirmed → Shipped → Delivered (or Cancelled). |
+| Site content | Every block of copy: announcement bar (on/off, text, button), the three opening slides, the origins and founder stories and quotes, Base / Oud / Musk descriptions and notes, shop text, promises, contact numbers (orders, calls, Instagram), SEO, the Blogs intro. Edited fields are marked and can be reset to the original. |
+| Films | All Blogs Raza films: edit the title, text and category, link to a fragrance (puts it on that product page), feature, hide, set the order; upload new films (MP4 up to 50 MB; the poster is taken from the video automatically). |
+| Media library | Everything uploaded, with links and delete. |
+| Subscribers | The newsletter list, with CSV download. |
+| Settings | The admin team (add / remove by email), your password, and the go-live checklist. |
+
+**Demo mode:** until Supabase is connected (or with `/admin?demo`), the panel runs in the browser
+on a copy of the catalogue, so it can be tried safely. Nothing changes the live site.
+
+**Security:** the database decides what each account may do (row-level security in
+`supabase/schema.sql`). Only emails in the `admins` table can change anything. A signed-in
+non-admin, or anyone with the public key, can only read the site and place orders. Uploads go to a
+public `media` bucket that only admins can write to. `/admin` is kept out of search engines and
+can't be framed.
+
+### Going live (one time, about 10 minutes)
+
+1. Supabase → **SQL Editor**: run `supabase/schema.sql`, then `supabase/seed.sql`. Both are safe
+   to run again after updates.
+2. In the SQL Editor, add the owner as the first admin:
+   `insert into public.admins (email) values ('owner@example.com');`
+3. Supabase → **Authentication → Users → Add user**: the same email and a password (tick
+   "Auto confirm user"). Under **Authentication → Sign In / Providers**, turn off "Allow new
+   users to sign up".
+4. Supabase → **Project Settings → API Keys**: copy the **Publishable key**. In Vercel →
+   **Settings → Environment Variables**, add these, then redeploy:
    - `VITE_SUPABASE_URL` = `https://unsrlrbbgjecswbswncc.supabase.co`
-   - `VITE_SUPABASE_PUBLISHABLE_KEY` = the key from step 2
+   - `VITE_SUPABASE_PUBLISHABLE_KEY` = the key
+5. Open `/admin`, sign in, and add the rest of the team under Settings (then create their users
+   as in step 3).
 
-Orders then land in the `orders` table (the `order_overview` view is the readable list) before
-the WhatsApp message is sent. The public key can only read products and place orders through
-`place_order`, which takes prices from the database. See the comments in `schema.sql`.
-Without these variables the store still works: it uses the bundled catalogue and goes straight to WhatsApp.
+From then on, products, prices, photos, copy and films edited in the panel show on the site as
+soon as they're saved, with no redeploy. The bundled catalogue stays as the fallback if Supabase
+is ever unreachable. Orders land in the `orders` table before the WhatsApp message is sent; the
+public key can only place orders through `place_order`, which takes prices from the database.
+
+**The spreadsheet after go-live:** it's still there for bulk loads (`npm run import:products`,
+then run the new `seed.sql`). Prices typed in the sheet replace the panel's; empty cells keep
+them. Photos, descriptions and featured flags set in the panel are never overwritten.
 
 ## Deploy (Vercel)
 
@@ -152,7 +206,7 @@ Every push to `main` then redeploys automatically. Hashed build assets are cache
 
 | What | File |
 |------|------|
-| All page copy | `index.html` |
+| All page copy | `index.html` (the editable blocks are listed in `src/cms/fields.js` and changed in `/admin`) |
 | Fragrance colours (liquid, glass, splash) | `src/content.js` |
 | Where the bottle sits / turns / explodes on each scroll beat | `src/story/keyframes.js` |
 | Text & scene choreography per chapter | `src/story/chapters.js` |

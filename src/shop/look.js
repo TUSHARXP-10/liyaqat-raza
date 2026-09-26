@@ -22,7 +22,12 @@ export function tintFor(p) {
 // Real photos first (Supabase image_url, then "product image/" via
 // `npm run import:photos`), otherwise the studio render.
 // size: 'sm' for cards and thumbnails, 'lg' for quick view.
-const base = () => import.meta.env?.BASE_URL ?? '/';
+// root-absolute, so nested pages (/p/<fragrance>) find the files too
+export const assetBase = () => {
+  const b = import.meta.env?.BASE_URL ?? '/';
+  return b === './' ? '/' : b;
+};
+const base = assetBase;
 export const photosOf = (p) => [
   ...(p.image ? [{ sm: p.image, lg: p.image, alt: p.name, url: true }] : []),
   ...(p.images || []),

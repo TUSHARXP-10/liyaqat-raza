@@ -14,6 +14,7 @@ import { buildBackdrops } from './ui/backdrops.js';
 import { initCursor } from './ui/cursor.js';
 import { Ambient } from './ui/sound.js';
 import { prefersReducedMotion } from './lib/math.js';
+import { loadContent, applyContent } from './cms/content.js';
 
 gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin);
 ScrollTrigger.config({ ignoreMobileResize: true });
@@ -41,6 +42,9 @@ async function boot() {
   try {
     hashTarget = location.hash.length > 1 ? document.querySelector(location.hash) : null;
   } catch { /* not a valid selector */ }
+
+  // copy edited in the admin panel loads while the intro plays
+  const contentReady = loadContent();
 
   // the full title sequence plays on every load, refreshes included
   const ambient = new Ambient();
@@ -91,6 +95,9 @@ async function boot() {
   // heavy one-off work (page build, first 3D frames) waits for the intro's
   // calm credits moment so the animation never stutters
   await intro.calm.promise;
+  // edited copy goes in before the chapters split their text for animation
+  await contentReady;
+  applyContent();
   const triggers = {};
   const director = new Director(triggers, KEYFRAMES);
   const story = buildChapters({ stage, lenis, ambient, director, triggers });

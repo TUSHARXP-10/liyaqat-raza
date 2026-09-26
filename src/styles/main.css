@@ -1899,3 +1899,18 @@ html.cart-open .bag-fab { opacity: 0; pointer-events: none; }
   .fx__grain, .bd__rays, .bd__smoke i, .bd__bokeh i, .bd__past, .bd__film-scratches i { animation: none; }
 }
 .qv__add:disabled .btn__arrow { display: none; }
+
+/* announcement bar (admin panel → Site content) */
+.announce { position: fixed; top: 0; left: 0; right: 0; z-index: 61; display: flex; align-items: center; justify-content: center; height: 36px; padding: 0 48px; background: var(--gold-grad); color: var(--ink); font-size: 12px; letter-spacing: 0.08em; transition: transform 0.8s var(--ease-out); }
+.announce p { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.announce__link { margin-left: 14px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; font-size: 10.5px; border-bottom: 1px solid rgba(7, 5, 4, 0.5); }
+.announce__close { position: absolute; right: 14px; top: 50%; width: 26px; height: 26px; margin-top: -13px; font-size: 18px; line-height: 1; color: var(--ink); }
+html.has-announce .nav { top: 36px; }
+html.has-announce .nav.is-hidden { transform: translateY(calc(-110% - 36px)); }
+html.has-announce.nav-away .announce { transform: translateY(-100%); }
+html.has-announce:not(.nav-away) .shop__controls { top: calc(var(--nav-h) + 36px); }
+@media (max-width: 819px) {
+  .announce { justify-content: flex-start; padding: 0 44px 0 16px; font-size: 11px; letter-spacing: 0.04em; }
+  .announce__link { margin-left: 8px; }
+}
+.qv__page { align-self: flex-start; }

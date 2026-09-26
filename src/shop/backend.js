@@ -23,7 +23,7 @@ export async function fetchCatalog() {
   if (!sb) return null;
   const { data, error } = await sb
     .from('products')
-    .select('id, name, sheet_name, category, number, inspired, price, variants, stock, size_ml, image_url, description')
+    .select('id, name, sheet_name, category, number, inspired, price, variants, stock, size_ml, image_url, description, images, featured')
     .order('category')
     .order('number');
   if (error) throw error;
@@ -52,8 +52,31 @@ export async function fetchCatalog() {
       sizeMl: r.size_ml,
       image: r.image_url || null,
       description: r.description || null,
+      // photos managed in the admin panel (none = keep the bundled photo / render)
+      images: Array.isArray(r.images) && r.images.length
+        ? r.images.filter((i) => i?.lg || i?.sm).map((i) => ({ lg: i.lg || i.sm, sm: i.sm || i.lg, alt: i.alt || r.name, kind: i.kind === 'card' ? 'card' : 'photo', url: true }))
+        : null,
+      featured: Boolean(r.featured),
     };
   });
+}
+
+// site copy edited in the admin panel: [{ key, value }]
+export async function fetchContent() {
+  const sb = await client();
+  if (!sb) return null;
+  const { data, error } = await sb.from('site_content').select('key, value');
+  if (error) throw error;
+  return data;
+}
+
+// Blogs Raza films edited or added in the admin panel
+export async function fetchFilms() {
+  const sb = await client();
+  if (!sb) return null;
+  const { data, error } = await sb.from('films').select('slug, title, text, category, product_id, featured, sort, active, video_url, poster_url, duration').order('sort');
+  if (error) throw error;
+  return data;
 }
 
 export class OrderError extends Error {
