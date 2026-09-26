@@ -1457,10 +1457,10 @@ html:not(.nav-away) .shop__controls { top: var(--nav-h); }
 .is-list .product__img { width: 100%; }
 .is-list .product:hover .product__img.is-loaded { transform: scale(1.06); }
 .is-list .stock { left: 4px; bottom: 4px; padding: 2px 4px; font-size: 7.5px; letter-spacing: 0.12em; }
-.is-list .product__body { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'name foot' 'meta foot'; align-items: center; gap: 4px 28px; padding: 14px 18px; }
+.is-list .product__body { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: 'name opts foot' 'meta opts foot'; align-items: center; gap: 4px 28px; padding: 14px 18px; }
 .is-list .product__name { grid-area: name; font-size: 14px; }
 .is-list .product__meta { grid-area: meta; }
-.is-list .product__foot { grid-area: foot; min-height: 0; margin: 0; padding: 0; border: 0; gap: 22px; }
+.is-list .product__foot { grid-area: foot; width: 236px; min-height: 0; margin: 0; padding: 0; border: 0; gap: 18px; }
 .is-list .product__heart { position: static; order: 3; margin-right: 14px; }
 
 .shop__none { padding: 64px 20px; text-align: center; border: 1px dashed var(--line-soft); }
@@ -1674,10 +1674,19 @@ html:not(.nav-away) .shop__controls { top: var(--nav-h); }
 .qv__thumb.is-film::after { content: ''; position: absolute; inset: 0; background: rgba(7, 5, 4, 0.35) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5v14l11-7z' fill='%23ecd49a'/%3E%3C/svg%3E") center / 20px no-repeat; }
 
 /* sizes: Perfume / Attar and ml, each with its own price */
-.product__kinds { display: flex; flex-basis: 100%; gap: 6px; margin-top: 4px; }
-.is-list .product__kinds { flex-basis: auto; margin: 0 0 0 4px; }
-.kind { padding: 5px 10px 4px; border: 1px solid var(--line-soft); border-radius: 999px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); transition: color 0.3s, border-color 0.3s, background 0.3s; }
-.kind:hover { color: var(--gold-hi); border-color: var(--gold); background: rgba(201, 164, 92, 0.08); }
+/* on every card: Perfume | Attar toggle, then the sizes */
+.product__opts { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.ptoggle { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); padding: 3px; border: 1px solid var(--line); border-radius: 999px; }
+.ptoggle__opt { padding: 7px 6px 6px; border-radius: 999px; font-size: 9.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); transition: background 0.35s, color 0.35s; }
+.ptoggle__opt:hover:not(.is-on) { color: var(--gold-hi); }
+.ptoggle__opt.is-on { background: var(--gold-grad); color: var(--ink); font-weight: 500; }
+.psizes { display: flex; gap: 6px; }
+.psize { position: relative; flex: 1 1 0; min-width: 0; padding: 6px 2px 5px; border: 1px solid var(--line-soft); font-family: var(--f-display); font-size: 12.5px; color: var(--muted); transition: border-color 0.3s, color 0.3s, background 0.3s; }
+.psize small { margin-left: 2px; font-family: var(--f-body); font-size: 8.5px; letter-spacing: 0.06em; text-transform: uppercase; }
+.psize:hover:not(.is-on) { border-color: var(--line); color: var(--gold-hi); }
+.psize.is-on { border-color: var(--gold); background: rgba(201, 164, 92, 0.14); color: var(--gold-hi); }
+.psize i { position: absolute; top: -4px; right: -4px; width: 8px; height: 8px; border-radius: 50%; background: var(--gold-hi); box-shadow: 0 0 0 2px #120c08; }
+.is-list .product__opts { grid-area: opts; width: 230px; margin: 0; }
 .product__price small { margin-right: 3px; font-family: var(--f-body); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); }
 .product__add.is-in { border-color: var(--gold); background: rgba(201, 164, 92, 0.12); }
 .product__check { color: var(--gold-hi); }
@@ -1862,8 +1871,8 @@ html.cart-open .bag-fab { opacity: 0; pointer-events: none; }
   .product__bottle { width: 34%; }
   .is-list .product { grid-template-columns: 72px minmax(0, 1fr) auto; }
   .is-list .product__media { width: 72px; }
-  .is-list .product__body { grid-template-columns: 1fr; grid-template-areas: 'name' 'meta' 'foot'; gap: 4px; padding: 12px 8px 12px 12px; }
-  .is-list .product__foot { flex-direction: row; justify-content: space-between; align-items: center; margin-top: 6px; }
+  .is-list .product__body { grid-template-columns: 1fr; grid-template-areas: 'name' 'meta' 'opts' 'foot'; gap: 4px; padding: 12px 8px 12px 12px; }
+  .is-list .product__foot { width: auto; flex-direction: row; justify-content: space-between; align-items: center; margin-top: 6px; }
   .is-list .product__heart { margin-right: 8px; }
   .qv { place-items: end center; padding: 0; }
   .qv__panel { grid-template-columns: 1fr; grid-template-rows: none; height: auto; max-height: 92vh; overflow-y: auto; overscroll-behavior: contain; border-width: 1px 0 0; transform: translateY(100%); transition: opacity 0.4s, transform 0.6s var(--ease-out); }
@@ -1872,7 +1881,10 @@ html.cart-open .bag-fab { opacity: 0; pointer-events: none; }
   .qv__info { padding: 22px 20px 26px; overflow: visible; }
   .qv__close { top: 12px; right: 12px; }
   .qv__rel-img { width: 48px; height: 48px; }
-  .kind { padding: 6px 9px 5px; font-size: 8.5px; letter-spacing: 0.14em; }
+  .ptoggle__opt { padding: 8px 4px 7px; font-size: 9px; letter-spacing: 0.14em; }
+  .psize { padding: 7px 1px 6px; font-size: 12px; }
+  .psize small { margin-left: 1px; font-size: 7.5px; }
+  .is-list .product__opts { width: 100%; margin-top: 6px; }
   .product__img.is-photo { margin-top: 0; }
   .qv__img.is-photo { width: 100%; height: 100%; }
   .qv__thumb { width: 44px; height: 44px; }

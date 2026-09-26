@@ -62,9 +62,13 @@ With Supabase connected, the same prices and stock can also be changed live in t
   exist; sold-out items sink to the end.
 - **Shareable views:** active filters appear as removable pills and are kept in the address bar,
   so a filtered view can be shared.
-- **Product cards:** photo, number, collection, Inspired tag, Perfume / Attar pills (each opens
-  the size picker on that kind), stock badge, and a price ("From ₹150") or "Ask price". The button
-  is "Choose" for fragrances sold in sizes, and Add (which turns into a quantity stepper) for the rest.
+- **Product cards:** photo, number, collection, Inspired tag, and a **Perfume | Attar toggle with
+  the ml sizes right on the card**. The card shows the price of the selected size (or "Ask price"
+  for that exact size), and Add puts that size straight in the bag, turning into a quantity stepper.
+  A dot marks sizes already in the bag. Each card remembers its choice per kind (back to Attar
+  returns to the attar size picked before). Untouched cards start on the kind and size last
+  picked, and quick view opens on the card's choice and stays in step with it. Arrow keys work
+  inside the toggle and sizes.
 - **Quick view:** Perfume / Attar and size picker with each size's price. It remembers the last
   size picked when moving to the next fragrance, and shows a count on sizes already in the bag.
   Also quantity and stock, Ask on WhatsApp, share link (including the size), save, prev/next with

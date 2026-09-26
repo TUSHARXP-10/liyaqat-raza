@@ -47,20 +47,51 @@ const collectionOf = (p) => (p.category === 'house' ? 'House signature' : `${CAT
 const soldOut = (p) => p.stock === 0;
 const lowStock = (p) => p.stock != null && p.stock > 0 && p.stock <= LOW_STOCK;
 const priceText = (p) => (p.price != null ? fmt(p.price) : 'Price on request');
-// "Perfume" · "Attar" pills on a card; each opens the size picker on that kind
-function kindPills(p) {
-  const kinds = [...new Set(p.variants.map((v) => v.type))];
-  return `<span class="product__kinds">${kinds.map((t) => {
-    const mls = p.variants.filter((v) => v.type === t).map((v) => v.ml).join(', ');
-    const label = typeLabel(t) || `${p.variants.length} sizes`;
-    return `<button type="button" class="kind" data-kind-of="${esc(p.id)}" data-kind="${esc(t ?? '')}" title="${esc(label)}: ${mls} ml" aria-label="${esc(p.name)} as ${esc(label)}: ${mls} ml">${esc(label)}</button>`;
-  }).join('')}</span>`;
-}
 // the size a product opens on: the one last picked (same kind and ml) when it has it
 const pickSize = (p, pref) =>
   p.variants.find((v) => v.type === pref?.type && v.ml === pref?.ml)
   || p.variants.find((v) => v.type === pref?.type)
   || p.variants[0];
+
+// What each card has selected (product id → size id). A card the shopper
+// hasn't touched starts on the kind + ml last picked on any card.
+const picks = new Map();
+let cardPref = null;
+// and, per product, the size last chosen of each kind: back to Attar = back to that attar size
+const kindPicks = new Map();
+function remember(p, size) {
+  picks.set(p.id, size.id);
+  kindPicks.set(`${p.id}|${size.type}`, size.id);
+}
+const sizeForKind = (p, type, ml) =>
+  variantOf(p, kindPicks.get(`${p.id}|${type}`))
+  || p.variants.find((v) => v.type === type && v.ml === ml)
+  || p.variants.find((v) => v.type === type);
+function pickOf(p) {
+  let size = variantOf(p, picks.get(p.id));
+  if (!size) {
+    size = pickSize(p, cardPref);
+    picks.set(p.id, size.id);
+  }
+  return size;
+}
+
+// on the card: a Perfume | Attar toggle, then that kind's sizes
+function optionsBlock(p) {
+  const size = pickOf(p);
+  const kinds = [...new Set(p.variants.map((v) => v.type))];
+  const toggle = kinds.length < 2 ? '' : `<div class="ptoggle" role="radiogroup" aria-label="${esc(p.name)}: perfume or attar">${kinds.map((t) => {
+    const on = t === size.type;
+    return `<button type="button" role="radio" class="ptoggle__opt${on ? ' is-on' : ''}" aria-checked="${on}" tabindex="${on ? 0 : -1}" data-pick-type="${esc(t ?? '')}">${esc(typeLabel(t))}</button>`;
+  }).join('')}</div>`;
+  const sizes = `<div class="psizes" role="radiogroup" aria-label="${esc(p.name)}: size">${p.variants.filter((v) => v.type === size.type).map((v) => {
+    const on = v.id === size.id;
+    const n = cart.qtyOf(p.id, v.id);
+    const price = v.price != null ? fmt(v.price) : 'price on request';
+    return `<button type="button" role="radio" class="psize${on ? ' is-on' : ''}" aria-checked="${on}" tabindex="${on ? 0 : -1}" data-pick-size="${esc(v.id)}" aria-label="${v.ml} ml, ${price}${n ? `, ${n} in your bag` : ''}">${v.ml}<small>ml</small>${n ? '<i aria-hidden="true"></i>' : ''}</button>`;
+  }).join('')}</div>`;
+  return toggle + sizes;
+}
 // films from Blogs Raza that show a fragrance (src/blog/reels.js "product")
 const FILMS = {};
 for (const r of REELS) {
@@ -137,29 +168,28 @@ function stockBadge(p) {
   return '';
 }
 
+// the price of what the card has selected (or "Ask price" for that size)
 function priceBlock(p) {
-  if (p.price != null && !soldOut(p)) {
-    const from = hasSizes(p) && new Set(p.variants.map((v) => v.price)).size > 1;
-    return `<span class="product__price">${from ? '<small>From</small> ' : ''}${fmt(p.price)}</span>`;
-  }
-  return `<a class="product__ask" href="${esc(askUrl(p))}" target="_blank" rel="noopener" aria-label="Ask the price of ${esc(p.name)} on WhatsApp">${ICON_WA}<span>${soldOut(p) ? 'Ask availability' : 'Ask price'}</span></a>`;
+  const size = hasSizes(p) ? pickOf(p) : null;
+  const unit = size ? size.price : p.price;
+  if (unit != null && !soldOut(p)) return `<span class="product__price">${fmt(unit)}</span>`;
+  const what = esc(size ? `${p.name}, ${size.label}` : p.name);
+  return `<a class="product__ask" href="${esc(askUrl(p, size))}" target="_blank" rel="noopener" aria-label="Ask the price of ${what} on WhatsApp">${ICON_WA}<span>${soldOut(p) ? 'Ask availability' : 'Ask price'}</span></a>`;
 }
 
+// Add, or a quantity stepper, for what the card has selected
 function buyControl(p) {
   if (soldOut(p)) return '<button class="product__add" type="button" disabled>Sold out</button>';
-  const q = cart.qtyOf(p.id);
-  // sold in sizes: the size is chosen in quick view
-  if (hasSizes(p)) {
-    return q
-      ? `<button class="product__add is-in" type="button" data-choose="${esc(p.id)}" aria-label="${q} in your bag. Choose another size of ${esc(p.name)}"><span class="product__check" aria-hidden="true">✓</span>${q} in bag</button>`
-      : `<button class="product__add" type="button" data-choose="${esc(p.id)}" aria-label="Choose a size of ${esc(p.name)}">Choose</button>`;
-  }
-  if (!q) return `<button class="product__add" type="button" data-add="${esc(p.id)}" aria-label="Add ${esc(p.name)} to bag"><span aria-hidden="true">+</span> Add</button>`;
-  const atMax = q >= limitFor(p.id);
-  return `<div class="stepper" role="group" aria-label="${esc(p.name)} in your bag">
-    <button type="button" data-dec="${esc(p.id)}" aria-label="One less ${esc(p.name)}">−</button>
+  const size = hasSizes(p) ? pickOf(p) : null;
+  const v = size?.id ?? '';
+  const what = esc(size ? `${p.name}, ${size.label}` : p.name);
+  const q = cart.qtyOf(p.id, size?.id ?? null);
+  if (!q) return `<button class="product__add" type="button" data-add="${esc(p.id)}" data-v="${esc(v)}" aria-label="Add ${what} to bag"><span aria-hidden="true">+</span> Add</button>`;
+  const atMax = cart.qtyOf(p.id) >= limitFor(p.id);
+  return `<div class="stepper" role="group" aria-label="${what} in your bag">
+    <button type="button" data-dec="${esc(p.id)}" data-v="${esc(v)}" aria-label="One less ${what}">−</button>
     <span>${q}</span>
-    <button type="button" data-inc="${esc(p.id)}" aria-label="One more ${esc(p.name)}"${atMax ? ' disabled' : ''}>+</button>
+    <button type="button" data-inc="${esc(p.id)}" data-v="${esc(v)}" aria-label="One more ${what}"${atMax ? ' disabled' : ''}>+</button>
   </div>`;
 }
 
@@ -175,9 +205,10 @@ function productCard(p, query = '') {
   ${heartButton(p, 'heart product__heart')}
   <div class="product__body">
     <h3 class="product__name"><button type="button" data-view="${esc(p.id)}">${highlight(p.name, query, esc)}</button></h3>
-    <p class="product__meta"><span class="dot dot--${p.category}" aria-hidden="true"></span>${collectionOf(p)}${p.inspired ? '<span class="product__tag">Inspired</span>' : ''}${hasSizes(p) ? kindPills(p) : ''}</p>
+    <p class="product__meta"><span class="dot dot--${p.category}" aria-hidden="true"></span>${collectionOf(p)}${p.inspired ? '<span class="product__tag">Inspired</span>' : ''}</p>
+    ${hasSizes(p) ? `<div class="product__opts" data-opts="${esc(p.id)}">${optionsBlock(p)}</div>` : ''}
     <div class="product__foot">
-      <div class="product__pricebox">${priceBlock(p)}</div>
+      <div class="product__pricebox" data-price="${esc(p.id)}">${priceBlock(p)}</div>
       <div class="product__buy" data-buy="${esc(p.id)}">${buyControl(p)}</div>
     </div>
   </div>
@@ -520,24 +551,64 @@ function initGrid({ lenis, quickView }) {
     const save = e.target.closest('[data-save]');
     if (save) return toggleSaved(save.dataset.save);
     const view = e.target.closest('[data-view]');
-    if (view) return quickView.open(view.dataset.view, results());
-    const choose = e.target.closest('[data-choose]');
-    if (choose) return quickView.open(choose.dataset.choose, results(), { toSizes: true });
-    const kind = e.target.closest('[data-kind-of]');
-    if (kind) return quickView.open(kind.dataset.kindOf, results(), { toSizes: true, kind: kind.dataset.kind || null });
+    if (view) return quickView.open(view.dataset.view, results(), { v: picks.get(view.dataset.view) });
+    // Perfume | Attar and size, right on the card
+    const type = e.target.closest('[data-pick-type]');
+    const size = e.target.closest('[data-pick-size]');
+    if (type || size) {
+      const p = catalog.get(e.target.closest('[data-id]').dataset.id);
+      const cur = pickOf(p);
+      const t = type ? type.dataset.pickType || null : cur.type;
+      const next = size ? variantOf(p, size.dataset.pickSize) : sizeForKind(p, t, cur.ml);
+      if (!next || next.id === cur.id) return;
+      remember(p, cur);
+      remember(p, next);
+      cardPref = { type: next.type, ml: next.ml };
+      refreshCard(p, type ? '.ptoggle__opt.is-on' : '.psize.is-on');
+      return;
+    }
     const addBtn = e.target.closest('[data-add]');
-    if (addBtn) return added(catalog.get(addBtn.dataset.add));
+    if (addBtn) return added(catalog.get(addBtn.dataset.add), 1, addBtn.dataset.v || null);
     const inc = e.target.closest('[data-inc]');
-    if (inc) return added(catalog.get(inc.dataset.inc));
+    if (inc) return added(catalog.get(inc.dataset.inc), 1, inc.dataset.v || null);
     const dec = e.target.closest('[data-dec]');
-    if (dec) cart.set(dec.dataset.dec, cart.qtyOf(dec.dataset.dec) - 1);
+    if (dec) cart.set(dec.dataset.dec, cart.qtyOf(dec.dataset.dec, dec.dataset.v || null) - 1, dec.dataset.v || null);
+  });
+  // arrow keys move the choice inside a card's toggle / sizes
+  grid.addEventListener('keydown', (e) => {
+    const group = e.target.closest('.ptoggle, .psizes');
+    const d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+    if (!group || !d) return;
+    e.preventDefault();
+    const radios = $$('[role="radio"]', group);
+    const i = radios.indexOf(group.querySelector('[aria-checked="true"]'));
+    radios[(i + d + radios.length) % radios.length].click();
   });
 
-  // cards reflect the bag: "Add" becomes a quantity stepper
+  // redraw one card's options, price and buy control; keep focus on `focusSel`
+  function refreshCard(p, focusSel) {
+    const card = $(`.product[data-id="${CSS.escape(p.id)}"]`, grid);
+    if (!card) return;
+    const opts = $('[data-opts]', card);
+    if (opts) opts.innerHTML = optionsBlock(p);
+    $('[data-price]', card).innerHTML = priceBlock(p);
+    $('[data-buy]', card).innerHTML = buyControl(p);
+    if (focusSel) $(focusSel, card)?.focus();
+  }
+
+  document.addEventListener('raza:pick', (e) => {
+    const p = catalog.get(e.detail);
+    if (p) refreshCard(p);
+  });
+
+  // cards reflect the bag: "Add" becomes a quantity stepper for the chosen size
   cart.subscribe(() => withFocus(() => {
-    $$('[data-buy]', grid).forEach((el) => {
-      const p = catalog.get(el.dataset.buy);
-      if (p) el.innerHTML = buyControl(p);
+    $$('.product', grid).forEach((card) => {
+      const p = catalog.get(card.dataset.id);
+      if (!p) return;
+      $('[data-buy]', card).innerHTML = buyControl(p);
+      const opts = $('[data-opts]', card);
+      if (opts) opts.innerHTML = optionsBlock(p);
     });
   }));
   // hearts, the Saved count, and the Saved view follow the wishlist
@@ -626,6 +697,9 @@ function initQuickView({ lenis }) {
     q.pref = { type: v.type, ml: v.ml };
     q.qty = 1;
     render();
+    // the card behind follows the size picked here
+    remember(p, v);
+    document.dispatchEvent(new CustomEvent('raza:pick', { detail: p.id }));
   }
 
   function renderRelated(p) {
@@ -732,7 +806,7 @@ function initQuickView({ lenis }) {
     const back = q.lastFocus;
     if (back?.isConnected) back.focus();
     else if (back?.dataset?.choose) $(`[data-buy="${CSS.escape(back.dataset.choose)}"] button`)?.focus();
-    else if (back?.dataset?.kindOf) $(`[data-kind-of="${CSS.escape(back.dataset.kindOf)}"][data-kind="${CSS.escape(back.dataset.kind)}"]`)?.focus();
+    else if (back?.dataset?.view) $(`[data-view="${CSS.escape(back.dataset.view)}"]`)?.focus();
   }
 
   const step = (d) => {
@@ -761,9 +835,10 @@ function initQuickView({ lenis }) {
     const t = e.target.closest('[data-type]');
     if (t) {
       const type = t.dataset.type || null;
-      const ml = variantOf(p, q.v)?.ml;
-      // same ml in the other kind if it has one, else its first size
-      choose(p, p.variants.find((v) => v.type === type && v.ml === ml) || p.variants.find((v) => v.type === type));
+      const cur = variantOf(p, q.v);
+      if (cur) remember(p, cur);
+      // the size last chosen of that kind, else the same ml, else its first size
+      choose(p, sizeForKind(p, type, cur?.ml));
       return $('.seg__opt.is-on', options)?.focus();
     }
     const s = e.target.closest('[data-size]');
