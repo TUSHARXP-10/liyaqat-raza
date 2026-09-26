@@ -2,18 +2,21 @@
 //
 //   npm run import:photos
 //
-// Put photos in "product image/", named after the fragrance as it appears on
-// the site or in the spreadsheet. Spaces, underscores and the words "Raza
-// Perfume" don't matter, so all of these work:
+// Two folders, one per kind:
+//   "product image/"  perfume photos: shown when the customer picks Perfume
+//   "attar image/"    attar photos:   shown when the customer picks Attar
+// Name each photo after the fragrance as it appears on the site or in the
+// spreadsheet. Spaces, underscores and the words "Raza Perfume" don't
+// matter, so all of these work:
 //   Gucci Oud.jpg · raza_perfume_cool_water.jpg · polo_red_raza_perfume.jpg
 // A second photo of the same fragrance ends in a number or "alt":
 //   Gucci Oud 2.jpg · raza_perfume_lomani_code_alt.jpg
 // A designed card (notes, accords) that must be shown whole, never cropped,
-// has "notes" or "card" in its name: Gucci Oud 2 notes.jpg
-// A photo of one kind has "attar" or "perfume" in its name, and shows when
-// the customer picks that kind: Blue Lady attar.jpg · Blue Lady attar 2.jpg
-// "Attar bottles.jpg" (no fragrance name) is the general attar photo, shown
-// with Attar for fragrances that have no attar photo of their own.
+// has "notes" or "card" in its name, and shows with both kinds:
+//   Gucci Oud 2 notes.jpg
+// "attar image/Attar bottles.jpg" (no fragrance name) is the general attar
+// photo, shown with Attar for fragrances that have no attar photo of their own.
+// ("attar" or "perfume" in a file name overrides its folder.)
 //
 // Each becomes a square image in two sizes under public/media/photos/ (tall
 // phone shots sit on a soft blurred copy of themselves, with the phone's
@@ -22,15 +25,17 @@
 // leads); the rest keep their studio render. Photos whose name isn't in the
 // catalogue are kept and reported, and attach once the spreadsheet lists it.
 import sharp from 'sharp';
-import { readdirSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, readdirSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { PRODUCTS, SIGNATURES } from '../src/shop/products.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const FOLDER = 'product image';
-const src = path.join(root, FOLDER);
+const FOLDERS = [
+  { dir: 'product image', kind: 'perfume' },
+  { dir: 'attar image', kind: 'attar' },
+];
 const out = path.join(root, 'public/media/photos');
 const SIZES = { lg: 1200, sm: 600 };
 
@@ -41,18 +46,21 @@ const find = (name) => {
   return s ? all.filter((p) => slug(p.name) === s || (p.sheetName && slug(p.sheetName) === s) || p.id === s) : [];
 };
 
-// "raza_perfume_lomani_code_alt.jpg" → { name: "lomani code", order: 2 }
-// "Blue Lady attar 2.jpg"            → { name: "blue lady", order: 2, kind: "attar" }
-// "Attar bottles.jpg"                → { general: true, kind: "attar" }
+// product image/raza_perfume_lomani_code_alt.jpg → { name: "lomani code", order: 2, kind: "perfume" }
+// attar image/Blue Lady 2.jpg                    → { name: "blue lady", order: 2, kind: "attar" }
+// attar image/Attar bottles.jpg                  → { general: true, kind: "attar" }
+// product image/Gucci Oud 2 notes.jpg            → { name: "gucci oud", card: true, kind: null (both) }
 const GENERAL = new Set(['', 'bottle', 'bottles', 'range', 'general', 'collection']);
 const tidy = (s) => s.replace(/\s+/g, ' ').trim();
-function parse(file) {
+function parse(file, folderKind) {
   let words = tidy(file.replace(/\.[^.]+$/, '').toLowerCase().replace(/[_\-.]+/g, ' '));
   words = tidy(words.replace(/\braza perfumes?\b/g, ' ')); // the brand, not the kind
   const card = /\b(notes|card)\b/.test(words);
   words = tidy(words.replace(/\b(notes|card)\b/g, ' '));
-  const kind = words.match(/\b(attar|perfume)\b/)?.[1] || null;
+  const named = words.match(/\b(attar|perfume)\b/)?.[1] || null;
   words = tidy(words.replace(/\b(attar|perfume)\b/g, ' '));
+  // a notes card describes the scent, so it goes with both kinds
+  const kind = named || (card ? null : folderKind);
   let order = 1;
   if (!find(words).length) { // "555" is a name, not photo no. 555
     const m = words.match(/^(.*?)\s*(?:\(?(\d+)\)?|alt(?:\s*(\d+))?)$/);
@@ -64,14 +72,16 @@ function parse(file) {
   return { name: words, order, card, kind, general: Boolean(kind) && GENERAL.has(words) };
 }
 
-const files = readdirSync(src).filter((f) => /\.(jpe?g|png|webp)$/i.test(f)).sort();
-const parsed = files.map((f) => ({ file: f, ...parse(f) }));
+const parsed = FOLDERS.flatMap(({ dir, kind }) => (existsSync(path.join(root, dir)) ? readdirSync(path.join(root, dir)) : [])
+  .filter((f) => /\.(jpe?g|png|webp)$/i.test(f))
+  .sort()
+  .map((f) => ({ file: `${dir}/${f}`, ...parse(f, kind) })));
 
 rmSync(out, { recursive: true, force: true });
 mkdirSync(out, { recursive: true });
 
 async function square(file, size) {
-  const img = sharp(path.join(src, file)).rotate();
+  const img = sharp(path.join(root, file)).rotate();
   const { width, height } = await img.metadata();
   const ratio = width / height;
   if (ratio > 0.85 && ratio < 1.18) {
@@ -82,7 +92,7 @@ async function square(file, size) {
   // tall phone photo: drop the bottom strip (camera watermark), then the whole
   // shot centred on a darkened, blurred copy of itself
   const crop = ratio < 1 ? { left: 0, top: 0, width, height: Math.round(height * 0.94) } : { left: 0, top: 0, width, height };
-  const shot = await sharp(path.join(src, file)).rotate().extract(crop).toBuffer();
+  const shot = await sharp(path.join(root, file)).rotate().extract(crop).toBuffer();
   const back = await sharp(shot).resize(size, size, { fit: 'cover' }).blur(28).modulate({ brightness: 0.42, saturation: 0.8 }).toBuffer();
   const front = await sharp(shot).resize(size, size, { fit: 'inside' }).toBuffer();
   return sharp(back).composite([{ input: front, gravity: 'center' }]).jpeg({ quality: 82, mozjpeg: true }).toBuffer();
@@ -92,7 +102,10 @@ const photos = {};
 const unmatched = [];
 let bytes = 0;
 const KIND = { attar: 'Attar', perfume: 'Perfume' };
-const byName = (a, b) => a.name.localeCompare(b.name) || Number(Boolean(a.kind)) - Number(Boolean(b.kind)) || a.order - b.order;
+// per fragrance: perfume photos, then notes cards, then attar photos
+const RANK = { perfume: 0, attar: 2 };
+const rank = (x) => RANK[x.kind] ?? 1;
+const byName = (a, b) => a.name.localeCompare(b.name) || rank(a) - rank(b) || a.order - b.order;
 for (const { file, name, order, card, kind, general } of parsed.sort(byName)) {
   // general photos live under "*attar" / "*perfume", ahead of any product id
   const hits = general ? [{ id: `*${kind}`, name: `Raza ${KIND[kind]}`, file: kind }] : find(name);
@@ -103,7 +116,7 @@ for (const { file, name, order, card, kind, general } of parsed.sort(byName)) {
   for (const p of hits) {
     const n = (photos[p.id]?.length || 0) + 1;
     // cards are shown whole; photos may be cropped to fill a frame
-    const label = `${p.name}${kind && !general ? ` ${KIND[kind]}` : ''}`;
+    const label = `${p.name}${kind === 'attar' && !general ? ' Attar' : ''}`;
     const entry = { alt: `${label}${n > 1 ? `, photo ${n}` : ''}`, kind: card ? 'card' : 'photo' };
     if (kind) entry.for = kind;
     // a fingerprint in the name: a changed photo gets a new address, so
@@ -122,7 +135,7 @@ for (const { file, name, order, card, kind, general } of parsed.sort(byName)) {
 
 writeFileSync(path.join(root, 'src/shop/photos.json'), `${JSON.stringify(photos, null, 2)}\n`);
 const count = Object.values(photos).reduce((n, l) => n + l.length, 0);
-console.log(`${FOLDER}/ → public/media/photos (${(bytes / 1e6).toFixed(1)} MB)`);
+console.log(`${FOLDERS.map((f) => `${f.dir}/`).join(' + ')} → public/media/photos (${(bytes / 1e6).toFixed(1)} MB)`);
 console.log(`  ${count} photo(s) on ${Object.keys(photos).filter((id) => id[0] !== '*').length} fragrance(s)`);
 for (const [id, list] of Object.entries(photos)) {
   const name = id[0] === '*' ? `(every ${KIND[id.slice(1)]})` : all.find((p) => p.id === id).name;

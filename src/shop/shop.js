@@ -54,7 +54,8 @@ const pickSize = (p, pref) =>
   || p.variants[0];
 
 // What each card has selected (product id → size id). A card the shopper
-// hasn't touched starts on the kind + ml last picked on any card.
+// hasn't touched opens on Perfume, so it shows its own perfume photo, in the
+// perfume size last picked on any card. Attar is picked card by card.
 const picks = new Map();
 let cardPref = null;
 // and, per product, the size last chosen of each kind: back to Attar = back to that attar size
@@ -596,7 +597,7 @@ function initGrid({ lenis, quickView }) {
       if (!next || next.id === cur.id) return;
       remember(p, cur);
       remember(p, next);
-      cardPref = { type: next.type, ml: next.ml };
+      if (next.type === p.variants[0].type) cardPref = { type: next.type, ml: next.ml };
       refreshCard(p, type ? '.ptoggle__opt.is-on' : '.psize.is-on');
       return;
     }
