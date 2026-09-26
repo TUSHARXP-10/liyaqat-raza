@@ -15,11 +15,16 @@ function siteMeta() {
   return {
     name: 'raza-site-meta',
     transformIndexHtml: (html) => html.replaceAll('__SITE_URL__', site).replaceAll('__PRODUCT_COUNT__', productCount()),
-    // /license.html is rendered from LICENSE.md, live in dev and at build
+    // /license.html is rendered from LICENSE.md, live in dev and at build;
+    // /blogs is blogs.html (Vercel does the same rewrite, see vercel.json)
     configureServer(server) {
       server.middlewares.use('/license.html', (req, res) => {
         res.setHeader('Content-Type', 'text/html; charset=utf-8');
         res.end(licensePage());
+      });
+      server.middlewares.use((req, res, next) => {
+        if (/^\/blogs\/?(\?|$)/.test(req.url)) req.url = req.url.replace(/^\/blogs\/?/, '/blogs.html');
+        next();
       });
     },
     generateBundle() {
@@ -33,7 +38,7 @@ function siteMeta() {
         this.emitFile({
           type: 'asset',
           fileName: 'sitemap.xml',
-          source: `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>${site}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>\n</urlset>\n`,
+          source: `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>${site}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>\n  <url><loc>${site}/blogs</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>\n</urlset>\n`,
         });
       }
     },
@@ -46,6 +51,8 @@ export default defineConfig({
   plugins: [siteMeta()],
   build: {
     target: 'es2022',
+    // two pages: the story site and Blogs Raza
+    rollupOptions: { input: { main: 'index.html', blogs: 'blogs.html' } },
     // three.js is intentionally bundled whole; the warning is expected
     chunkSizeWarningLimit: 1200,
   },

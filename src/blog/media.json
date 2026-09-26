@@ -1,0 +1,362 @@
+{
+  "reels": {
+    "afternoon-swim": {
+      "video": "afternoon-swim.mp4",
+      "preview": "afternoon-swim-p.mp4",
+      "poster": "afternoon-swim.webp",
+      "duration": 13.5,
+      "ratio": 0.563,
+      "mb": 2.2
+    },
+    "dior-savage": {
+      "video": "dior-savage.mp4",
+      "preview": "dior-savage-p.mp4",
+      "poster": "dior-savage.webp",
+      "duration": 14.3,
+      "ratio": 0.563,
+      "mb": 1.9
+    },
+    "oud-rose": {
+      "video": "oud-rose.mp4",
+      "preview": "oud-rose-p.mp4",
+      "poster": "oud-rose.webp",
+      "duration": 14.6,
+      "ratio": 0.563,
+      "mb": 1.5
+    },
+    "the-red-room": {
+      "video": "the-red-room.mp4",
+      "preview": "the-red-room-p.mp4",
+      "poster": "the-red-room.webp",
+      "duration": 18.3,
+      "ratio": 0.563,
+      "mb": 1.6
+    },
+    "valantino": {
+      "video": "valantino.mp4",
+      "preview": "valantino-p.mp4",
+      "poster": "valantino.webp",
+      "duration": 9.4,
+      "ratio": 0.563,
+      "mb": 0.9
+    },
+    "from-a-call-to-a-bottle": {
+      "video": "from-a-call-to-a-bottle.mp4",
+      "preview": "from-a-call-to-a-bottle-p.mp4",
+      "poster": "from-a-call-to-a-bottle.webp",
+      "duration": 9.4,
+      "ratio": 0.563,
+      "mb": 1.5
+    },
+    "unboxing-lattafa": {
+      "video": "unboxing-lattafa.mp4",
+      "preview": "unboxing-lattafa-p.mp4",
+      "poster": "unboxing-lattafa.webp",
+      "duration": 16.5,
+      "ratio": 0.563,
+      "mb": 2.2
+    },
+    "the-blind-test": {
+      "video": "the-blind-test.mp4",
+      "preview": "the-blind-test-p.mp4",
+      "poster": "the-blind-test.webp",
+      "duration": 68.8,
+      "ratio": 0.563,
+      "mb": 4.9
+    },
+    "the-blind-test-round-two": {
+      "video": "the-blind-test-round-two.mp4",
+      "preview": "the-blind-test-round-two-p.mp4",
+      "poster": "the-blind-test-round-two.webp",
+      "duration": 51.9,
+      "ratio": 0.563,
+      "mb": 3.2
+    },
+    "itne-acche": {
+      "video": "itne-acche.mp4",
+      "preview": "itne-acche-p.mp4",
+      "poster": "itne-acche.webp",
+      "duration": 24.3,
+      "ratio": 0.563,
+      "mb": 4.1
+    },
+    "fourteen-thousand-or-nineteen-hundred": {
+      "video": "fourteen-thousand-or-nineteen-hundred.mp4",
+      "preview": "fourteen-thousand-or-nineteen-hundred-p.mp4",
+      "poster": "fourteen-thousand-or-nineteen-hundred.webp",
+      "duration": 31.2,
+      "ratio": 0.563,
+      "mb": 1.7
+    },
+    "what-is-a-recreation": {
+      "video": "what-is-a-recreation.mp4",
+      "preview": "what-is-a-recreation-p.mp4",
+      "poster": "what-is-a-recreation.webp",
+      "duration": 27.1,
+      "ratio": 0.563,
+      "mb": 3
+    },
+    "sauvage-for-a-fraction": {
+      "video": "sauvage-for-a-fraction.mp4",
+      "preview": "sauvage-for-a-fraction-p.mp4",
+      "poster": "sauvage-for-a-fraction.webp",
+      "duration": 10.6,
+      "ratio": 0.563,
+      "mb": 1.6
+    },
+    "your-questions": {
+      "video": "your-questions.mp4",
+      "preview": "your-questions-p.mp4",
+      "poster": "your-questions.webp",
+      "duration": 9.6,
+      "ratio": 0.563,
+      "mb": 1.1
+    },
+    "inside-the-store": {
+      "video": "inside-the-store.mp4",
+      "preview": "inside-the-store-p.mp4",
+      "poster": "inside-the-store.webp",
+      "duration": 17,
+      "ratio": 0.563,
+      "mb": 1.8
+    },
+    "walls-of-fragrance": {
+      "video": "walls-of-fragrance.mp4",
+      "preview": "walls-of-fragrance-p.mp4",
+      "poster": "walls-of-fragrance.webp",
+      "duration": 30.4,
+      "ratio": 0.563,
+      "mb": 3.7
+    },
+    "packed-with-care": {
+      "video": "packed-with-care.mp4",
+      "preview": "packed-with-care-p.mp4",
+      "poster": "packed-with-care.webp",
+      "duration": 6,
+      "ratio": 0.563,
+      "mb": 0.9
+    },
+    "pick-your-scent": {
+      "video": "pick-your-scent.mp4",
+      "preview": "pick-your-scent-p.mp4",
+      "poster": "pick-your-scent.webp",
+      "duration": 5.1,
+      "ratio": 0.563,
+      "mb": 0.6
+    },
+    "two-scents-one-choice": {
+      "video": "two-scents-one-choice.mp4",
+      "preview": "two-scents-one-choice-p.mp4",
+      "poster": "two-scents-one-choice.webp",
+      "duration": 9.3,
+      "ratio": 0.563,
+      "mb": 0.9
+    },
+    "best-use-of-a-trend": {
+      "video": "best-use-of-a-trend.mp4",
+      "preview": "best-use-of-a-trend-p.mp4",
+      "poster": "best-use-of-a-trend.webp",
+      "duration": 18.5,
+      "ratio": 0.563,
+      "mb": 2.4
+    },
+    "confidence-level": {
+      "video": "confidence-level.mp4",
+      "preview": "confidence-level-p.mp4",
+      "poster": "confidence-level.webp",
+      "duration": 7.1,
+      "ratio": 0.563,
+      "mb": 1.1
+    },
+    "attar-poured-by-hand": {
+      "video": "attar-poured-by-hand.mp4",
+      "preview": "attar-poured-by-hand-p.mp4",
+      "poster": "attar-poured-by-hand.webp",
+      "duration": 16.7,
+      "ratio": 0.563,
+      "mb": 1.5
+    },
+    "the-chemistry-of-a-scent": {
+      "video": "the-chemistry-of-a-scent.mp4",
+      "preview": "the-chemistry-of-a-scent-p.mp4",
+      "poster": "the-chemistry-of-a-scent.webp",
+      "duration": 7.6,
+      "ratio": 0.563,
+      "mb": 1.1
+    },
+    "nahi-better-hai": {
+      "video": "nahi-better-hai.mp4",
+      "preview": "nahi-better-hai-p.mp4",
+      "poster": "nahi-better-hai.webp",
+      "duration": 35.3,
+      "ratio": 0.563,
+      "mb": 5.4
+    },
+    "blending-with-the-team": {
+      "video": "blending-with-the-team.mp4",
+      "preview": "blending-with-the-team-p.mp4",
+      "poster": "blending-with-the-team.webp",
+      "duration": 17.2,
+      "ratio": 0.563,
+      "mb": 3.3
+    },
+    "pm9": {
+      "video": "pm9.mp4",
+      "preview": "pm9-p.mp4",
+      "poster": "pm9.webp",
+      "duration": 14.7,
+      "ratio": 0.563,
+      "mb": 1.3
+    },
+    "r-hawas-black": {
+      "video": "r-hawas-black.mp4",
+      "preview": "r-hawas-black-p.mp4",
+      "poster": "r-hawas-black.webp",
+      "duration": 9.1,
+      "ratio": 0.563,
+      "mb": 1
+    },
+    "lv-imagination": {
+      "video": "lv-imagination.mp4",
+      "preview": "lv-imagination-p.mp4",
+      "poster": "lv-imagination.webp",
+      "duration": 12,
+      "ratio": 0.563,
+      "mb": 1.4
+    },
+    "rasasi-hawas-ice": {
+      "video": "rasasi-hawas-ice.mp4",
+      "preview": "rasasi-hawas-ice-p.mp4",
+      "poster": "rasasi-hawas-ice.webp",
+      "duration": 8.8,
+      "ratio": 0.563,
+      "mb": 1.2
+    },
+    "hawas-ice-unwrapped": {
+      "video": "hawas-ice-unwrapped.mp4",
+      "preview": "hawas-ice-unwrapped-p.mp4",
+      "poster": "hawas-ice-unwrapped.webp",
+      "duration": 4.4,
+      "ratio": 0.759,
+      "mb": 0.4
+    },
+    "dubai-chocolate": {
+      "video": "dubai-chocolate.mp4",
+      "preview": "dubai-chocolate-p.mp4",
+      "poster": "dubai-chocolate.webp",
+      "duration": 14.7,
+      "ratio": 0.563,
+      "mb": 1.5
+    },
+    "elroja-amber-aoud": {
+      "video": "elroja-amber-aoud.mp4",
+      "preview": "elroja-amber-aoud-p.mp4",
+      "poster": "elroja-amber-aoud.webp",
+      "duration": 11.7,
+      "ratio": 0.563,
+      "mb": 1.8
+    },
+    "kaaf": {
+      "video": "kaaf.mp4",
+      "preview": "kaaf-p.mp4",
+      "poster": "kaaf.webp",
+      "duration": 14.7,
+      "ratio": 0.563,
+      "mb": 1.4
+    },
+    "lomani-blue": {
+      "video": "lomani-blue.mp4",
+      "preview": "lomani-blue-p.mp4",
+      "poster": "lomani-blue.webp",
+      "duration": 16.7,
+      "ratio": 0.563,
+      "mb": 2.1
+    },
+    "jpg-ultra-male": {
+      "video": "jpg-ultra-male.mp4",
+      "preview": "jpg-ultra-male-p.mp4",
+      "poster": "jpg-ultra-male.webp",
+      "duration": 34.7,
+      "ratio": 0.563,
+      "mb": 3.1
+    },
+    "fresh-cut": {
+      "video": "fresh-cut.mp4",
+      "preview": "fresh-cut-p.mp4",
+      "poster": "fresh-cut.webp",
+      "duration": 16,
+      "ratio": 0.563,
+      "mb": 1.8
+    },
+    "know-your-notes": {
+      "video": "know-your-notes.mp4",
+      "preview": "know-your-notes-p.mp4",
+      "poster": "know-your-notes.webp",
+      "duration": 9.8,
+      "ratio": 0.563,
+      "mb": 0.9
+    }
+  },
+  "photos": [
+    {
+      "src": "photo-01.webp",
+      "sm": "photo-01-sm.webp",
+      "ratio": 0.462
+    },
+    {
+      "src": "photo-02.webp",
+      "sm": "photo-02-sm.webp",
+      "ratio": 0.462
+    },
+    {
+      "src": "photo-03.webp",
+      "sm": "photo-03-sm.webp",
+      "ratio": 0.462
+    },
+    {
+      "src": "photo-04.webp",
+      "sm": "photo-04-sm.webp",
+      "ratio": 0.462
+    },
+    {
+      "src": "photo-05.webp",
+      "sm": "photo-05-sm.webp",
+      "ratio": 0.462
+    },
+    {
+      "src": "photo-06.webp",
+      "sm": "photo-06-sm.webp",
+      "ratio": 0.75
+    },
+    {
+      "src": "photo-07.webp",
+      "sm": "photo-07-sm.webp",
+      "ratio": 0.462
+    },
+    {
+      "src": "photo-08.webp",
+      "sm": "photo-08-sm.webp",
+      "ratio": 0.878
+    },
+    {
+      "src": "photo-09.webp",
+      "sm": "photo-09-sm.webp",
+      "ratio": 0.79
+    },
+    {
+      "src": "photo-10.webp",
+      "sm": "photo-10-sm.webp",
+      "ratio": 0.678
+    },
+    {
+      "src": "photo-11.webp",
+      "sm": "photo-11-sm.webp",
+      "ratio": 0.678
+    },
+    {
+      "src": "photo-12.webp",
+      "sm": "photo-12-sm.webp",
+      "ratio": 5.505
+    }
+  ]
+}

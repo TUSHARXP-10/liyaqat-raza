@@ -8,6 +8,8 @@ import { wishlist } from './wishlist.js';
 import { score, suggest, highlight } from './search.js';
 import { tintFor, imageFor, photosOf, hasPhoto } from './look.js';
 import { backendEnabled, fetchCatalog, submitOrder } from './backend.js';
+import { REELS } from '../blog/reels.js';
+import BLOG_MEDIA from '../blog/media.json' with { type: 'json' };
 
 // Chapter VI · The Atelier — catalogue, quick view, bag drawer, checkout.
 //
@@ -59,6 +61,14 @@ const pickSize = (p, pref) =>
   p.variants.find((v) => v.type === pref?.type && v.ml === pref?.ml)
   || p.variants.find((v) => v.type === pref?.type)
   || p.variants[0];
+// films from Blogs Raza that show a fragrance (src/blog/reels.js "product")
+const FILMS = {};
+for (const r of REELS) {
+  const m = BLOG_MEDIA.reels[r.slug];
+  if (r.product && m) (FILMS[r.product] ||= []).push({ slug: r.slug, title: r.title, video: m.video, poster: m.poster });
+}
+const filmsOf = (p) => FILMS[p.id] || [];
+const blogMedia = (f) => `${import.meta.env?.BASE_URL ?? '/'}media/blog/${f}`;
 const store = {
   get: (k) => { try { return localStorage.getItem(k); } catch { return null; } },
   set: (k, v) => { try { localStorage.setItem(k, v); } catch { /* storage unavailable */ } },
@@ -159,6 +169,7 @@ function productCard(p, query = '') {
     ${photo(p, 'product__img')}
     <span class="product__no">No. ${pad(p.number)}</span>
     ${stockBadge(p)}
+    ${filmsOf(p).length ? '<span class="product__film" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Film</span>' : ''}
     <span class="product__quick" aria-hidden="true">Quick view</span>
   </button>
   ${heartButton(p, 'heart product__heart')}
@@ -564,17 +575,29 @@ function initQuickView({ lenis }) {
   // v: the size shown · pref: the last kind + ml picked, carried to the next fragrance
   const q = { list: [], index: 0, qty: 1, v: null, pref: null, img: 0, lastFocus: null };
 
-  // main image + a thumbnail per photo when there is more than one
+  // the gallery: photos (or the studio render), then the fragrance's films
+  const galleryOf = (p) => [
+    ...(photosOf(p).length ? photosOf(p).map((_, i) => ({ i })) : [{ i: 0 }]),
+    ...filmsOf(p).map((film) => ({ film })),
+  ];
+  // main image or film + a thumbnail per item when there is more than one
   function renderMedia(p) {
+    const items = galleryOf(p);
+    q.img = Math.min(q.img, items.length - 1);
     const key = `${p.id}#${q.img}`;
     if (media.dataset.key === key) return;
     media.dataset.key = key;
-    const photos = photosOf(p);
-    const alt = photos[q.img]?.alt || p.name;
-    media.innerHTML = photo(p, 'qv__img', { eager: true, alt, size: 'lg', index: q.img })
-      + (photos.length > 1
-        ? `<div class="qv__thumbs" role="group" aria-label="Photos of ${esc(p.name)}">${photos.map((ph, i) => `<button type="button" class="qv__thumb${i === q.img ? ' is-on' : ''}" data-img="${i}" aria-pressed="${i === q.img}" aria-label="Photo ${i + 1} of ${photos.length}"><img src="${esc(imageFor(p, { index: i }))}" alt="" width="60" height="60" /></button>`).join('')}</div>`
-        : '');
+    const item = items[q.img];
+    const main = item.film
+      ? `<video class="qv__film" src="${esc(blogMedia(item.film.video))}" poster="${esc(blogMedia(item.film.poster))}" controls autoplay playsinline aria-label="Film: ${esc(item.film.title)}"></video>`
+      : photo(p, 'qv__img', { eager: true, alt: photosOf(p)[item.i]?.alt || p.name, size: 'lg', index: item.i });
+    const thumbs = items.map((it, i) => {
+      const label = it.film ? `Film: ${it.film.title}` : `Photo ${i + 1}`;
+      const src = it.film ? blogMedia(it.film.poster) : imageFor(p, { index: it.i });
+      return `<button type="button" class="qv__thumb${it.film ? ' is-film' : ''}${i === q.img ? ' is-on' : ''}" data-img="${i}" aria-pressed="${i === q.img}" aria-label="${esc(label)}"><img src="${esc(src)}" alt="" width="60" height="60" /></button>`;
+    }).join('');
+    media.innerHTML = main + (items.length > 1 ? `<div class="qv__thumbs" role="group" aria-label="Photos and films of ${esc(p.name)}">${thumbs}</div>` : '');
+    media.classList.toggle('has-film', Boolean(item.film));
     markLoaded(media);
   }
   const current = () => q.list[q.index];
@@ -700,6 +723,7 @@ function initQuickView({ lenis }) {
   }
 
   function close() {
+    $('video', media)?.pause();
     root.classList.remove('is-open');
     root.setAttribute('aria-hidden', 'true');
     document.documentElement.classList.remove('qv-open');

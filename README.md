@@ -81,6 +81,35 @@ With Supabase connected, the same prices and stock can also be changed live in t
   `public/media/products/` (`npm run render:products`, needs Google Chrome). `image_url` in
   Supabase overrides both.
 
+## Blogs Raza (`/blogs`)
+
+A second page, linked from the nav as **Blogs Raza**, showcasing the brand's films and photos:
+
+- **Hero:** a tilted wall of films drifting behind the title.
+- **Signature films:** the brand's own picks, in a draggable rail with hover previews.
+- **The library:** every film, filterable (Fragrance films, The blind test, In the lab, At the
+  counter). Hover plays a silent preview on desktop; on phones, the card in the middle of the
+  screen previews.
+- **The player:** full-screen, one film per screen like reels. Swipe, scroll or ↑ ↓ to move
+  between films, and the next one starts when a film ends. It has sound on/off, "Ask on WhatsApp",
+  Share (`/blogs?v=<film>`, which opens silently with "Tap for sound"), and **Shop this
+  fragrance** when the film shows a product.
+- **Moments:** a photo wall with a lightbox.
+
+Films that show a fragrance also appear in that fragrance's quick view in the shop (a ▶ Film
+badge on the card, and a film thumbnail that plays in place).
+
+**Adding a film:**
+1. Put the raw file in `src/story/blog content/`. That folder is not committed; only the web copies are.
+2. Add a line to `REELS` in `src/blog/reels.js`: title, one-line text, category, and optionally
+   `featured` and the shop `product` id.
+3. Run `npm run import:blog`. It needs ffmpeg: on PATH, or `FFMPEG=path/to/ffmpeg`, or
+   `npm i -D ffmpeg-static`. It writes a 720p film, a 4-second silent preview and a poster to
+   `public/media/blog/`, skipping anything already up to date.
+
+Left out on purpose: re-exports of the same clip (each kept once), the expired
+"15% / 25% off, 29–31 May" offer, and a lab clip carrying another brand's watermark (@infiniparfums).
+
 ### Supabase setup (one time)
 
 1. Supabase → **SQL Editor**: paste and run `supabase/schema.sql`, then `supabase/seed.sql`.

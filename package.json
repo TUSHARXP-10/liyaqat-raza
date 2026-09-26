@@ -13,7 +13,8 @@
     "brand:assets": "node scripts/brand-assets.mjs",
     "bake:env": "node scripts/bake-env.mjs",
     "import:products": "node scripts/import-products.mjs",
-    "import:photos": "node scripts/import-photos.mjs"
+    "import:photos": "node scripts/import-photos.mjs",
+    "import:blog": "node scripts/import-blog.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.1",

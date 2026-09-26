@@ -7,3 +7,8 @@ dist/
 *.log
 .DS_Store
 Thumbs.db
+
+# raw client media (web-ready copies are generated into public/media/)
+src/story/blog content/
+supabase/more images/
+src/lib/*.jpeg
