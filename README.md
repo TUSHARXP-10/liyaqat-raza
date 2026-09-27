@@ -243,7 +243,7 @@ If the logo changes, re-trace it, then run `npm run render:products` and `npm ru
   3:4, in a tall arch). To change it, add the new photo under a new file name and point
   `index.html` at it: `/media/` files are cached for a week, so reusing a name can show the old photo.
   It appears inside the arch automatically. If the file is missing, a candle shows in its place.
-- `public/media/amjad-ali-sayed.jpg`: Amjad Ali Sayed, co-founder (Chapter IV, full length 2:3).
+- `public/media/amjad-ali-sayed-portrait.jpg`: Amjad Ali Sayed, co-founder (Chapter IV, portrait 2:3).
   Same rule: a new photo gets a new file name.
 - The Kannauj etching (deg and bhapka) is inline SVG in `index.html`, drawn for the site.
 - `public/media/anatomy.jpg` is only shown if a visitor's device can't run WebGL.
