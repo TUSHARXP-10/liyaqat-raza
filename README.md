@@ -205,7 +205,7 @@ Every push to `main` then redeploys automatically. Hashed build assets are cache
 | I | Prologue (`#hero`) | The bottle rises onto a marble plinth in a Moorish colonnade while liquid-gold ribbons pour around it. Slides 01/02/03 switch the headline and turn the bottle into Base, Oud or Musk. |
 | II | Anatomy (`#anatomy`, pinned) | The bottle comes apart piece by piece: cap, R seal, spray, collar, glass, fragrance, base. Each label is attached to the actual 3D part and follows it. It then snaps back together. |
 | III | Origins (`#story`, pinned) | The screen turns to sepia film and an odometer rewinds 2026 → 1986. The counter lands in "Established in 1986", then the real photograph of founder **Yasinali Sayed** at his counter drops in and develops. His name and story take over the panel, and his words *"Sugandh se rishte bante hain"* write themselves in script, signed. Colour then returns over a dusk skyline. |
-| IV | The House Today (`#founder`) | **Liyaqat Sayed**, founder and owner of Raza Perfume today and Yasinali's son. His portrait sits in a wide Mughal arch beside incense smoke from a brass burner, and his quote lights up word by word as you scroll. |
+| IV | The House Today (`#founder`) | **Liyaqat Sayed**, founder and owner of Raza Perfume today and Yasinali's son. His portrait at the Raza counter sits in a tall Mughal arch (3:4) beside incense smoke from a brass burner, and his quote lights up word by word as you scroll. |
 | V | Collection (`#collection`, pinned) | The bottle spins through Base → Oud → Musk. Liquid, glass tint, label, splash colour and backdrop grade all change with it. |
 | — | Promises / Journey | Line icons draw themselves. A giant RAZA rises from the footer and the gold follows the cursor. |
 
@@ -239,7 +239,9 @@ If the logo changes, re-trace it, then run `npm run render:products` and `npm ru
 ## Assets
 
 - `public/media/yasinali-sayed-1986.jpg`: the founder, Yasinali Sayed, at the first Raza counter (Origins chapter).
-- `public/media/liyaqat-sayed.jpg`: Liyaqat Sayed (Chapter IV, landscape, about 1.4:1).
+- `public/media/liyaqat-sayed-shop.jpg`: Liyaqat Sayed at the Raza counter (Chapter IV, portrait
+  3:4, in a tall arch). To change it, add the new photo under a new file name and point
+  `index.html` at it: `/media/` files are cached for a week, so reusing a name can show the old photo.
   It appears inside the arch automatically. If the file is missing, a candle shows in its place.
 - `public/media/anatomy.jpg` is only shown if a visitor's device can't run WebGL.
 

@@ -967,8 +967,8 @@ html.is-covered body > :not(.intro) * { animation-play-state: paused !important;
 
 .founder { padding: 22vh var(--gutter) 18vh; }
 .founder__grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 0.5fr); gap: clamp(24px, 4vw, 70px); align-items: center; }
-/* a wide Mughal arch framing the couple's portrait */
-.founder__arch { position: relative; aspect-ratio: 1.39 / 1; }
+/* a tall Mughal arch framing Liyaqat's portrait at the Raza counter (3:4) */
+.founder__arch { position: relative; justify-self: center; width: min(100%, 500px, 58vh); aspect-ratio: 3 / 4; }
 .founder__arch::before {
   content: '';
   position: absolute;
@@ -992,7 +992,7 @@ html.is-covered body > :not(.intro) * { animation-play-state: paused !important;
   box-shadow: inset 0 0 60px rgba(7, 5, 4, 0.55);
   pointer-events: none;
 }
-.founder__photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 35% 30%; }
+.founder__photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; }
 .founder__photo.is-missing { display: none; }
 .founder__arabic {
   position: absolute;
