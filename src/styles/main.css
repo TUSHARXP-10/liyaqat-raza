@@ -14,7 +14,7 @@
   --gold-grad: linear-gradient(100deg, #93672a 0%, #e6c987 26%, #b5873d 50%, #f2dca1 72%, #9d6f2e 100%);
   --text: #eadfca;
   --muted: #a3957d;
-  --dim: #6c604f;
+  --dim: #877a65; /* 4.9:1 on the page black: small print stays readable */
   --line: rgba(201, 164, 92, 0.32);
   --line-soft: rgba(201, 164, 92, 0.14);
 
@@ -216,6 +216,14 @@ html.is-covered body > :not(.intro) * { animation-play-state: paused !important;
   opacity: 0.9;
 }
 .intro__canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* painted before any script runs; gone as soon as the title sequence starts */
+.intro__boot { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; transition: opacity 0.6s ease; }
+.intro__boot svg { width: 54px; height: auto; opacity: 0.5; }
+.intro:is(.is-playing, .is-quick, .is-skipped, .is-revealing) .intro__boot { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .intro__boot svg { animation: bootPulse 2.4s ease-in-out infinite; }
+  @keyframes bootPulse { 50% { opacity: 0.22; transform: scale(0.96); } }
+}
 
 .intro__since { position: absolute; left: 0; right: 0; top: 36%; padding: 0 24px; }
 .intro__year {
@@ -985,7 +993,8 @@ html.is-covered body > :not(.intro) * { animation-play-state: paused !important;
 
 /* ------------------------------------------------------------- Founder */
 
-.founder { padding: 22vh var(--gutter) 18vh; }
+/* x-clip: the burner's smoke canvas runs past the right edge and must not widen the page */
+.founder { padding: 22vh var(--gutter) 18vh; overflow-x: clip; }
 .founder__grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 0.5fr); gap: clamp(24px, 4vw, 70px); align-items: center; }
 /* a tall Mughal arch framing Liyaqat's portrait at the Raza counter (3:4) */
 .founder__arch { position: relative; justify-self: center; width: min(100%, 500px, 58vh); aspect-ratio: 3 / 4; }
@@ -1236,7 +1245,7 @@ html.is-covered body > :not(.intro) * { animation-play-state: paused !important;
 .journey__links a:hover { color: var(--gold-hi); }
 .journey__copy { font-size: 11px; line-height: 1.8; letter-spacing: 0.08em; color: var(--dim); text-align: center; }
 .journey__credit { margin-top: 4px; }
-.journey__credit a { color: var(--gold); transition: color 0.3s; }
+.journey__credit a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(201, 164, 92, 0.45); transition: color 0.3s; }
 .journey__credit a:hover { color: var(--gold-hi); }
 .journey__sign { text-align: right; font-family: var(--f-serif); font-size: 22px; line-height: 1.2; color: var(--text); }
 .journey__sign em { color: var(--gold-hi); }
@@ -1283,7 +1292,7 @@ html:not(.nav-away) .shop__controls { top: var(--nav-h); }
   white-space: nowrap;
   transition: color 0.3s, border-color 0.3s, background 0.3s;
 }
-.shop__tab small, .chip small { font-family: var(--f-display); font-size: 10px; letter-spacing: 0.05em; opacity: 0.7; }
+.shop__tab small, .chip small { font-family: var(--f-display); font-size: 10px; letter-spacing: 0.05em; opacity: 0.85; }
 .shop__tab:hover { color: var(--gold-hi); border-color: var(--line); }
 .shop__tab.is-active { color: var(--ink); background: var(--gold-grad); border-color: transparent; }
 .chip {
@@ -1693,6 +1702,25 @@ html:not(.nav-away) .shop__controls { top: var(--nav-h); }
 .qv__thumb:hover { opacity: 0.9; }
 .qv__thumb.is-on { border-color: var(--gold-hi); opacity: 1; box-shadow: 0 0 0 1px var(--gold); }
 .cart__img.is-photo, .qv__rel-img.is-photo, .toast__img.is-photo { object-fit: cover; }
+/* privacy choices (src/ui/consent.js) */
+.consent { position: fixed; left: 20px; bottom: 20px; z-index: 80; width: min(380px, calc(100vw - 40px)); padding: 18px 20px 16px; border: 1px solid var(--line); border-radius: 14px; background: rgba(12, 9, 6, 0.94); backdrop-filter: blur(10px); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55); opacity: 0; transform: translateY(14px); transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out); }
+.consent.is-on { opacity: 1; transform: none; }
+.consent__text { margin: 0; font-size: 13px; line-height: 1.6; color: var(--muted); }
+.consent__text a { color: var(--gold-hi); text-decoration: underline; text-underline-offset: 3px; }
+.consent__actions { display: flex; align-items: center; justify-content: flex-end; gap: 16px; margin-top: 14px; }
+.consent__no { padding: 10px 4px; border: 0; background: none; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); cursor: pointer; }
+.consent__no:hover, .consent__no:focus-visible { color: var(--gold-hi); }
+.consent__yes { padding: 12px 26px; }
+@media (max-width: 819px) {
+  .consent { left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); width: auto; }
+}
+/* spam trap: a field people never see (bots fill it in) */
+.hp { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+.subscribe__fine { margin-top: 10px; font-size: 11px; letter-spacing: 0.04em; color: var(--dim); }
+.subscribe__fine a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+.subscribe.is-offline .subscribe__fine { display: none; }
+.cart__privacy a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+.cart__form [aria-invalid="true"], .subscribe [aria-invalid="true"] { border-color: #d27a5a; }
 /* over a general photo: a Raza bottle standing in for this fragrance */
 .media-note { position: absolute; left: 14px; top: 14px; z-index: 2; margin: 0; padding: 5px 11px; border: 1px solid rgba(236, 212, 154, 0.35); border-radius: 20px; background: rgba(7, 5, 4, 0.66); backdrop-filter: blur(6px); font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-hi); pointer-events: none; }
 

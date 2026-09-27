@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import { readFileSync } from 'node:fs';
-import { licensePage } from './scripts/license-page.mjs';
+import { legalPage, LEGAL } from './scripts/license-page.mjs';
 
 // "Browse 145 fragrances" in link previews and page copy follows the spreadsheet
 const productCount = () => JSON.parse(readFileSync(new URL('./src/shop/catalog.json', import.meta.url), 'utf8')).products.length;
@@ -19,11 +19,13 @@ function siteMeta() {
     name: 'raza-site-meta',
     transformIndexHtml: (html) => html.replaceAll('__SITE_URL__', site).replaceAll('__PRODUCT_COUNT__', productCount()),
     // dev server: the same addresses as on Vercel (see vercel.json)
-    //   /license.html is rendered from LICENSE.md · /blogs, /admin, /p/<fragrance>
+    //   /license, /privacy, /terms are rendered from Markdown · /blogs, /admin, /p/<fragrance>
     configureServer(server) {
-      server.middlewares.use('/license.html', (req, res) => {
+      server.middlewares.use((req, res, next) => {
+        const legal = req.url.match(/^\/(license|privacy|terms)(\.html)?\/?(\?|$)/);
+        if (!legal) return next();
         res.setHeader('Content-Type', 'text/html; charset=utf-8');
-        res.end(licensePage());
+        res.end(legalPage(legal[1]));
       });
       server.middlewares.use((req, res, next) => {
         if (/^\/blogs\/?(\?|$)/.test(req.url)) req.url = req.url.replace(/^\/blogs\/?/, '/blogs.html');
@@ -33,14 +35,14 @@ function siteMeta() {
       });
     },
     async generateBundle() {
-      this.emitFile({ type: 'asset', fileName: 'license.html', source: licensePage() });
+      for (const key of Object.keys(LEGAL)) this.emitFile({ type: 'asset', fileName: `${key}.html`, source: legalPage(key) });
       this.emitFile({
         type: 'asset',
         fileName: 'robots.txt',
         source: `User-agent: *\nAllow: /\nDisallow: /tools/\nDisallow: /admin\n${site ? `\nSitemap: ${site}/sitemap.xml\n` : ''}`,
       });
       if (site) {
-        const urls = [['/', '1.0'], ['/blogs', '0.8'], ...(await loadProducts()).map((p) => [`/p/${p.id}`, '0.7'])];
+        const urls = [['/', '1.0'], ['/blogs', '0.8'], ...(await loadProducts()).map((p) => [`/p/${p.id}`, '0.7']), ['/privacy', '0.3'], ['/terms', '0.3']];
         this.emitFile({
           type: 'asset',
           fileName: 'sitemap.xml',
@@ -73,8 +75,10 @@ function productPages() {
         const kinds = [...new Set((p.variants || []).map((v) => v.type))].filter(Boolean).join(' and ');
         const desc = `${p.name} from the ${collection.toLowerCase()} of Raza Perfume NX2, Kalyan.${kinds ? ` Available as ${kinds}.` : ''} Order on WhatsApp.`;
         // the photo the page opens on (its own, else the Raza house bottle photo)
+        // as a JPEG (og), which every link preview reads
         const shot = photosOf(p)[0];
-        const image = shot?.lg ? `/${shot.lg}` : `/media/products/${p.id}.webp`;
+        const file = shot?.og || shot?.lg;
+        const image = file ? `/${file}` : `/media/products/${p.id}.webp`;
         const url = `${site}/p/${p.id}`;
         const html = page.source
           .replace(/<title>[^<]*<\/title>/, `<title>${esc(title)}</title>`)

@@ -142,7 +142,7 @@ html.viewer-open { overflow: hidden; }
 .bfoot__contact a { color: var(--gold-hi); }
 .bfoot__bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 40px; margin-top: 12vh; padding-top: 28px; border-top: 1px solid var(--line-soft); font-size: 12px; color: var(--dim); }
 .bfoot__bottom .logo__word { width: 150px; }
-.bfoot__credit a { color: var(--gold-hi); }
+.bfoot__credit a { color: var(--gold-hi); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(236, 212, 154, 0.45); }
 
 /* ---------------------------------------------------------------- player */
 .viewer { position: fixed; inset: 0; z-index: 110; background: #050302; opacity: 0; visibility: hidden; transition: opacity 0.45s, visibility 0.45s; }

@@ -78,19 +78,23 @@ With Supabase connected, the same prices and stock can also be changed live in t
 - **Photos:** real photos come first, one folder per kind, then run `npm run import:photos`:
   - `product image/`: **perfume** photos, shown when the customer picks Perfume (and on every
     card until they pick Attar on it).
-  - `attar image/`: **attar** photos, shown when the customer picks Attar. `Attar bottles.jpg` /
-    `Attar bottles 2.jpg` (no fragrance name) are the general attar photos, shown with Attar for
+  - `attar image/`: **attar** photos, shown when the customer picks Attar. `Attar bottles.jpg`,
+    `Attar bottles 2.jpg` … (no fragrance name) are the general attar photos, shown with Attar for
     every fragrance that has no attar photo of its own.
+  - `product image/Perfume bottles.jpg`, `Perfume bottles 2.jpg` …: Raza house bottles with no
+    fragrance name, shown with Perfume for every fragrance that has no photo of its own (marked
+    "Shown in a Raza house bottle" in quick view and on the product page). Neighbouring cards
+    never share one. Several are stills from the shop's own films.
 
   Name each after the fragrance (`Gucci Oud.jpg`, `raza_perfume_cool_water.jpg`; a second photo
   ends in a number or `_alt`; a designed notes card has "notes" in its name, is never cropped and
-  shows with both kinds). Each is made square in two sizes; tall phone shots sit on a blurred copy
-  of themselves, with the camera watermark strip cropped off. The photos of the kind picked show on
-  the card, in quick view, on the product page and in the bag. In the admin panel each photo has a
-  "Shows with" tag (Perfume & Attar, Perfume, Attar). Photos whose name isn't in the spreadsheet are kept and reported, and attach once the sheet lists
-  that fragrance. Fragrances without photos show a studio render of the Raza bottle from
-  `public/media/products/` (`npm run render:products`, needs Google Chrome). `image_url` in
-  Supabase overrides both.
+  shows with both kinds). Each is made square as WebP in three sizes (large, card, thumbnail) plus
+  a JPEG for link previews; tall phone shots sit on a blurred copy of themselves, with the camera
+  watermark strip cropped off. The photos of the kind picked show on the card, in quick view, on
+  the product page and in the bag. In the admin panel each photo has a "Shows with" tag
+  (Perfume & Attar, Perfume, Attar). Photos whose name isn't in the spreadsheet are kept and
+  reported, and attach once the sheet lists that fragrance. Only the three house signatures keep
+  the studio render from `public/media/products/`. `image_url` in Supabase overrides both.
 
 ## Blogs Raza (`/blogs`)
 
@@ -197,6 +201,34 @@ The repo is Vercel-ready (`vercel.json`):
 
 Every push to `main` then redeploys automatically. Hashed build assets are cached for a year, and `/media` for a week.
 
+After the first deploy, in the Vercel project:
+
+- **Analytics → Enable** (Web Analytics) and **Speed Insights → Enable**. The site loads both only
+  for visitors who tap "Allow" in the privacy notice; until they are enabled the scripts simply
+  don't run.
+- Optional: add the custom domain, then set `SITE_URL` (e.g. `https://razaperfume.com`) under
+  Environment Variables so the sitemap, canonical links and link previews use it.
+
+## Launch checklist (what's in place)
+
+| Item | Where |
+|------|-------|
+| Privacy policy · Terms & conditions | `/privacy`, `/terms` (from `legal/privacy.md`, `legal/terms.md`, rendered like `/license` by `scripts/license-page.mjs`); linked from every footer and the order form |
+| No secrets in the frontend | Only the Supabase URL and publishable key reach the browser (public by design; the database is protected by row-level security). No keys or passwords are in the repo or its history |
+| HTTPS | Vercel redirects HTTP → HTTPS; `Strict-Transport-Security`, `upgrade-insecure-requests`, `frame-ancestors 'self'`, `Permissions-Policy` in `vercel.json` |
+| Cookie consent | `src/ui/consent.js`: no tracking cookies; anonymous analytics only after "Allow"; "No thanks" is remembered; the choice can be reset on `/privacy` |
+| Analytics | Vercel Web Analytics + Speed Insights (cookieless), gated by the notice |
+| Meta titles/descriptions, social preview | Every page; each product page has its own title, description and photo (JPEG) for link previews |
+| Favicon | `favicon.ico`, PNG icons, `site.webmanifest` |
+| Sitemap, robots.txt | Generated at build: home, Blogs, every product, Privacy, Terms |
+| Images | WebP in three sizes (thumbnails, cards, large views), lazy-loaded, every image has alt text |
+| Speed | Fonts load without blocking; the Raza mark paints immediately while the intro loads |
+| Contrast, mobile, 404 | Small print lightened to ≥4.5:1; no sideways scrolling at 360–1440 px; custom 404 page |
+| Links | Every internal link checked; `/license` etc. linked directly (no redirects) |
+| Forms | The order form checks name (letters), phone (digits, 7–15) and city; the newsletter checks the email. Errors are announced and the field marked |
+| Spam protection | A hidden honeypot field in both forms; the database also validates everything and rate-limits orders (3 per phone per 10 minutes, 30 a minute) and sign-ups (20 a minute) |
+| One clear call to action | The opening screen leads with **Shop 145 fragrances**; the story is the quiet alternative |
+
 ## The story, chapter by chapter
 
 | # | Chapter | What happens |
@@ -238,12 +270,12 @@ If the logo changes, re-trace it, then run `npm run render:products` and `npm ru
 
 ## Assets
 
-- `public/media/yasinali-sayed-1986.jpg`: the founder, Yasinali Sayed, at the first Raza counter (Origins chapter).
-- `public/media/liyaqat-sayed-shop.jpg`: Liyaqat Sayed at the Raza counter (Chapter IV, portrait
+- `public/media/yasinali-sayed-1986.webp`: the founder, Yasinali Sayed, at the first Raza counter (Origins chapter).
+- `public/media/liyaqat-sayed-shop.webp`: Liyaqat Sayed at the Raza counter (Chapter IV, portrait
   3:4, in a tall arch). To change it, add the new photo under a new file name and point
   `index.html` at it: `/media/` files are cached for a week, so reusing a name can show the old photo.
   It appears inside the arch automatically. If the file is missing, a candle shows in its place.
-- `public/media/amjad-ali-sayed-portrait.jpg`: Amjad Ali Sayed, co-founder (Chapter IV, portrait 2:3).
+- `public/media/amjad-ali-sayed-portrait.webp`: Amjad Ali Sayed, co-founder (Chapter IV, portrait 2:3).
   Same rule: a new photo gets a new file name.
 - The Kannauj etching (deg and bhapka) is inline SVG in `index.html`, drawn for the site.
 - `public/media/anatomy.jpg` is only shown if a visitor's device can't run WebGL.
@@ -259,7 +291,12 @@ If the logo changes, re-trace it, then run `npm run render:products` and `npm ru
 - **Amjad Ali Sayed's "about"** (Chapter IV) is a draft: co-founder and Liyaqat's partner, with no
   family relation stated. Edit it under Site content → "The House Today · Amjad Ali Sayed".
 - **Fragrance notes and descriptions** in the Collection chapter are placeholder copy written for the layout.
-- Social links, the "Add to bag" counter and the newsletter form are front-end only. Connect them to the shop/CRM.
+- **Privacy policy and Terms** (`legal/`) are written for how the site works today. Have the client
+  confirm the business details in the Terms: delivery across India, the 48-hour window for damaged
+  or wrong items, and Kalyan / Thane courts. Neither is a substitute for a lawyer's review.
+- **House bottle photos**: fragrances without a photo of their own show a Raza house bottle, marked
+  "Shown in a Raza house bottle". Add their own photos to `product image/` as they are taken.
+- The newsletter stores emails once Supabase is connected; until then it points to Instagram.
 
 ## License
 

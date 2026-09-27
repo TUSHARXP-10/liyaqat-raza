@@ -23,7 +23,10 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <!-- fonts load without holding up the first paint (display=swap) -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" media="print" onload="this.media='all'" data-fonts />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" /></noscript>
   <link rel="stylesheet" href="/src/styles/main.css" />
   <link rel="stylesheet" href="/src/blog/blog.css" />
 </head>
@@ -43,7 +46,7 @@
       <a href="#contact"><span class="roll"><span data-text="Contact">Contact</span></span></a>
     </nav>
     <div class="nav__tools">
-      <a class="nav__shop" href="/#shop">
+      <a class="nav__shop" href="/#shop" aria-label="Shop">
         <span>Shop</span>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>
       </a>
@@ -141,7 +144,7 @@
       <div class="bfoot__bottom">
         <a class="logo" href="/" aria-label="Raza Perfume NX2 — home"><img class="logo__word" src="/brand/raza-wordmark-light.svg" alt="Raza Perfume NX2" width="654" height="170" /></a>
         <p>© 2026 Raza Perfume. Films, photography and product content belong to Raza Perfume.</p>
-        <p class="bfoot__credit">Website designed, built &amp; maintained by <a href="https://webzooinnovation.com" target="_blank" rel="noopener">Webzoo Innovation</a> · <a href="/license.html">License</a></p>
+        <p class="bfoot__credit">Website designed, built &amp; maintained by <a href="https://webzooinnovation.com" target="_blank" rel="noopener">Webzoo Innovation</a> · <a href="/license">License</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></p>
       </div>
     </footer>
   </main>

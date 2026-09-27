@@ -3,6 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import Lenis from 'lenis';
 import { initCursor } from '../ui/cursor.js';
+import { initConsent } from '../ui/consent.js';
 import { assetBase } from '../shop/look.js';
 import { prefersReducedMotion } from '../lib/math.js';
 import { BY_ID } from '../shop/products.js';
@@ -166,7 +167,7 @@ function centerPreviews(root) {
 const watchPreviews = (root) => (isTouch() ? centerPreviews(root) : (hoverPreviews(root), null));
 
 const cardMedia = (f, { eager = false } = {}) => `
-  <img class="reel__poster" src="${media(f.poster)}" alt="" width="540" height="${Math.round(540 / f.ratio)}" loading="${eager ? 'eager' : 'lazy'}" decoding="async" />
+  <img class="reel__poster" src="${media(f.poster)}"${f.posterSm ? ` srcset="${media(f.posterSm)} 270w, ${media(f.poster)} 540w" sizes="(max-width: 819px) 46vw, 300px"` : ''} alt="" width="540" height="${Math.round(540 / f.ratio)}" loading="${eager ? 'eager' : 'lazy'}" decoding="async" />
   <video class="reel__video" muted loop playsinline preload="none" data-src="${media(f.preview)}" aria-hidden="true"></video>`;
 
 /* ------------------------------------------------------------------ hero */
@@ -195,7 +196,8 @@ function buildHero() {
   ].map(([n, l]) => `<li><strong data-count-to="${n}">${n}</strong><span>${l}</span></li>`).join('');
 
   if (reduced) return;
-  const title = new SplitText('[data-title] .bhero__line', { type: 'chars', charsClass: 'bhero__char' });
+  // split the heading itself, so its accessible name stays on the <h1>
+  const title = new SplitText('[data-title]', { type: 'chars', charsClass: 'bhero__char' });
   gsap.timeline({ delay: 0.15 })
     .from(wall, { autoAlpha: 0, scale: 1.25, duration: 2.2, ease: 'expo.out' })
     .from(title.chars, { yPercent: 115, rotateX: -80, autoAlpha: 0, stagger: 0.05, duration: 1.4, ease: 'expo.out' }, 0.2)
@@ -588,6 +590,7 @@ buildLibrary();
 buildMoments();
 buildViewer();
 initCursor();
+setTimeout(initConsent, 1800); // after the hero has come in
 if (!reduced) {
   $$('.bsec__title .display__line, .bfoot__title .display__line').forEach((line) => {
     gsap.from(line, { yPercent: 110, duration: 1.3, ease: 'expo.out', scrollTrigger: { trigger: line, start: 'top 90%' } });

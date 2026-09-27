@@ -6,7 +6,7 @@
 // and writes to public/media/blog/:
 //   <slug>.mp4      the film: ≤720 px wide, H.264 + AAC, starts streaming at once
 //   <slug>-p.mp4    a 4-second silent loop for hover / in-view previews
-//   <slug>.webp     the poster still
+//   <slug>.webp     the poster still (and <slug>-sm.webp, half size, for grids)
 //   photo-NN.webp   each photo (and -sm for the wall)
 // plus src/blog/media.json (sizes, durations) for the page. Files that are
 // already up to date are skipped, so re-running after adding one film is quick.
@@ -53,7 +53,7 @@ for (const r of REELS) {
     console.log(`  ! missing ${r.file} (${r.slug}) — skipped`);
     continue;
   }
-  const films = { video: `${r.slug}.mp4`, preview: `${r.slug}-p.mp4`, poster: `${r.slug}.webp` };
+  const films = { video: `${r.slug}.mp4`, preview: `${r.slug}-p.mp4`, poster: `${r.slug}.webp`, posterSm: `${r.slug}-sm.webp` };
   Object.values(films).forEach((f) => keep.add(f));
   const at = (f) => path.join(out, f);
   const dur = duration(file);
@@ -70,6 +70,8 @@ for (const r of REELS) {
     const png = run(['-ss', String(Math.min(r.poster ?? 1, Math.max(0, dur - 0.2))), '-i', file, '-frames:v', '1', '-f', 'image2pipe', '-vcodec', 'png', '-']);
     await sharp(png).resize({ width: 540 }).webp({ quality: 72 }).toFile(at(films.poster));
   }
+  // a half-size poster for the library grid and thumbnails
+  if (!fresh(at(films.posterSm), at(films.poster))) await sharp(at(films.poster)).resize({ width: 270 }).webp({ quality: 72 }).toFile(at(films.posterSm));
   const { width, height } = await sharp(at(films.poster)).metadata();
   const size = statSync(at(films.video)).size;
   bytes += size + statSync(at(films.preview)).size + statSync(at(films.poster)).size;

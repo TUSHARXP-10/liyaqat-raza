@@ -50,7 +50,10 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet" />
+  <!-- fonts load without holding up the first paint (display=swap) -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap" media="print" onload="this.media='all'" data-fonts />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap" /></noscript>
   <link rel="stylesheet" href="/src/styles/main.css" />
 </head>
 <body>
@@ -63,6 +66,8 @@
     <div class="intro__half intro__half--bottom"></div>
     <div class="intro__seam"></div>
     <canvas class="intro__canvas" data-intro-canvas aria-hidden="true"></canvas>
+    <!-- on a slow connection, the mark holds the screen until the sequence starts -->
+    <div class="intro__boot" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 920" aria-hidden="true" focusable="false"><g transform="translate(0 -16)"><path fill="#f0dfb2" fill-rule="evenodd" d="M 347 32 C 346 32, 342 35, 339 38 C 335 42, 328 47, 324 51 C 314 59, 291 79, 288 82 C 285 86, 289 88, 293 85 C 294 84, 296 83, 298 83 C 299 83, 305 80, 311 77 C 317 74, 323 71, 324 71 C 324 71, 327 70, 329 69 C 331 68, 334 67, 335 67 C 336 67, 338 66, 340 65 C 344 63, 347 61, 358 57 C 361 56, 366 54, 368 53 C 370 52, 374 50, 377 49 C 380 48, 384 46, 387 45 C 390 44, 394 43, 395 43 C 398 43, 411 47, 421 52 C 424 53, 427 55, 427 55 C 428 55, 430 55, 432 56 C 436 58, 448 63, 455 66 C 457 66, 459 68, 461 69 C 462 70, 464 71, 465 71 C 466 71, 470 72, 484 79 C 507 89, 506 89, 498 100 C 495 104, 491 109, 490 111 C 482 121, 447 168, 439 178 C 433 185, 424 199, 424 200 C 424 202, 426 200, 431 196 C 439 190, 539 90, 539 89 C 539 88, 534 81, 533 81 C 531 79, 500 46, 497 41 C 495 39, 491 36, 489 34 L 485 31 417 31 C 370 31, 348 31, 347 32 M 398 90 C 396 92, 396 206, 398 206 C 399 206, 400 205, 401 203 C 401 202, 402 201, 403 200 C 403 199, 408 192, 414 185 C 420 177, 426 167, 429 164 C 434 158, 436 154, 443 145 C 445 142, 455 129, 464 116 C 481 94, 483 90, 480 89 C 477 88, 399 88, 398 90 M 337 209 C 337 210, 337 213, 337 216 C 337 226, 341 226, 283 226 L 233 226 230 228 C 228 229, 222 235, 216 241 C 202 256, 140 319, 127 332 C 122 338, 109 351, 97 363 C 86 374, 77 384, 77 385 C 76 386, 76 468, 76 567 L 76 747 85 755 C 101 770, 109 778, 119 786 C 124 790, 128 795, 129 795 C 130 796, 131 796, 131 796 C 132 796, 133 796, 133 797 C 133 799, 133 800, 134 800 C 135 800, 137 800, 137 802 C 137 803, 138 804, 139 804 C 140 804, 141 804, 141 806 C 141 807, 141 808, 142 808 C 143 808, 144 808, 144 810 C 145 811, 154 820, 164 831 C 193 860, 221 889, 231 900 L 240 910 391 910 L 542 910 545 906 C 547 905, 552 899, 556 894 C 565 884, 577 872, 596 853 C 603 846, 617 832, 627 822 C 637 812, 648 801, 652 798 C 663 788, 679 774, 698 755 L 707 747 707 565 L 707 384 691 368 C 682 359, 656 333, 634 309 C 611 286, 583 258, 572 246 L 551 226 503 225 C 476 225, 453 225, 453 225 C 452 224, 451 222, 451 219 C 452 207, 450 207, 409 223 C 398 228, 384 227, 376 221 C 374 221, 371 219, 369 218 C 366 217, 359 215, 354 213 C 344 209, 339 208, 337 209 M 221 271 C 203 289, 158 335, 115 379 L 101 394 101 426 C 101 443, 100 485, 99 520 C 99 554, 98 585, 98 589 C 98 592, 99 616, 99 643 C 99 669, 100 694, 100 697 C 100 701, 100 710, 99 717 C 98 735, 99 739, 106 745 C 112 749, 134 770, 206 842 L 249 885 391 884 L 534 884 562 857 C 577 842, 610 809, 635 784 L 681 738 682 704 C 683 659, 683 556, 682 465 L 681 393 672 384 C 667 379, 647 358, 627 338 C 607 318, 580 290, 566 276 L 542 251 391 251 L 241 251 221 271 M 333 317 C 331 318, 331 364, 333 366 C 335 368, 445 368, 448 366 C 450 365, 450 363, 450 346 C 451 323, 450 318, 447 317 C 444 316, 335 316, 333 317 M 374 400 C 371 402, 374 404, 383 404 C 387 405, 392 406, 394 406 C 395 407, 400 408, 405 410 C 409 411, 414 413, 416 414 C 418 415, 420 416, 421 416 C 423 416, 437 423, 444 427 C 450 431, 469 450, 472 455 C 472 456, 474 460, 476 463 C 478 466, 481 471, 482 475 C 483 479, 485 484, 486 488 C 488 492, 488 496, 488 514 C 488 536, 488 536, 483 550 C 479 564, 466 582, 454 591 C 451 593, 448 596, 448 596 C 447 596, 446 596, 446 597 C 444 599, 433 605, 431 605 C 428 605, 430 608, 434 611 C 439 614, 446 622, 455 634 C 461 641, 471 655, 471 656 C 471 657, 471 658, 473 660 C 474 662, 476 664, 476 666 C 480 672, 484 679, 486 682 C 487 683, 488 685, 488 685 C 488 685, 489 687, 490 689 C 491 691, 493 693, 493 695 C 494 697, 497 701, 500 705 C 502 709, 505 713, 505 713 C 505 715, 531 742, 533 742 C 533 742, 535 744, 537 745 C 539 746, 542 748, 544 748 C 545 749, 548 751, 550 752 C 551 752, 554 754, 556 754 C 558 755, 561 756, 563 756 C 565 757, 570 758, 575 760 C 584 762, 585 762, 586 760 C 588 758, 587 757, 582 754 C 581 754, 578 752, 577 751 C 575 750, 572 747, 570 746 C 566 742, 557 732, 551 724 C 547 717, 546 715, 539 704 C 537 700, 534 694, 532 691 C 530 687, 527 682, 526 680 C 524 677, 522 673, 521 671 C 520 669, 518 666, 518 666 C 517 665, 516 663, 515 661 C 514 659, 512 656, 511 655 C 504 641, 481 620, 465 613 C 460 611, 457 608, 458 607 C 458 606, 461 605, 465 605 C 484 603, 511 590, 528 574 C 536 567, 547 551, 549 543 C 550 541, 551 538, 552 538 C 553 536, 556 515, 556 507 C 556 498, 553 477, 551 473 C 550 471, 550 469, 550 468 C 549 466, 542 452, 537 446 C 531 437, 515 423, 507 419 C 491 410, 477 405, 461 404 C 456 403, 450 402, 447 402 C 439 400, 375 399, 374 400 M 217 422 C 214 425, 216 427, 220 428 C 234 432, 246 446, 248 461 C 249 472, 249 718, 248 724 C 245 739, 236 750, 223 755 C 217 757, 215 760, 220 761 C 221 761, 249 761, 282 761 L 342 761 342 759 C 343 757, 342 756, 333 753 C 327 750, 320 743, 316 735 L 313 728 313 669 C 312 624, 313 610, 314 609 C 316 607, 330 608, 336 611 C 350 618, 359 630, 374 658 C 378 666, 382 673, 382 674 C 383 675, 384 678, 385 681 C 390 691, 406 725, 411 733 C 420 750, 434 768, 445 777 C 455 786, 461 789, 476 796 C 481 798, 503 802, 510 801 C 525 799, 537 797, 541 795 C 543 794, 545 793, 546 793 C 548 793, 559 789, 560 787 C 562 784, 561 784, 554 784 C 543 785, 525 779, 513 771 C 505 764, 503 763, 496 756 C 489 749, 472 727, 472 725 C 472 725, 470 722, 468 719 C 465 716, 463 711, 461 709 C 460 706, 458 702, 457 700 C 455 698, 453 694, 451 691 C 450 687, 448 684, 447 684 C 446 683, 445 681, 444 679 C 442 674, 432 658, 430 656 C 429 655, 429 654, 429 653 C 429 652, 415 634, 411 630 C 402 621, 391 613, 383 609 C 372 603, 371 601, 379 601 C 389 600, 415 586, 426 574 C 439 560, 442 555, 448 535 C 452 524, 450 497, 446 489 C 445 487, 445 485, 445 485 C 445 483, 439 473, 435 466 C 432 462, 414 444, 412 444 C 412 444, 409 442, 406 440 C 404 438, 401 437, 400 437 C 400 437, 398 435, 396 434 C 394 433, 391 432, 390 432 C 389 432, 387 431, 385 430 C 383 429, 377 427, 372 426 C 366 425, 360 423, 357 422 C 347 420, 218 420, 217 422 M 313 438 C 313 439, 313 475, 313 518 L 313 596 327 596 C 349 595, 361 590, 376 576 C 384 567, 387 563, 393 548 C 397 539, 399 514, 396 498 C 395 488, 388 470, 385 467 C 384 466, 384 464, 384 464 C 384 460, 366 446, 357 441 C 348 437, 344 437, 328 436 L 314 435 313 438"/><path fill="#c9a45c" fill-rule="evenodd" d="M 297 38 C 294 42, 290 46, 288 48 C 287 49, 281 55, 276 61 C 260 78, 252 87, 253 89 C 253 92, 326 167, 346 185 C 351 189, 356 194, 358 196 C 363 201, 365 202, 366 200 C 367 199, 361 190, 357 186 C 356 185, 355 184, 355 183 C 355 183, 347 172, 345 169 C 344 168, 343 166, 341 165 C 340 163, 337 159, 335 157 C 333 155, 329 150, 327 146 C 324 142, 319 135, 315 129 C 311 124, 303 114, 298 107 C 293 100, 287 93, 285 91 C 284 89, 283 87, 283 86 C 283 84, 301 67, 303 67 C 304 67, 310 61, 317 54 C 326 46, 331 42, 332 42 C 334 42, 342 34, 342 32 C 342 32, 333 32, 323 32 L 304 32 297 38 M 327 89 C 309 90, 309 90, 317 100 C 320 104, 323 108, 324 109 C 325 110, 328 116, 332 121 C 336 127, 340 133, 343 136 C 345 138, 349 144, 352 148 C 358 158, 369 172, 371 175 C 373 176, 374 177, 374 178 C 374 178, 377 184, 382 190 C 389 201, 392 205, 393 203 C 394 203, 392 117, 391 102 L 390 92 385 91 C 382 91, 375 91, 369 90 C 358 89, 354 88, 327 89 M 245 280 C 241 283, 235 289, 232 293 C 229 296, 220 305, 213 312 C 206 319, 197 328, 194 332 C 190 336, 185 341, 182 344 C 171 354, 126 401, 124 404 C 124 405, 123 478, 123 566 L 123 727 146 750 C 158 762, 188 792, 213 816 C 237 840, 258 860, 259 861 C 262 863, 267 863, 332 863 C 436 862, 464 861, 458 858 C 457 857, 409 856, 328 855 L 262 854 238 830 C 225 816, 209 800, 203 794 C 196 788, 189 781, 187 778 C 184 775, 177 768, 170 761 C 164 754, 153 743, 146 736 L 134 724 134 566 L 134 407 149 391 C 158 382, 171 369, 178 362 C 185 355, 205 334, 222 317 C 240 299, 254 284, 255 283 C 256 283, 317 283, 391 282 L 527 282 557 313 C 584 341, 603 360, 638 396 L 650 408 650 473 C 650 528, 650 633, 650 705 L 650 724 632 742 C 612 762, 610 765, 613 769 C 614 771, 614 771, 617 768 C 618 767, 623 763, 627 758 C 631 754, 641 746, 647 739 L 660 727 660 567 C 660 470, 659 406, 659 404 C 658 402, 643 386, 637 381 C 635 379, 630 374, 625 369 C 614 357, 568 311, 548 289 L 532 274 392 274 L 251 273 245 280"/></g></svg></div>
 
     <div class="intro__since">
       <p class="intro__year">Since 1986</p>
@@ -214,7 +219,7 @@
       </button>
       <button class="nav__icon nav__bag" type="button" aria-label="Shopping bag" data-bag>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>
-        <span class="nav__bag-count" data-bag-count>0</span>
+        <span class="nav__bag-count" data-bag-count aria-hidden="true">0</span>
       </button>
       <button class="nav__burger" type="button" aria-label="Open menu" aria-expanded="false" data-burger><span></span><span></span></button>
     </div>
@@ -272,14 +277,15 @@
       <footer class="cart__foot">
         <div class="cart__total"><span>Total</span><strong data-cart-total>₹0</strong></div>
         <form class="cart__form" data-cart-form novalidate>
-          <div class="field"><label for="c-name">Your name</label><input id="c-name" name="name" autocomplete="name" maxlength="80" required /></div>
-          <div class="field"><label for="c-phone">Phone / WhatsApp</label><input id="c-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" required /></div>
-          <div class="field"><label for="c-city">City</label><input id="c-city" name="city" autocomplete="address-level2" maxlength="80" /></div>
+          <div class="field"><label for="c-name">Your name</label><input id="c-name" name="name" autocomplete="name" maxlength="80" required aria-describedby="c-error" /></div>
+          <div class="field"><label for="c-phone">Phone / WhatsApp</label><input id="c-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" required aria-describedby="c-error" /></div>
+          <div class="field"><label for="c-city">City</label><input id="c-city" name="city" autocomplete="address-level2" maxlength="80" aria-describedby="c-error" /></div>
           <div class="field"><label for="c-note">Note <small>(optional)</small></label><input id="c-note" name="note" maxlength="300" /></div>
-          <p class="cart__error" data-cart-error role="alert"></p>
+          <div class="hp" aria-hidden="true"><label for="c-website">Leave this empty</label><input id="c-website" name="website" tabindex="-1" autocomplete="off" /></div>
+          <p class="cart__error" id="c-error" data-cart-error role="alert"></p>
           <button class="btn btn--solid cart__checkout" type="submit"><span class="btn__label">Place order on WhatsApp</span><span class="btn__arrow" aria-hidden="true">→</span></button>
           <p class="cart__note">We’ll confirm prices, availability and delivery with you on WhatsApp. Prefer to talk? Call <a href="tel:+919029504320">+91 90295 04320</a>.</p>
-          <p class="cart__note cart__privacy">Your name and number are used only to confirm and deliver this order.</p>
+          <p class="cart__note cart__privacy">Your name and number are used only to confirm and deliver this order. By ordering you agree to our <a href="/terms">Terms</a> and <a href="/privacy">Privacy Policy</a>.</p>
         </form>
       </footer>
     </aside>
@@ -355,7 +361,7 @@
   <div class="toast" data-toast role="status" aria-live="polite"></div>
   <button class="bag-fab" type="button" data-bag aria-label="Open bag">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8Z" /><path d="M9 8V6.5a3 3 0 0 1 6 0V8" /></svg>
-    <span class="bag-fab__count" data-bag-fab-count>0</span>
+    <span class="bag-fab__count" data-bag-fab-count aria-hidden="true">0</span>
   </button>
 
   <button class="sound" type="button" data-sound aria-pressed="false" aria-label="Toggle ambient sound">
@@ -391,10 +397,11 @@
         </h1>
         <p class="hero__lead" data-hero-lead>Rooted in tradition. Created for today. Raza Perfume brings you the finest scents, inspired by heritage, designed for modern gentlemen.</p>
         <div class="hero__cta" data-hero-cta>
-          <a class="btn" href="#collection" data-scrollto data-magnetic data-cursor-label="Explore">
-            <span class="btn__label">Explore Collection</span><span class="btn__arrow" aria-hidden="true">→</span>
+          <!-- one clear action: shop; the story is the quiet alternative -->
+          <a class="btn btn--solid" href="#shop" data-scrollto data-magnetic data-cursor-label="Shop">
+            <span class="btn__label">Shop __PRODUCT_COUNT__ fragrances</span><span class="btn__arrow" aria-hidden="true">→</span>
           </a>
-          <a class="link-quiet hero__shop" href="#shop" data-scrollto>Shop all __PRODUCT_COUNT__ fragrances</a>
+          <a class="link-quiet hero__shop" href="#collection" data-scrollto>Explore the collection</a>
         </div>
         <div class="hero__pager" role="tablist" aria-label="Featured fragrance" data-hero-pager>
           <button type="button" role="tab" class="is-active" data-hero-go="0" aria-selected="true"><span>01</span><i><b></b></i></button>
@@ -533,7 +540,7 @@
 
         <figure class="story__photo" data-story-photo>
           <div class="story__photo-inner" data-story-photo-inner>
-            <img src="/media/yasinali-sayed-1986.jpg" width="1536" height="1024" alt="Yasinali Sayed behind the counter of his Raza Perfume shop, 1986" decoding="async" data-story-img />
+            <img src="/media/yasinali-sayed-1986.webp" width="1200" height="800" alt="Yasinali Sayed behind the counter of his Raza Perfume shop, 1986" decoding="async" data-story-img />
           </div>
           <figcaption>Yasinali Sayed · The first counter · 1986</figcaption>
         </figure>
@@ -557,7 +564,7 @@
       <div class="founder__grid">
         <figure class="founder__arch" data-founder-arch>
           <div class="founder__arch-inner" data-founder-arch-inner>
-            <img class="founder__photo" src="/media/liyaqat-sayed-shop.jpg" alt="Liyaqat Sayed, founder and owner of Raza Perfume, at the Raza Perfume counter" width="960" height="1280" data-founder-photo />
+            <img class="founder__photo" src="/media/liyaqat-sayed-shop.webp" alt="Liyaqat Sayed, founder and owner of Raza Perfume, at the Raza Perfume counter" width="960" height="1280" data-founder-photo />
             <div class="candle" aria-hidden="true">
               <div class="candle__glow"></div>
               <div class="candle__flame"><i></i></div>
@@ -644,7 +651,7 @@
 
         <figure class="founder__arch cofounder__arch" data-cofounder-arch>
           <div class="founder__arch-inner" data-cofounder-arch-inner>
-            <img class="founder__photo cofounder__photo" src="/media/amjad-ali-sayed-portrait.jpg" alt="Amjad Ali Sayed, co-founder and partner of Raza Perfume" width="853" height="1280" loading="lazy" decoding="async" />
+            <img class="founder__photo cofounder__photo" src="/media/amjad-ali-sayed-portrait.webp" alt="Amjad Ali Sayed, co-founder and partner of Raza Perfume" width="853" height="1280" loading="lazy" decoding="async" />
           </div>
         </figure>
       </div>
@@ -816,10 +823,13 @@
           <p class="subscribe__text">Be the first to know about new launches, offers and stories.</p>
           <div class="subscribe__row">
             <label class="sr-only" for="email">Email address</label>
-            <input id="email" type="email" placeholder="Enter your email" autocomplete="email" required />
+            <input id="email" name="email" type="email" placeholder="Enter your email" autocomplete="email" maxlength="254" required />
             <button class="btn btn--solid" type="submit" data-magnetic><span class="btn__label">Subscribe</span><span class="btn__arrow" aria-hidden="true">→</span></button>
           </div>
+          <!-- left empty by people; bots that fill every field give themselves away -->
+          <div class="hp" aria-hidden="true"><label for="s-website">Leave this empty</label><input id="s-website" name="website" tabindex="-1" autocomplete="off" /></div>
           <p class="subscribe__status" data-subscribe-status role="status" aria-live="polite"></p>
+          <p class="subscribe__fine">News only, never spam. Unsubscribe any time. <a href="/privacy">Privacy policy</a></p>
           <a class="subscribe__offline btn" href="https://www.instagram.com/raza_perfumenx2kalyan/" target="_blank" rel="noopener">
             <span class="btn__label">Follow @raza_perfumenx2kalyan</span><span class="btn__arrow" aria-hidden="true">→</span>
           </a>
@@ -854,7 +864,7 @@
         </nav>
         <div class="journey__copy">
           <p>© 2026 Raza Perfume. Brand, photography and product content belong to Raza Perfume.</p>
-          <p class="journey__credit">Website designed, built &amp; maintained by <a href="https://webzooinnovation.com" target="_blank" rel="noopener">Webzoo Innovation</a> · <a href="/license.html">License</a></p>
+          <p class="journey__credit">Website designed, built &amp; maintained by <a href="https://webzooinnovation.com" target="_blank" rel="noopener">Webzoo Innovation</a> · <a href="/license">License</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></p>
         </div>
         <p class="journey__sign">More than a fragrance.<br /><em>A legacy.</em></p>
       </div>

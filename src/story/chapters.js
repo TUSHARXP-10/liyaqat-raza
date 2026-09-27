@@ -16,6 +16,11 @@ import { heroState } from './keyframes.js';
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const isMobile = () => window.innerWidth < 820;
+// Paragraphs split into lines for their reveal. Lines keep every word whole,
+// so the text reads normally and needs no ARIA (SplitText's default puts an
+// aria-label on the element, which isn't allowed on <p>). Headings are split
+// whole instead, so that label lands on the heading, where it is allowed.
+const splitLines = (target) => SplitText.create(target, { type: 'lines', mask: 'lines', aria: 'none' }).lines;
 const TAU = Math.PI * 2;
 // how many screens of scroll the Origins chapter (III) stays pinned for
 const STORY_SCREENS = 5.3;
@@ -40,8 +45,8 @@ export function buildChapters(ctx) {
 
 function setupHero({ stage, triggers: T, director, ambient }) {
   const slides = $$('[data-hero-slide]');
-  const chars = slides.map((s) => SplitText.create(s.querySelectorAll('.hero__line'), { type: 'words,chars' }).chars);
-  const lead = SplitText.create('[data-hero-lead]', { type: 'lines', mask: 'lines' }).lines;
+  const chars = slides.map((s) => SplitText.create(s.querySelectorAll('.hero__line'), { type: 'words,chars', aria: 'none' }).chars);
+  const lead = splitLines('[data-hero-lead]');
   const eyebrow = $('[data-hero-eyebrow]');
   const pager = $$('[data-hero-go]');
   const bars = pager.map((b) => b.querySelector('b'));
@@ -120,8 +125,8 @@ function setupHero({ stage, triggers: T, director, ambient }) {
 /* ---------------------------------------------------------------- ANATOMY */
 
 function setupAnatomy({ triggers: T, ambient }) {
-  const title = SplitText.create('#anatomy .display__line', { type: 'words,chars' }).chars;
-  const lead = SplitText.create('#anatomy [data-split-lines]', { type: 'lines', mask: 'lines' }).lines;
+  const title = SplitText.create('#anatomy .anatomy__title', { type: 'words,chars' }).chars;
+  const lead = splitLines('#anatomy [data-split-lines]');
   const callouts = $('[data-callouts]');
 
   const tl = gsap.timeline({
@@ -161,12 +166,12 @@ function setupStory({ triggers: T }) {
   const year = { v: 2026 };
   odo.set(year.v);
   const words = $$('[data-story-word]');
-  const text = SplitText.create('[data-story-text]', { type: 'lines', mask: 'lines' }).lines;
-  const craftTitle = SplitText.create('[data-story-craft] .display__line', { type: 'words,chars' }).chars;
-  const craftText = SplitText.create('[data-craft-text]', { type: 'lines', mask: 'lines' }).lines;
+  const text = splitLines('[data-story-text]');
+  const craftTitle = SplitText.create('[data-story-craft] .story__craft-title', { type: 'words,chars' }).chars;
+  const craftText = splitLines('[data-craft-text]');
   const etch = $$('[data-etch] path');
-  const founderName = SplitText.create('[data-story-founder] .display__line', { type: 'words,chars' }).chars;
-  const founderText = SplitText.create('[data-founder-origin-text]', { type: 'lines', mask: 'lines' }).lines;
+  const founderName = SplitText.create('[data-story-founder] .story__founder-name', { type: 'words,chars' }).chars;
+  const founderText = splitLines('[data-founder-origin-text]');
 
   // where the big counter must land so it becomes the "1986" in the title
   const M = { dx: 0, dy: 0, scale: 0.3 };
@@ -264,8 +269,8 @@ function setupFounder() {
   if (photo.complete) onPhoto();
 
   const name = SplitText.create('[data-founder-name]', { type: 'words,chars' }).chars;
-  const text = SplitText.create('[data-founder-text]', { type: 'lines', mask: 'lines' }).lines;
-  const words = SplitText.create('[data-quote-words]', { type: 'words' }).words;
+  const text = splitLines('[data-founder-text]');
+  const words = SplitText.create('[data-quote-words]', { type: 'words', aria: 'none' }).words;
 
   gsap.timeline({ scrollTrigger: { trigger: '.founder__grid', start: 'top 70%', toggleActions: 'play none none reverse' } })
     .fromTo('[data-founder-arch-inner]', { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.8, ease: 'expo.inOut' }, 0)
@@ -296,7 +301,7 @@ function setupFounder() {
 // Amjad Ali Sayed, still chapter IV: the same arch reveal as Liyaqat's, mirrored
 function setupCofounder() {
   const name = SplitText.create('[data-cofounder-name]', { type: 'words,chars' }).chars;
-  const text = SplitText.create('[data-cofounder-text]', { type: 'lines', mask: 'lines' }).lines;
+  const text = splitLines('[data-cofounder-text]');
 
   gsap.timeline({ scrollTrigger: { trigger: '.cofounder__grid', start: 'top 70%', toggleActions: 'play none none reverse' } })
     .fromTo('[data-cofounder-arch-inner]', { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.8, ease: 'expo.inOut' }, 0)
@@ -314,7 +319,7 @@ function setupCofounder() {
 /* ------------------------------------------------------------- COLLECTION */
 
 function setupCollection({ triggers: T, lenis, ambient, shop }) {
-  const title = SplitText.create('#collection .display__line', { type: 'words,chars' }).chars;
+  const title = SplitText.create('#collection .collection__title', { type: 'words,chars' }).chars;
   const articles = $$('[data-variant]');
   const names = articles.map((a) => SplitText.create(a.querySelector('[data-variant-name]'), { type: 'words,chars' }).chars);
   const cards = $$('[data-rail-go]');
@@ -419,15 +424,25 @@ function setupJourney() {
   const shake = () => gsap.fromTo(form.querySelector('.subscribe__row'), { x: -8 }, { x: 0, duration: 0.6, ease: 'elastic.out(1, 0.3)' });
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const input = form.querySelector('input');
+    const input = form.elements.email;
     const button = form.querySelector('[type="submit"]');
-    if (!input.checkValidity() || !input.value) {
+    const email = input.value.trim();
+    // a bot filled the hidden field: say thanks, send nothing
+    if (form.elements.website.value) {
+      status.textContent = 'Welcome to the journey. You’ll hear from us first.';
+      input.value = '';
+      return;
+    }
+    if (!input.checkValidity() || !/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) {
       status.textContent = 'Please enter a valid email address.';
+      input.setAttribute('aria-invalid', 'true');
+      input.focus();
       return shake();
     }
+    input.removeAttribute('aria-invalid');
     button.disabled = true;
     try {
-      await subscribe(input.value.trim());
+      await subscribe(email);
       status.textContent = 'Welcome to the journey. You’ll hear from us first.';
       input.value = '';
     } catch (err) {

@@ -68,7 +68,7 @@
 .pp__contact span { display: inline-block; min-width: 150px; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--dim); }
 .pp__contact a { color: var(--gold-hi); }
 .pp__credit { width: 100%; color: var(--dim); font-size: 12px; }
-.pp__credit a { color: var(--gold-hi); }
+.pp__credit a { color: var(--gold-hi); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(236, 212, 154, 0.45); }
 .pp-html .nav { background: rgba(7, 5, 4, 0.9); }
 .pp-html .bag-fab { display: none; }
 

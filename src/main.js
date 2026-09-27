@@ -15,6 +15,7 @@ import { initCursor } from './ui/cursor.js';
 import { Ambient } from './ui/sound.js';
 import { prefersReducedMotion } from './lib/math.js';
 import { loadContent, applyContent } from './cms/content.js';
+import { initConsent } from './ui/consent.js';
 
 gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin);
 ScrollTrigger.config({ ignoreMobileResize: true });
@@ -25,8 +26,19 @@ const FONTS = [
   'italic 300 40px "Cormorant Garamond"', '300 40px "Cormorant Garamond"',
 ];
 
+// The font stylesheet loads without blocking the first paint, so wait for it
+// before asking for the faces: the bottle's painted labels need them.
+const fontSheet = () => {
+  const link = document.querySelector('link[data-fonts]');
+  if (!link || link.sheet) return Promise.resolve();
+  return new Promise((resolve) => {
+    link.addEventListener('load', resolve, { once: true });
+    link.addEventListener('error', resolve, { once: true });
+  });
+};
+
 async function loadFonts() {
-  const all = Promise.all(FONTS.map((f) => document.fonts.load(f, f.includes('Aref') ? 'رضا' : 'RAZA Perfume')));
+  const all = fontSheet().then(() => Promise.all(FONTS.map((f) => document.fonts.load(f, f.includes('Aref') ? 'رضا' : 'RAZA Perfume'))));
   await Promise.race([all, new Promise((r) => setTimeout(r, 6000))]);
 }
 
@@ -165,6 +177,8 @@ async function boot() {
     intro.reveal();
     setTimeout(() => story.intro.play(), 500);
   }
+  // privacy choices, once the opening slide has settled
+  setTimeout(initConsent, skip ? 0 : 2600);
 
   window.__raza = { lenis, stage, director, ScrollTrigger };
 }

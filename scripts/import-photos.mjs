@@ -18,12 +18,13 @@
 // photo, shown with Attar for fragrances that have no attar photo of their own.
 // ("attar" or "perfume" in a file name overrides its folder.)
 //
-// Each becomes a square image in two sizes under public/media/photos/ (tall
-// phone shots sit on a soft blurred copy of themselves, with the phone's
-// watermark strip cropped off), listed in src/shop/photos.json. A fragrance
-// with photos shows them on its card and in quick view (the first photo
-// leads); the rest keep their studio render. Photos whose name isn't in the
-// catalogue are kept and reported, and attach once the spreadsheet lists it.
+// Each becomes a square WebP image in three sizes (plus a JPEG for link
+// previews) under public/media/photos/ (tall phone shots sit on a soft
+// blurred copy of themselves, with the phone's watermark strip cropped off),
+// listed in src/shop/photos.json. A fragrance with photos shows them on its
+// card and in quick view (the first photo leads); the rest show the general
+// photos. Photos whose name isn't in the catalogue are kept and reported, and
+// attach once the spreadsheet lists it.
 import sharp from 'sharp';
 import { existsSync, readdirSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -37,7 +38,10 @@ const FOLDERS = [
   { dir: 'attar image', kind: 'attar' },
 ];
 const out = path.join(root, 'public/media/photos');
-const SIZES = { lg: 1200, sm: 600 };
+// lg: quick view and the product page · sm: cards · xs: thumbnails (bag,
+// quick view strip, toast) · og: the JPEG link previews use (WhatsApp, etc.)
+const SIZES = { lg: [1200, 'webp'], sm: [600, 'webp'], xs: [320, 'webp'], og: [1200, 'jpeg'] };
+const SUFFIX = { lg: '.webp', sm: '-sm.webp', xs: '-xs.webp', og: '.jpg' };
 
 const slug = (s) => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const all = [...PRODUCTS, ...SIGNATURES];
@@ -80,14 +84,17 @@ const parsed = FOLDERS.flatMap(({ dir, kind }) => (existsSync(path.join(root, di
 rmSync(out, { recursive: true, force: true });
 mkdirSync(out, { recursive: true });
 
-async function square(file, size) {
+// The square picture at `size` px, encoded as `format` ('webp' for the site,
+// 'jpeg' for link previews).
+const encode = (img, format) => (format === 'jpeg' ? img.jpeg({ quality: 82, mozjpeg: true }) : img.webp({ quality: 80, effort: 5 })).toBuffer();
+async function square(file, size, format = 'webp') {
   const img = sharp(path.join(root, file)).rotate();
   const { width, height } = await img.metadata();
   const ratio = width / height;
   if (ratio > 0.85 && ratio < 1.18) {
     // already (nearly) square: fit whole, never enlarged
     const s = Math.min(size, Math.max(width, height));
-    return img.resize(s, s, { fit: 'contain', background: '#ffffff' }).jpeg({ quality: 84, mozjpeg: true }).toBuffer();
+    return encode(img.resize(s, s, { fit: 'contain', background: '#ffffff' }), format);
   }
   // tall phone photo: drop the bottom strip (camera watermark), then the whole
   // shot centred on a darkened, blurred copy of itself
@@ -95,7 +102,7 @@ async function square(file, size) {
   const shot = await sharp(path.join(root, file)).rotate().extract(crop).toBuffer();
   const back = await sharp(shot).resize(size, size, { fit: 'cover' }).blur(28).modulate({ brightness: 0.42, saturation: 0.8 }).toBuffer();
   const front = await sharp(shot).resize(size, size, { fit: 'inside' }).toBuffer();
-  return sharp(back).composite([{ input: front, gravity: 'center' }]).jpeg({ quality: 82, mozjpeg: true }).toBuffer();
+  return encode(sharp(back).composite([{ input: front, gravity: 'center' }]), format);
 }
 
 const photos = {};
@@ -121,10 +128,10 @@ for (const { file, name, order, card, kind, general } of parsed.sort(byName)) {
     if (kind) entry.for = kind;
     // a fingerprint in the name: a changed photo gets a new address, so
     // browsers never show last week's cached copy under the same name
-    const bufs = Object.fromEntries(await Promise.all(Object.entries(SIZES).map(async ([key, size]) => [key, await square(file, size)])));
+    const bufs = Object.fromEntries(await Promise.all(Object.entries(SIZES).map(async ([key, [size, format]]) => [key, await square(file, size, format)])));
     const print = createHash('sha1').update(bufs.lg).digest('hex').slice(0, 8);
     for (const [key, buf] of Object.entries(bufs)) {
-      const rel = `media/photos/${p.file || p.id}-${n}-${print}${key === 'sm' ? '-sm' : ''}.jpg`;
+      const rel = `media/photos/${p.file || p.id}-${n}-${print}${SUFFIX[key]}`;
       writeFileSync(path.join(root, 'public', rel), buf);
       bytes += buf.length;
       entry[key] = rel;

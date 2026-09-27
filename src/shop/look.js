@@ -73,9 +73,12 @@ export function photosOf(p, kind = null) {
   return mine.some((ph) => ph.kind !== 'card') ? mine : [...general(p, 'perfume'), ...mine];
 }
 export const hasPhoto = (p, kind = null) => photosOf(p, kind).length > 0;
+// size: 'lg' (large views), 'sm' (cards), 'xs' (thumbnails; photos uploaded
+// in the admin panel have no xs, so they fall back to sm)
 export function imageFor(p, { size = 'sm', index = 0, kind = null } = {}) {
   const photo = photosOf(p, kind)[index];
-  if (photo) return photo.url ? photo[size] : `${base()}${photo[size]}`;
+  const file = photo && (photo[size] || photo.sm || photo.lg);
+  if (file) return photo.url ? file : `${base()}${file}`;
   return `${base()}media/products/${p.id}.webp`;
 }
 

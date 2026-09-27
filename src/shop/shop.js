@@ -89,7 +89,7 @@ function optionsBlock(p) {
     const on = v.id === size.id;
     const n = cart.qtyOf(p.id, v.id);
     const price = v.price != null ? fmt(v.price) : 'price on request';
-    return `<button type="button" role="radio" class="psize${on ? ' is-on' : ''}" aria-checked="${on}" tabindex="${on ? 0 : -1}" data-pick-size="${esc(v.id)}" aria-label="${v.ml} ml, ${price}${n ? `, ${n} in your bag` : ''}">${v.ml}<small>ml</small>${n ? '<i aria-hidden="true"></i>' : ''}</button>`;
+    return `<button type="button" role="radio" class="psize${on ? ' is-on' : ''}" aria-checked="${on}" tabindex="${on ? 0 : -1}" data-pick-size="${esc(v.id)}">${v.ml}<small>ml</small><span class="sr-only">, ${price}${n ? `, ${n} in your bag` : ''}</span>${n ? '<i aria-hidden="true"></i>' : ''}</button>`;
   }).join('')}</div>`;
   return toggle + sizes;
 }
@@ -97,7 +97,7 @@ function optionsBlock(p) {
 const FILMS = {};
 for (const r of REELS) {
   const m = BLOG_MEDIA.reels[r.slug];
-  if (r.product && m) (FILMS[r.product] ||= []).push({ slug: r.slug, title: r.title, video: m.video, poster: m.poster });
+  if (r.product && m) (FILMS[r.product] ||= []).push({ slug: r.slug, title: r.title, video: m.video, poster: m.poster, posterSm: m.posterSm || m.poster });
 }
 const filmsOf = (p) => FILMS[p.id] || [];
 const blogMedia = (f) => `${assetBase()}media/blog/${f}`;
@@ -195,11 +195,13 @@ const heartButton = (p, cls = 'heart') => {
   return `<button class="${cls}${on ? ' is-on' : ''}" type="button" data-save="${esc(p.id)}" aria-pressed="${on}" aria-label="${on ? 'Remove' : 'Save'} ${esc(p.name)} ${on ? 'from' : 'to'} wishlist">${ICON_HEART}</button>`;
 };
 
+// on the card photo; the photo button's label says the same for screen readers
 function stockBadge(p) {
-  if (soldOut(p)) return '<span class="stock stock--out">Sold out</span>';
-  if (lowStock(p)) return `<span class="stock stock--low">Only ${p.stock} left</span>`;
+  if (soldOut(p)) return '<span class="stock stock--out" aria-hidden="true">Sold out</span>';
+  if (lowStock(p)) return `<span class="stock stock--low" aria-hidden="true">Only ${p.stock} left</span>`;
   return '';
 }
+const stockNote = (p) => (soldOut(p) ? ', sold out' : lowStock(p) ? `, only ${p.stock} left` : '');
 
 // the price of what the card has selected (or "Ask price" for that size)
 function priceBlock(p) {
@@ -228,9 +230,9 @@ function buyControl(p) {
 
 function productCard(p, query = '') {
   return `<article class="product${soldOut(p) ? ' is-out' : ''}" data-id="${esc(p.id)}">
-  <button class="product__media" type="button" data-view="${esc(p.id)}" aria-label="Quick view: ${esc(p.name)}">
+  <button class="product__media" type="button" data-view="${esc(p.id)}" aria-label="Quick view: ${esc(p.name)}${stockNote(p)}">
     ${photo(p, 'product__img', { kind: cardKind(p) })}
-    <span class="product__no">No. ${pad(p.number)}</span>
+    <span class="product__no" aria-hidden="true">No. ${pad(p.number)}</span>
     ${stockBadge(p)}
     ${filmsOf(p).length ? '<span class="product__film" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>Film</span>' : ''}
     <span class="product__quick" aria-hidden="true">Quick view</span>
@@ -259,7 +261,7 @@ function describe(p) {
 let toastTimer = null;
 function toast(p, message, { cta = 'View bag', kind = null } = {}) {
   const el = $('[data-toast]');
-  el.innerHTML = `${p ? photo(p, 'toast__img', { eager: true, kind }) : ''}<span class="toast__text">${esc(message)}</span>${cta ? `<span class="toast__cta">${esc(cta)}</span>` : ''}`;
+  el.innerHTML = `${p ? photo(p, 'toast__img', { eager: true, kind, size: 'xs' }) : ''}<span class="toast__text">${esc(message)}</span>${cta ? `<span class="toast__cta">${esc(cta)}</span>` : ''}`;
   markLoaded(el);
   el.classList.add('is-on');
   clearTimeout(toastTimer);
@@ -706,7 +708,7 @@ function initQuickView({ lenis }) {
         + (shot?.general ? `<p class="media-note">${esc(generalNote(kind))}</p>` : '');
     const thumbs = items.map((it, i) => {
       const label = it.film ? `Film: ${it.film.title}` : `Photo ${i + 1}`;
-      const src = it.film ? blogMedia(it.film.poster) : imageFor(p, { index: it.i, kind });
+      const src = it.film ? blogMedia(it.film.posterSm) : imageFor(p, { index: it.i, kind, size: 'xs' });
       return `<button type="button" class="qv__thumb${it.film ? ' is-film' : ''}${i === q.img ? ' is-on' : ''}" data-img="${i}" aria-pressed="${i === q.img}" aria-label="${esc(label)}"><img src="${esc(src)}" alt="" width="60" height="60" /></button>`;
     }).join('');
     media.innerHTML = main + (items.length > 1 ? `<div class="qv__thumbs" role="group" aria-label="Photos and films of ${esc(p.name)}">${thumbs}</div>` : '');
@@ -729,7 +731,7 @@ function initQuickView({ lenis }) {
       const on = v.id === size.id;
       const n = cart.qtyOf(p.id, v.id);
       const price = v.price != null ? fmt(v.price) : 'On request';
-      return `<button type="button" role="radio" class="size${on ? ' is-on' : ''}" aria-checked="${on}" tabindex="${on ? 0 : -1}" data-size="${esc(v.id)}" aria-label="${v.ml} ml, ${price}${n ? `, ${n} in your bag` : ''}"><b>${v.ml} ml</b><span>${price}</span>${n ? `<i class="size__in" aria-hidden="true">${n}</i>` : ''}</button>`;
+      return `<button type="button" role="radio" class="size${on ? ' is-on' : ''}" aria-checked="${on}" tabindex="${on ? 0 : -1}" data-size="${esc(v.id)}"><b>${v.ml} ml</b><span>${price}</span>${n ? `<i class="size__in" aria-hidden="true">${n}</i><span class="sr-only">, ${n} in your bag</span>` : ''}</button>`;
     }).join('');
   }
 
@@ -756,7 +758,7 @@ function initQuickView({ lenis }) {
     relatedWrap.hidden = !picks.length;
     $('[data-qv-related-title]', root).textContent = `More from the ${collectionOf(p).toLowerCase()}`;
     const list = $('[data-qv-related]', root);
-    list.innerHTML = picks.map((x) => `<button type="button" class="qv__rel" data-rel="${esc(x.id)}">${photo(x, 'qv__rel-img', { kind: hasSizes(x) ? pickSize(x, { type: kind }).type : null })}<span>${esc(x.name)}</span></button>`).join('');
+    list.innerHTML = picks.map((x) => `<button type="button" class="qv__rel" data-rel="${esc(x.id)}">${photo(x, 'qv__rel-img', { kind: hasSizes(x) ? pickSize(x, { type: kind }).type : null, size: 'xs' })}<span>${esc(x.name)}</span></button>`).join('');
     markLoaded(list);
   }
 
@@ -991,7 +993,7 @@ function initDrawer({ lenis }) {
       const atMax = cart.qtyOf(id) >= limitFor(id);
       const what = esc(size ? `${p.name}, ${size.label}` : p.name);
       return `<li class="cart__item" data-id="${esc(id)}" data-v="${esc(v ?? '')}">
-        <div class="cart__thumb">${photo(p, 'cart__img', { kind: size?.type ?? null })}</div>
+        <div class="cart__thumb">${photo(p, 'cart__img', { kind: size?.type ?? null, size: 'xs' })}</div>
         <div class="cart__info">
           <p class="cart__name">${esc(p.name)}</p>
           ${size ? `<p class="cart__variant">${esc(size.label)}${unit != null && qty > 1 ? ` <span>· ${fmt(unit)} each</span>` : ''}</p>` : ''}
@@ -1015,6 +1017,9 @@ function initDrawer({ lenis }) {
     badge.textContent = count;
     badge.classList.toggle('has-items', count > 0);
     $('[data-bag-fab-count]').textContent = count;
+    // the badges are hidden from screen readers; the buttons say the count
+    const bagLabel = count ? `Shopping bag, ${count} item${count === 1 ? '' : 's'}` : 'Shopping bag';
+    $$('[data-bag]').forEach((b) => b.setAttribute('aria-label', bagLabel));
     document.documentElement.classList.toggle('has-bag', count > 0);
   }
 
@@ -1069,15 +1074,19 @@ function initDrawer({ lenis }) {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     errorEl.textContent = '';
+    [...form.elements].forEach((el) => el.removeAttribute?.('aria-invalid'));
+    // a bot filled the hidden field: nothing is saved or sent
+    if (form.elements.website?.value) return;
     const customer = {
-      name: form.elements.name.value.trim(),
+      name: form.elements.name.value.trim().replace(/\s+/g, ' '),
       phone: form.elements.phone.value.trim(),
-      city: form.elements.city.value.trim(),
+      city: form.elements.city.value.trim().replace(/\s+/g, ' '),
       note: form.elements.note.value.trim(),
     };
-    if (customer.name.length < 2) return fail('Please enter your name.', 'name');
+    if (customer.name.length < 2 || !/\p{L}/u.test(customer.name)) return fail('Please enter your name.', 'name');
     const digits = customer.phone.replace(/\D/g, '');
-    if (digits.length < 7 || digits.length > 15) return fail('Please enter a valid phone number.', 'phone');
+    if (!/^[+\d\s().-]+$/.test(customer.phone) || digits.length < 7 || digits.length > 15) return fail('Please enter a valid phone number, e.g. +91 98765 43210.', 'phone');
+    if (customer.city && !/\p{L}/u.test(customer.city)) return fail('Please enter a city, or leave it empty.', 'city');
 
     const lines = cart.items.map((i) => (i.v ? { id: i.id, v: i.v, qty: i.qty } : { id: i.id, qty: i.qty }));
     // desktop: open the WhatsApp tab inside the click so it isn't popup-blocked
@@ -1119,7 +1128,9 @@ function initDrawer({ lenis }) {
 
   function fail(message, field) {
     errorEl.textContent = message;
-    if (field) form.elements[field].focus();
+    if (!field) return;
+    form.elements[field].setAttribute('aria-invalid', 'true');
+    form.elements[field].focus();
   }
   function resetButton() {
     submitBtn.disabled = false;

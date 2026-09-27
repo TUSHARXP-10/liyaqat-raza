@@ -4,8 +4,10 @@
       "alt": "212 Sexy Men",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-212-sexy-men-1-679ae6f5.jpg",
-      "sm": "media/photos/regular-212-sexy-men-1-679ae6f5-sm.jpg"
+      "lg": "media/photos/regular-212-sexy-men-1-477ec5de.webp",
+      "sm": "media/photos/regular-212-sexy-men-1-477ec5de-sm.webp",
+      "xs": "media/photos/regular-212-sexy-men-1-477ec5de-xs.webp",
+      "og": "media/photos/regular-212-sexy-men-1-477ec5de.jpg"
     }
   ],
   "premium-9pm": [
@@ -13,15 +15,19 @@
       "alt": "9PM",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/premium-9pm-1-0891512e.jpg",
-      "sm": "media/photos/premium-9pm-1-0891512e-sm.jpg"
+      "lg": "media/photos/premium-9pm-1-4579d9ba.webp",
+      "sm": "media/photos/premium-9pm-1-4579d9ba-sm.webp",
+      "xs": "media/photos/premium-9pm-1-4579d9ba-xs.webp",
+      "og": "media/photos/premium-9pm-1-4579d9ba.jpg"
     },
     {
       "alt": "9PM, photo 2",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/premium-9pm-2-a13e6466.jpg",
-      "sm": "media/photos/premium-9pm-2-a13e6466-sm.jpg"
+      "lg": "media/photos/premium-9pm-2-956ddad9.webp",
+      "sm": "media/photos/premium-9pm-2-956ddad9-sm.webp",
+      "xs": "media/photos/premium-9pm-2-956ddad9-xs.webp",
+      "og": "media/photos/premium-9pm-2-956ddad9.jpg"
     }
   ],
   "luxury-afternoon-swim": [
@@ -29,15 +35,19 @@
       "alt": "Afternoon Swim",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/luxury-afternoon-swim-1-a0e99cd6.jpg",
-      "sm": "media/photos/luxury-afternoon-swim-1-a0e99cd6-sm.jpg"
+      "lg": "media/photos/luxury-afternoon-swim-1-3b91087c.webp",
+      "sm": "media/photos/luxury-afternoon-swim-1-3b91087c-sm.webp",
+      "xs": "media/photos/luxury-afternoon-swim-1-3b91087c-xs.webp",
+      "og": "media/photos/luxury-afternoon-swim-1-3b91087c.jpg"
     },
     {
       "alt": "Afternoon Swim, photo 2",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/luxury-afternoon-swim-2-46906f61.jpg",
-      "sm": "media/photos/luxury-afternoon-swim-2-46906f61-sm.jpg"
+      "lg": "media/photos/luxury-afternoon-swim-2-8c1e59d4.webp",
+      "sm": "media/photos/luxury-afternoon-swim-2-8c1e59d4-sm.webp",
+      "xs": "media/photos/luxury-afternoon-swim-2-8c1e59d4-xs.webp",
+      "og": "media/photos/luxury-afternoon-swim-2-8c1e59d4.jpg"
     }
   ],
   "regular-armani-black": [
@@ -45,8 +55,10 @@
       "alt": "Armani Black",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-armani-black-1-2e113979.jpg",
-      "sm": "media/photos/regular-armani-black-1-2e113979-sm.jpg"
+      "lg": "media/photos/regular-armani-black-1-e682f2a5.webp",
+      "sm": "media/photos/regular-armani-black-1-e682f2a5-sm.webp",
+      "xs": "media/photos/regular-armani-black-1-e682f2a5-xs.webp",
+      "og": "media/photos/regular-armani-black-1-e682f2a5.jpg"
     }
   ],
   "regular-arrow-magnet": [
@@ -54,8 +66,10 @@
       "alt": "Arrow Magnet",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-arrow-magnet-1-046bad7d.jpg",
-      "sm": "media/photos/regular-arrow-magnet-1-046bad7d-sm.jpg"
+      "lg": "media/photos/regular-arrow-magnet-1-39f33e00.webp",
+      "sm": "media/photos/regular-arrow-magnet-1-39f33e00-sm.webp",
+      "xs": "media/photos/regular-arrow-magnet-1-39f33e00-xs.webp",
+      "og": "media/photos/regular-arrow-magnet-1-39f33e00.jpg"
     }
   ],
   "luxury-aurum": [
@@ -63,8 +77,10 @@
       "alt": "Aurum",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/luxury-aurum-1-8b8eb692.jpg",
-      "sm": "media/photos/luxury-aurum-1-8b8eb692-sm.jpg"
+      "lg": "media/photos/luxury-aurum-1-4e47451a.webp",
+      "sm": "media/photos/luxury-aurum-1-4e47451a-sm.webp",
+      "xs": "media/photos/luxury-aurum-1-4e47451a-xs.webp",
+      "og": "media/photos/luxury-aurum-1-4e47451a.jpg"
     }
   ],
   "regular-be-delicious": [
@@ -72,8 +88,10 @@
       "alt": "Be Delicious",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-be-delicious-1-05f22b0a.jpg",
-      "sm": "media/photos/regular-be-delicious-1-05f22b0a-sm.jpg"
+      "lg": "media/photos/regular-be-delicious-1-be545d87.webp",
+      "sm": "media/photos/regular-be-delicious-1-be545d87-sm.webp",
+      "xs": "media/photos/regular-be-delicious-1-be545d87-xs.webp",
+      "og": "media/photos/regular-be-delicious-1-be545d87.jpg"
     }
   ],
   "regular-black-excess": [
@@ -81,8 +99,10 @@
       "alt": "Black Excess",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-black-excess-1-760cc301.jpg",
-      "sm": "media/photos/regular-black-excess-1-760cc301-sm.jpg"
+      "lg": "media/photos/regular-black-excess-1-8b80fa97.webp",
+      "sm": "media/photos/regular-black-excess-1-8b80fa97-sm.webp",
+      "xs": "media/photos/regular-black-excess-1-8b80fa97-xs.webp",
+      "og": "media/photos/regular-black-excess-1-8b80fa97.jpg"
     }
   ],
   "regular-black-london": [
@@ -90,8 +110,10 @@
       "alt": "Black London",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-black-london-1-b1886546.jpg",
-      "sm": "media/photos/regular-black-london-1-b1886546-sm.jpg"
+      "lg": "media/photos/regular-black-london-1-549fe705.webp",
+      "sm": "media/photos/regular-black-london-1-549fe705-sm.webp",
+      "xs": "media/photos/regular-black-london-1-549fe705-xs.webp",
+      "og": "media/photos/regular-black-london-1-549fe705.jpg"
     }
   ],
   "regular-black-orchid": [
@@ -99,8 +121,10 @@
       "alt": "Black Orchid",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-black-orchid-1-4a8c40fa.jpg",
-      "sm": "media/photos/regular-black-orchid-1-4a8c40fa-sm.jpg"
+      "lg": "media/photos/regular-black-orchid-1-b4272c18.webp",
+      "sm": "media/photos/regular-black-orchid-1-b4272c18-sm.webp",
+      "xs": "media/photos/regular-black-orchid-1-b4272c18-xs.webp",
+      "og": "media/photos/regular-black-orchid-1-b4272c18.jpg"
     }
   ],
   "regular-blue-lady": [
@@ -108,15 +132,19 @@
       "alt": "Blue Lady Attar",
       "kind": "photo",
       "for": "attar",
-      "lg": "media/photos/regular-blue-lady-1-4cf69b63.jpg",
-      "sm": "media/photos/regular-blue-lady-1-4cf69b63-sm.jpg"
+      "lg": "media/photos/regular-blue-lady-1-5f3adcdb.webp",
+      "sm": "media/photos/regular-blue-lady-1-5f3adcdb-sm.webp",
+      "xs": "media/photos/regular-blue-lady-1-5f3adcdb-xs.webp",
+      "og": "media/photos/regular-blue-lady-1-5f3adcdb.jpg"
     },
     {
       "alt": "Blue Lady Attar, photo 2",
       "kind": "photo",
       "for": "attar",
-      "lg": "media/photos/regular-blue-lady-2-a7698031.jpg",
-      "sm": "media/photos/regular-blue-lady-2-a7698031-sm.jpg"
+      "lg": "media/photos/regular-blue-lady-2-f0e4e6c6.webp",
+      "sm": "media/photos/regular-blue-lady-2-f0e4e6c6-sm.webp",
+      "xs": "media/photos/regular-blue-lady-2-f0e4e6c6-xs.webp",
+      "og": "media/photos/regular-blue-lady-2-f0e4e6c6.jpg"
     }
   ],
   "regular-bombshell": [
@@ -124,8 +152,10 @@
       "alt": "Bombshell",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-bombshell-1-5a3fc5e2.jpg",
-      "sm": "media/photos/regular-bombshell-1-5a3fc5e2-sm.jpg"
+      "lg": "media/photos/regular-bombshell-1-1c707407.webp",
+      "sm": "media/photos/regular-bombshell-1-1c707407-sm.webp",
+      "xs": "media/photos/regular-bombshell-1-1c707407-xs.webp",
+      "og": "media/photos/regular-bombshell-1-1c707407.jpg"
     }
   ],
   "*perfume": [
@@ -133,43 +163,55 @@
       "alt": "Raza Perfume",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/perfume-1-db7f3264.jpg",
-      "sm": "media/photos/perfume-1-db7f3264-sm.jpg"
+      "lg": "media/photos/perfume-1-5ba139c6.webp",
+      "sm": "media/photos/perfume-1-5ba139c6-sm.webp",
+      "xs": "media/photos/perfume-1-5ba139c6-xs.webp",
+      "og": "media/photos/perfume-1-5ba139c6.jpg"
     },
     {
       "alt": "Raza Perfume, photo 2",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/perfume-2-f07b875f.jpg",
-      "sm": "media/photos/perfume-2-f07b875f-sm.jpg"
+      "lg": "media/photos/perfume-2-f237362e.webp",
+      "sm": "media/photos/perfume-2-f237362e-sm.webp",
+      "xs": "media/photos/perfume-2-f237362e-xs.webp",
+      "og": "media/photos/perfume-2-f237362e.jpg"
     },
     {
       "alt": "Raza Perfume, photo 3",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/perfume-3-2aba6242.jpg",
-      "sm": "media/photos/perfume-3-2aba6242-sm.jpg"
+      "lg": "media/photos/perfume-3-f1792e66.webp",
+      "sm": "media/photos/perfume-3-f1792e66-sm.webp",
+      "xs": "media/photos/perfume-3-f1792e66-xs.webp",
+      "og": "media/photos/perfume-3-f1792e66.jpg"
     },
     {
       "alt": "Raza Perfume, photo 4",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/perfume-4-83292df9.jpg",
-      "sm": "media/photos/perfume-4-83292df9-sm.jpg"
+      "lg": "media/photos/perfume-4-89f79fc2.webp",
+      "sm": "media/photos/perfume-4-89f79fc2-sm.webp",
+      "xs": "media/photos/perfume-4-89f79fc2-xs.webp",
+      "og": "media/photos/perfume-4-89f79fc2.jpg"
     },
     {
       "alt": "Raza Perfume, photo 5",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/perfume-5-6f0c5f3a.jpg",
-      "sm": "media/photos/perfume-5-6f0c5f3a-sm.jpg"
+      "lg": "media/photos/perfume-5-b34c6011.webp",
+      "sm": "media/photos/perfume-5-b34c6011-sm.webp",
+      "xs": "media/photos/perfume-5-b34c6011-xs.webp",
+      "og": "media/photos/perfume-5-b34c6011.jpg"
     },
     {
       "alt": "Raza Perfume, photo 6",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/perfume-6-fcfd682d.jpg",
-      "sm": "media/photos/perfume-6-fcfd682d-sm.jpg"
+      "lg": "media/photos/perfume-6-7a5110cc.webp",
+      "sm": "media/photos/perfume-6-7a5110cc-sm.webp",
+      "xs": "media/photos/perfume-6-7a5110cc-xs.webp",
+      "og": "media/photos/perfume-6-7a5110cc.jpg"
     }
   ],
   "*attar": [
@@ -177,50 +219,64 @@
       "alt": "Raza Attar",
       "kind": "photo",
       "for": "attar",
-      "lg": "media/photos/attar-1-a39e5388.jpg",
-      "sm": "media/photos/attar-1-a39e5388-sm.jpg"
+      "lg": "media/photos/attar-1-75702e6e.webp",
+      "sm": "media/photos/attar-1-75702e6e-sm.webp",
+      "xs": "media/photos/attar-1-75702e6e-xs.webp",
+      "og": "media/photos/attar-1-75702e6e.jpg"
     },
     {
       "alt": "Raza Attar, photo 2",
       "kind": "photo",
       "for": "attar",
-      "lg": "media/photos/attar-2-0546ad70.jpg",
-      "sm": "media/photos/attar-2-0546ad70-sm.jpg"
+      "lg": "media/photos/attar-2-bdde1849.webp",
+      "sm": "media/photos/attar-2-bdde1849-sm.webp",
+      "xs": "media/photos/attar-2-bdde1849-xs.webp",
+      "og": "media/photos/attar-2-bdde1849.jpg"
     },
     {
       "alt": "Raza Attar, photo 3",
       "kind": "photo",
       "for": "attar",
-      "lg": "media/photos/attar-3-8aa8d3df.jpg",
-      "sm": "media/photos/attar-3-8aa8d3df-sm.jpg"
+      "lg": "media/photos/attar-3-d15c0afa.webp",
+      "sm": "media/photos/attar-3-d15c0afa-sm.webp",
+      "xs": "media/photos/attar-3-d15c0afa-xs.webp",
+      "og": "media/photos/attar-3-d15c0afa.jpg"
     },
     {
       "alt": "Raza Attar, photo 4",
       "kind": "photo",
       "for": "attar",
-      "lg": "media/photos/attar-4-8997e217.jpg",
-      "sm": "media/photos/attar-4-8997e217-sm.jpg"
+      "lg": "media/photos/attar-4-80dc2d37.webp",
+      "sm": "media/photos/attar-4-80dc2d37-sm.webp",
+      "xs": "media/photos/attar-4-80dc2d37-xs.webp",
+      "og": "media/photos/attar-4-80dc2d37.jpg"
     },
     {
       "alt": "Raza Attar, photo 5",
       "kind": "photo",
       "for": "attar",
-      "lg": "media/photos/attar-5-c6e88b0f.jpg",
-      "sm": "media/photos/attar-5-c6e88b0f-sm.jpg"
+      "lg": "media/photos/attar-5-91a2f993.webp",
+      "sm": "media/photos/attar-5-91a2f993-sm.webp",
+      "xs": "media/photos/attar-5-91a2f993-xs.webp",
+      "og": "media/photos/attar-5-91a2f993.jpg"
     },
     {
       "alt": "Raza Attar, photo 6",
       "kind": "photo",
       "for": "attar",
-      "lg": "media/photos/attar-6-59eb8ab9.jpg",
-      "sm": "media/photos/attar-6-59eb8ab9-sm.jpg"
+      "lg": "media/photos/attar-6-5a8c7f7e.webp",
+      "sm": "media/photos/attar-6-5a8c7f7e-sm.webp",
+      "xs": "media/photos/attar-6-5a8c7f7e-xs.webp",
+      "og": "media/photos/attar-6-5a8c7f7e.jpg"
     },
     {
       "alt": "Raza Attar, photo 7",
       "kind": "photo",
       "for": "attar",
-      "lg": "media/photos/attar-7-42e5a82a.jpg",
-      "sm": "media/photos/attar-7-42e5a82a-sm.jpg"
+      "lg": "media/photos/attar-7-dc17cd61.webp",
+      "sm": "media/photos/attar-7-dc17cd61-sm.webp",
+      "xs": "media/photos/attar-7-dc17cd61-xs.webp",
+      "og": "media/photos/attar-7-dc17cd61.jpg"
     }
   ],
   "regular-bvlgari-black": [
@@ -228,8 +284,10 @@
       "alt": "Bvlgari Black",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-bvlgari-black-1-3106531e.jpg",
-      "sm": "media/photos/regular-bvlgari-black-1-3106531e-sm.jpg"
+      "lg": "media/photos/regular-bvlgari-black-1-d7d3f666.webp",
+      "sm": "media/photos/regular-bvlgari-black-1-d7d3f666-sm.webp",
+      "xs": "media/photos/regular-bvlgari-black-1-d7d3f666-xs.webp",
+      "og": "media/photos/regular-bvlgari-black-1-d7d3f666.jpg"
     }
   ],
   "regular-charlie": [
@@ -237,8 +295,10 @@
       "alt": "Charlie",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-charlie-1-2f1893b2.jpg",
-      "sm": "media/photos/regular-charlie-1-2f1893b2-sm.jpg"
+      "lg": "media/photos/regular-charlie-1-dffe724d.webp",
+      "sm": "media/photos/regular-charlie-1-dffe724d-sm.webp",
+      "xs": "media/photos/regular-charlie-1-dffe724d-xs.webp",
+      "og": "media/photos/regular-charlie-1-dffe724d.jpg"
     }
   ],
   "regular-ck-one": [
@@ -246,8 +306,10 @@
       "alt": "CK One",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-ck-one-1-8d2b2052.jpg",
-      "sm": "media/photos/regular-ck-one-1-8d2b2052-sm.jpg"
+      "lg": "media/photos/regular-ck-one-1-dfc26239.webp",
+      "sm": "media/photos/regular-ck-one-1-dfc26239-sm.webp",
+      "xs": "media/photos/regular-ck-one-1-dfc26239-xs.webp",
+      "og": "media/photos/regular-ck-one-1-dfc26239.jpg"
     }
   ],
   "regular-cool-girl": [
@@ -255,8 +317,10 @@
       "alt": "Cool Girl",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-cool-girl-1-cfa1a807.jpg",
-      "sm": "media/photos/regular-cool-girl-1-cfa1a807-sm.jpg"
+      "lg": "media/photos/regular-cool-girl-1-871d8f29.webp",
+      "sm": "media/photos/regular-cool-girl-1-871d8f29-sm.webp",
+      "xs": "media/photos/regular-cool-girl-1-871d8f29-xs.webp",
+      "og": "media/photos/regular-cool-girl-1-871d8f29.jpg"
     }
   ],
   "regular-cool-water": [
@@ -264,8 +328,10 @@
       "alt": "Cool Water",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-cool-water-1-a7fd3b8a.jpg",
-      "sm": "media/photos/regular-cool-water-1-a7fd3b8a-sm.jpg"
+      "lg": "media/photos/regular-cool-water-1-a8ad4c4e.webp",
+      "sm": "media/photos/regular-cool-water-1-a8ad4c4e-sm.webp",
+      "xs": "media/photos/regular-cool-water-1-a8ad4c4e-xs.webp",
+      "og": "media/photos/regular-cool-water-1-a8ad4c4e.jpg"
     }
   ],
   "regular-cr7": [
@@ -273,8 +339,10 @@
       "alt": "CR7",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-cr7-1-1210a46d.jpg",
-      "sm": "media/photos/regular-cr7-1-1210a46d-sm.jpg"
+      "lg": "media/photos/regular-cr7-1-361dc39a.webp",
+      "sm": "media/photos/regular-cr7-1-361dc39a-sm.webp",
+      "xs": "media/photos/regular-cr7-1-361dc39a-xs.webp",
+      "og": "media/photos/regular-cr7-1-361dc39a.jpg"
     }
   ],
   "regular-creed-aventus": [
@@ -282,8 +350,10 @@
       "alt": "Creed Aventus",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-creed-aventus-1-8258b099.jpg",
-      "sm": "media/photos/regular-creed-aventus-1-8258b099-sm.jpg"
+      "lg": "media/photos/regular-creed-aventus-1-330e7d28.webp",
+      "sm": "media/photos/regular-creed-aventus-1-330e7d28-sm.webp",
+      "xs": "media/photos/regular-creed-aventus-1-330e7d28-xs.webp",
+      "og": "media/photos/regular-creed-aventus-1-330e7d28.jpg"
     }
   ],
   "regular-creed-men": [
@@ -291,8 +361,10 @@
       "alt": "Creed Men Attar",
       "kind": "photo",
       "for": "attar",
-      "lg": "media/photos/regular-creed-men-1-0a3f46a4.jpg",
-      "sm": "media/photos/regular-creed-men-1-0a3f46a4-sm.jpg"
+      "lg": "media/photos/regular-creed-men-1-2ff82bcb.webp",
+      "sm": "media/photos/regular-creed-men-1-2ff82bcb-sm.webp",
+      "xs": "media/photos/regular-creed-men-1-2ff82bcb-xs.webp",
+      "og": "media/photos/regular-creed-men-1-2ff82bcb.jpg"
     }
   ],
   "regular-desire": [
@@ -300,8 +372,10 @@
       "alt": "Desire",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-desire-1-431b2646.jpg",
-      "sm": "media/photos/regular-desire-1-431b2646-sm.jpg"
+      "lg": "media/photos/regular-desire-1-05bae1b7.webp",
+      "sm": "media/photos/regular-desire-1-05bae1b7-sm.webp",
+      "xs": "media/photos/regular-desire-1-05bae1b7-xs.webp",
+      "og": "media/photos/regular-desire-1-05bae1b7.jpg"
     }
   ],
   "regular-dior-sauvage": [
@@ -309,8 +383,10 @@
       "alt": "Dior Sauvage",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-dior-sauvage-1-e9105288.jpg",
-      "sm": "media/photos/regular-dior-sauvage-1-e9105288-sm.jpg"
+      "lg": "media/photos/regular-dior-sauvage-1-be99c96f.webp",
+      "sm": "media/photos/regular-dior-sauvage-1-be99c96f-sm.webp",
+      "xs": "media/photos/regular-dior-sauvage-1-be99c96f-xs.webp",
+      "og": "media/photos/regular-dior-sauvage-1-be99c96f.jpg"
     }
   ],
   "premium-dubai-chocolate": [
@@ -318,15 +394,19 @@
       "alt": "Dubai Chocolate",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/premium-dubai-chocolate-1-0d46e5d9.jpg",
-      "sm": "media/photos/premium-dubai-chocolate-1-0d46e5d9-sm.jpg"
+      "lg": "media/photos/premium-dubai-chocolate-1-402e162f.webp",
+      "sm": "media/photos/premium-dubai-chocolate-1-402e162f-sm.webp",
+      "xs": "media/photos/premium-dubai-chocolate-1-402e162f-xs.webp",
+      "og": "media/photos/premium-dubai-chocolate-1-402e162f.jpg"
     },
     {
       "alt": "Dubai Chocolate, photo 2",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/premium-dubai-chocolate-2-cb511533.jpg",
-      "sm": "media/photos/premium-dubai-chocolate-2-cb511533-sm.jpg"
+      "lg": "media/photos/premium-dubai-chocolate-2-51ed1423.webp",
+      "sm": "media/photos/premium-dubai-chocolate-2-51ed1423-sm.webp",
+      "xs": "media/photos/premium-dubai-chocolate-2-51ed1423-xs.webp",
+      "og": "media/photos/premium-dubai-chocolate-2-51ed1423.jpg"
     }
   ],
   "luxury-el-roja-amber-ex": [
@@ -334,8 +414,10 @@
       "alt": "El Roja Amber Ex",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/luxury-el-roja-amber-ex-1-b5b3fcdf.jpg",
-      "sm": "media/photos/luxury-el-roja-amber-ex-1-b5b3fcdf-sm.jpg"
+      "lg": "media/photos/luxury-el-roja-amber-ex-1-8845fbfd.webp",
+      "sm": "media/photos/luxury-el-roja-amber-ex-1-8845fbfd-sm.webp",
+      "xs": "media/photos/luxury-el-roja-amber-ex-1-8845fbfd-xs.webp",
+      "og": "media/photos/luxury-el-roja-amber-ex-1-8845fbfd.jpg"
     }
   ],
   "luxury-greatness-of-oud": [
@@ -343,8 +425,10 @@
       "alt": "Greatness of Oud",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/luxury-greatness-of-oud-1-6c6e3d4c.jpg",
-      "sm": "media/photos/luxury-greatness-of-oud-1-6c6e3d4c-sm.jpg"
+      "lg": "media/photos/luxury-greatness-of-oud-1-9d3ce1b9.webp",
+      "sm": "media/photos/luxury-greatness-of-oud-1-9d3ce1b9-sm.webp",
+      "xs": "media/photos/luxury-greatness-of-oud-1-9d3ce1b9-xs.webp",
+      "og": "media/photos/luxury-greatness-of-oud-1-9d3ce1b9.jpg"
     }
   ],
   "luxury-green-ajmeri": [
@@ -352,8 +436,10 @@
       "alt": "Green Ajmeri",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/luxury-green-ajmeri-1-15727b01.jpg",
-      "sm": "media/photos/luxury-green-ajmeri-1-15727b01-sm.jpg"
+      "lg": "media/photos/luxury-green-ajmeri-1-ca5745e8.webp",
+      "sm": "media/photos/luxury-green-ajmeri-1-ca5745e8-sm.webp",
+      "xs": "media/photos/luxury-green-ajmeri-1-ca5745e8-xs.webp",
+      "og": "media/photos/luxury-green-ajmeri-1-ca5745e8.jpg"
     }
   ],
   "regular-gucci-bamboo": [
@@ -361,8 +447,10 @@
       "alt": "Gucci Bamboo",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-gucci-bamboo-1-d85eec20.jpg",
-      "sm": "media/photos/regular-gucci-bamboo-1-d85eec20-sm.jpg"
+      "lg": "media/photos/regular-gucci-bamboo-1-13f1791a.webp",
+      "sm": "media/photos/regular-gucci-bamboo-1-13f1791a-sm.webp",
+      "xs": "media/photos/regular-gucci-bamboo-1-13f1791a-xs.webp",
+      "og": "media/photos/regular-gucci-bamboo-1-13f1791a.jpg"
     }
   ],
   "luxury-gucci-oud": [
@@ -370,14 +458,18 @@
       "alt": "Gucci Oud",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/luxury-gucci-oud-1-e0531130.jpg",
-      "sm": "media/photos/luxury-gucci-oud-1-e0531130-sm.jpg"
+      "lg": "media/photos/luxury-gucci-oud-1-cd54151c.webp",
+      "sm": "media/photos/luxury-gucci-oud-1-cd54151c-sm.webp",
+      "xs": "media/photos/luxury-gucci-oud-1-cd54151c-xs.webp",
+      "og": "media/photos/luxury-gucci-oud-1-cd54151c.jpg"
     },
     {
       "alt": "Gucci Oud, photo 2",
       "kind": "card",
-      "lg": "media/photos/luxury-gucci-oud-2-27010cc0.jpg",
-      "sm": "media/photos/luxury-gucci-oud-2-27010cc0-sm.jpg"
+      "lg": "media/photos/luxury-gucci-oud-2-42366d1a.webp",
+      "sm": "media/photos/luxury-gucci-oud-2-42366d1a-sm.webp",
+      "xs": "media/photos/luxury-gucci-oud-2-42366d1a-xs.webp",
+      "og": "media/photos/luxury-gucci-oud-2-42366d1a.jpg"
     }
   ],
   "regular-helmenton-green": [
@@ -385,8 +477,10 @@
       "alt": "Helmenton Green",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-helmenton-green-1-40b32dee.jpg",
-      "sm": "media/photos/regular-helmenton-green-1-40b32dee-sm.jpg"
+      "lg": "media/photos/regular-helmenton-green-1-c21fae79.webp",
+      "sm": "media/photos/regular-helmenton-green-1-c21fae79-sm.webp",
+      "xs": "media/photos/regular-helmenton-green-1-c21fae79-xs.webp",
+      "og": "media/photos/regular-helmenton-green-1-c21fae79.jpg"
     }
   ],
   "regular-hugo-boss": [
@@ -394,8 +488,10 @@
       "alt": "Hugo Boss",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-hugo-boss-1-747f7b21.jpg",
-      "sm": "media/photos/regular-hugo-boss-1-747f7b21-sm.jpg"
+      "lg": "media/photos/regular-hugo-boss-1-657688ab.webp",
+      "sm": "media/photos/regular-hugo-boss-1-657688ab-sm.webp",
+      "xs": "media/photos/regular-hugo-boss-1-657688ab-xs.webp",
+      "og": "media/photos/regular-hugo-boss-1-657688ab.jpg"
     }
   ],
   "regular-invictus": [
@@ -403,8 +499,10 @@
       "alt": "Invictus",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-invictus-1-dbd98a0a.jpg",
-      "sm": "media/photos/regular-invictus-1-dbd98a0a-sm.jpg"
+      "lg": "media/photos/regular-invictus-1-abedc7ed.webp",
+      "sm": "media/photos/regular-invictus-1-abedc7ed-sm.webp",
+      "xs": "media/photos/regular-invictus-1-abedc7ed-xs.webp",
+      "og": "media/photos/regular-invictus-1-abedc7ed.jpg"
     }
   ],
   "regular-jaguar-black": [
@@ -412,8 +510,10 @@
       "alt": "Jaguar Black",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-jaguar-black-1-d640f136.jpg",
-      "sm": "media/photos/regular-jaguar-black-1-d640f136-sm.jpg"
+      "lg": "media/photos/regular-jaguar-black-1-caa6b85e.webp",
+      "sm": "media/photos/regular-jaguar-black-1-caa6b85e-sm.webp",
+      "xs": "media/photos/regular-jaguar-black-1-caa6b85e-xs.webp",
+      "og": "media/photos/regular-jaguar-black-1-caa6b85e.jpg"
     }
   ],
   "regular-lacoste-white": [
@@ -421,8 +521,10 @@
       "alt": "Lacoste White",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-lacoste-white-1-75bb5a33.jpg",
-      "sm": "media/photos/regular-lacoste-white-1-75bb5a33-sm.jpg"
+      "lg": "media/photos/regular-lacoste-white-1-29859c91.webp",
+      "sm": "media/photos/regular-lacoste-white-1-29859c91-sm.webp",
+      "xs": "media/photos/regular-lacoste-white-1-29859c91-xs.webp",
+      "og": "media/photos/regular-lacoste-white-1-29859c91.jpg"
     }
   ],
   "regular-lomani-code": [
@@ -430,15 +532,19 @@
       "alt": "Lomani Code",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-lomani-code-1-b1cad552.jpg",
-      "sm": "media/photos/regular-lomani-code-1-b1cad552-sm.jpg"
+      "lg": "media/photos/regular-lomani-code-1-482e8473.webp",
+      "sm": "media/photos/regular-lomani-code-1-482e8473-sm.webp",
+      "xs": "media/photos/regular-lomani-code-1-482e8473-xs.webp",
+      "og": "media/photos/regular-lomani-code-1-482e8473.jpg"
     },
     {
       "alt": "Lomani Code, photo 2",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-lomani-code-2-eece7198.jpg",
-      "sm": "media/photos/regular-lomani-code-2-eece7198-sm.jpg"
+      "lg": "media/photos/regular-lomani-code-2-54796789.webp",
+      "sm": "media/photos/regular-lomani-code-2-54796789-sm.webp",
+      "xs": "media/photos/regular-lomani-code-2-54796789-xs.webp",
+      "og": "media/photos/regular-lomani-code-2-54796789.jpg"
     }
   ],
   "luxury-lv-imagination": [
@@ -446,22 +552,28 @@
       "alt": "LV Imagination",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/luxury-lv-imagination-1-f964fcad.jpg",
-      "sm": "media/photos/luxury-lv-imagination-1-f964fcad-sm.jpg"
+      "lg": "media/photos/luxury-lv-imagination-1-e4e2fc97.webp",
+      "sm": "media/photos/luxury-lv-imagination-1-e4e2fc97-sm.webp",
+      "xs": "media/photos/luxury-lv-imagination-1-e4e2fc97-xs.webp",
+      "og": "media/photos/luxury-lv-imagination-1-e4e2fc97.jpg"
     },
     {
       "alt": "LV Imagination, photo 2",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/luxury-lv-imagination-2-4ef3725c.jpg",
-      "sm": "media/photos/luxury-lv-imagination-2-4ef3725c-sm.jpg"
+      "lg": "media/photos/luxury-lv-imagination-2-c298109c.webp",
+      "sm": "media/photos/luxury-lv-imagination-2-c298109c-sm.webp",
+      "xs": "media/photos/luxury-lv-imagination-2-c298109c-xs.webp",
+      "og": "media/photos/luxury-lv-imagination-2-c298109c.jpg"
     },
     {
       "alt": "LV Imagination, photo 3",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/luxury-lv-imagination-3-23376616.jpg",
-      "sm": "media/photos/luxury-lv-imagination-3-23376616-sm.jpg"
+      "lg": "media/photos/luxury-lv-imagination-3-01d306d0.webp",
+      "sm": "media/photos/luxury-lv-imagination-3-01d306d0-sm.webp",
+      "xs": "media/photos/luxury-lv-imagination-3-01d306d0-xs.webp",
+      "og": "media/photos/luxury-lv-imagination-3-01d306d0.jpg"
     }
   ],
   "regular-m-ponds": [
@@ -469,8 +581,10 @@
       "alt": "M. Ponds",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-m-ponds-1-ab5fdaa1.jpg",
-      "sm": "media/photos/regular-m-ponds-1-ab5fdaa1-sm.jpg"
+      "lg": "media/photos/regular-m-ponds-1-dc2ea8b7.webp",
+      "sm": "media/photos/regular-m-ponds-1-dc2ea8b7-sm.webp",
+      "xs": "media/photos/regular-m-ponds-1-dc2ea8b7-xs.webp",
+      "og": "media/photos/regular-m-ponds-1-dc2ea8b7.jpg"
     }
   ],
   "regular-mont-blanc-legend": [
@@ -478,8 +592,10 @@
       "alt": "Mont Blanc Legend",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-mont-blanc-legend-1-0b93f777.jpg",
-      "sm": "media/photos/regular-mont-blanc-legend-1-0b93f777-sm.jpg"
+      "lg": "media/photos/regular-mont-blanc-legend-1-2712c574.webp",
+      "sm": "media/photos/regular-mont-blanc-legend-1-2712c574-sm.webp",
+      "xs": "media/photos/regular-mont-blanc-legend-1-2712c574-xs.webp",
+      "og": "media/photos/regular-mont-blanc-legend-1-2712c574.jpg"
     }
   ],
   "regular-polo-red": [
@@ -487,8 +603,10 @@
       "alt": "Polo Red",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-polo-red-1-e7ff0093.jpg",
-      "sm": "media/photos/regular-polo-red-1-e7ff0093-sm.jpg"
+      "lg": "media/photos/regular-polo-red-1-57ec5628.webp",
+      "sm": "media/photos/regular-polo-red-1-57ec5628-sm.webp",
+      "xs": "media/photos/regular-polo-red-1-57ec5628-xs.webp",
+      "og": "media/photos/regular-polo-red-1-57ec5628.jpg"
     }
   ],
   "regular-polo-sport": [
@@ -496,8 +614,10 @@
       "alt": "Polo Sport",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-polo-sport-1-5a1d8d7f.jpg",
-      "sm": "media/photos/regular-polo-sport-1-5a1d8d7f-sm.jpg"
+      "lg": "media/photos/regular-polo-sport-1-73d6f824.webp",
+      "sm": "media/photos/regular-polo-sport-1-73d6f824-sm.webp",
+      "xs": "media/photos/regular-polo-sport-1-73d6f824-xs.webp",
+      "og": "media/photos/regular-polo-sport-1-73d6f824.jpg"
     }
   ],
   "luxury-rasasi-hawas": [
@@ -505,8 +625,10 @@
       "alt": "Rasasi Hawas",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/luxury-rasasi-hawas-1-91f989ee.jpg",
-      "sm": "media/photos/luxury-rasasi-hawas-1-91f989ee-sm.jpg"
+      "lg": "media/photos/luxury-rasasi-hawas-1-ae0ba550.webp",
+      "sm": "media/photos/luxury-rasasi-hawas-1-ae0ba550-sm.webp",
+      "xs": "media/photos/luxury-rasasi-hawas-1-ae0ba550-xs.webp",
+      "og": "media/photos/luxury-rasasi-hawas-1-ae0ba550.jpg"
     }
   ],
   "luxury-rasasi-hawas-black": [
@@ -514,15 +636,19 @@
       "alt": "Rasasi Hawas Black",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/luxury-rasasi-hawas-black-1-1a736e8a.jpg",
-      "sm": "media/photos/luxury-rasasi-hawas-black-1-1a736e8a-sm.jpg"
+      "lg": "media/photos/luxury-rasasi-hawas-black-1-8e3de0d5.webp",
+      "sm": "media/photos/luxury-rasasi-hawas-black-1-8e3de0d5-sm.webp",
+      "xs": "media/photos/luxury-rasasi-hawas-black-1-8e3de0d5-xs.webp",
+      "og": "media/photos/luxury-rasasi-hawas-black-1-8e3de0d5.jpg"
     },
     {
       "alt": "Rasasi Hawas Black, photo 2",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/luxury-rasasi-hawas-black-2-8ad7e777.jpg",
-      "sm": "media/photos/luxury-rasasi-hawas-black-2-8ad7e777-sm.jpg"
+      "lg": "media/photos/luxury-rasasi-hawas-black-2-9533d6c7.webp",
+      "sm": "media/photos/luxury-rasasi-hawas-black-2-9533d6c7-sm.webp",
+      "xs": "media/photos/luxury-rasasi-hawas-black-2-9533d6c7-xs.webp",
+      "og": "media/photos/luxury-rasasi-hawas-black-2-9533d6c7.jpg"
     }
   ],
   "luxury-rasasi-hawas-ice": [
@@ -530,15 +656,19 @@
       "alt": "Rasasi Hawas Ice",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/luxury-rasasi-hawas-ice-1-5fc83417.jpg",
-      "sm": "media/photos/luxury-rasasi-hawas-ice-1-5fc83417-sm.jpg"
+      "lg": "media/photos/luxury-rasasi-hawas-ice-1-abb81e56.webp",
+      "sm": "media/photos/luxury-rasasi-hawas-ice-1-abb81e56-sm.webp",
+      "xs": "media/photos/luxury-rasasi-hawas-ice-1-abb81e56-xs.webp",
+      "og": "media/photos/luxury-rasasi-hawas-ice-1-abb81e56.jpg"
     },
     {
       "alt": "Rasasi Hawas Ice, photo 2",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/luxury-rasasi-hawas-ice-2-30c5fa4a.jpg",
-      "sm": "media/photos/luxury-rasasi-hawas-ice-2-30c5fa4a-sm.jpg"
+      "lg": "media/photos/luxury-rasasi-hawas-ice-2-776cd345.webp",
+      "sm": "media/photos/luxury-rasasi-hawas-ice-2-776cd345-sm.webp",
+      "xs": "media/photos/luxury-rasasi-hawas-ice-2-776cd345-xs.webp",
+      "og": "media/photos/luxury-rasasi-hawas-ice-2-776cd345.jpg"
     }
   ],
   "regular-rasasi-royal-blue": [
@@ -546,8 +676,10 @@
       "alt": "Rasasi Royal Blue",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-rasasi-royal-blue-1-5eeb58ee.jpg",
-      "sm": "media/photos/regular-rasasi-royal-blue-1-5eeb58ee-sm.jpg"
+      "lg": "media/photos/regular-rasasi-royal-blue-1-e02bd9ab.webp",
+      "sm": "media/photos/regular-rasasi-royal-blue-1-e02bd9ab-sm.webp",
+      "xs": "media/photos/regular-rasasi-royal-blue-1-e02bd9ab-xs.webp",
+      "og": "media/photos/regular-rasasi-royal-blue-1-e02bd9ab.jpg"
     }
   ],
   "regular-silver-scent": [
@@ -555,8 +687,10 @@
       "alt": "Silver Scent",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-silver-scent-1-9efb9680.jpg",
-      "sm": "media/photos/regular-silver-scent-1-9efb9680-sm.jpg"
+      "lg": "media/photos/regular-silver-scent-1-ca9cc4d2.webp",
+      "sm": "media/photos/regular-silver-scent-1-ca9cc4d2-sm.webp",
+      "xs": "media/photos/regular-silver-scent-1-ca9cc4d2-xs.webp",
+      "og": "media/photos/regular-silver-scent-1-ca9cc4d2.jpg"
     }
   ],
   "premium-titan-skinn-raw": [
@@ -564,14 +698,18 @@
       "alt": "Titan Skinn Raw",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/premium-titan-skinn-raw-1-44d23003.jpg",
-      "sm": "media/photos/premium-titan-skinn-raw-1-44d23003-sm.jpg"
+      "lg": "media/photos/premium-titan-skinn-raw-1-b09c4ea8.webp",
+      "sm": "media/photos/premium-titan-skinn-raw-1-b09c4ea8-sm.webp",
+      "xs": "media/photos/premium-titan-skinn-raw-1-b09c4ea8-xs.webp",
+      "og": "media/photos/premium-titan-skinn-raw-1-b09c4ea8.jpg"
     },
     {
       "alt": "Titan Skinn Raw, photo 2",
       "kind": "card",
-      "lg": "media/photos/premium-titan-skinn-raw-2-c80fe0f2.jpg",
-      "sm": "media/photos/premium-titan-skinn-raw-2-c80fe0f2-sm.jpg"
+      "lg": "media/photos/premium-titan-skinn-raw-2-8693dc5a.webp",
+      "sm": "media/photos/premium-titan-skinn-raw-2-8693dc5a-sm.webp",
+      "xs": "media/photos/premium-titan-skinn-raw-2-8693dc5a-xs.webp",
+      "og": "media/photos/premium-titan-skinn-raw-2-8693dc5a.jpg"
     }
   ],
   "regular-tommy-girl": [
@@ -579,8 +717,10 @@
       "alt": "Tommy Girl",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-tommy-girl-1-35ab6bda.jpg",
-      "sm": "media/photos/regular-tommy-girl-1-35ab6bda-sm.jpg"
+      "lg": "media/photos/regular-tommy-girl-1-d666e5fc.webp",
+      "sm": "media/photos/regular-tommy-girl-1-d666e5fc-sm.webp",
+      "xs": "media/photos/regular-tommy-girl-1-d666e5fc-xs.webp",
+      "og": "media/photos/regular-tommy-girl-1-d666e5fc.jpg"
     }
   ],
   "regular-versace": [
@@ -588,8 +728,10 @@
       "alt": "Versace",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-versace-1-f1da47d0.jpg",
-      "sm": "media/photos/regular-versace-1-f1da47d0-sm.jpg"
+      "lg": "media/photos/regular-versace-1-07f515bd.webp",
+      "sm": "media/photos/regular-versace-1-07f515bd-sm.webp",
+      "xs": "media/photos/regular-versace-1-07f515bd-xs.webp",
+      "og": "media/photos/regular-versace-1-07f515bd.jpg"
     }
   ],
   "regular-versace-eros": [
@@ -597,8 +739,10 @@
       "alt": "Versace Eros",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-versace-eros-1-09cd89e3.jpg",
-      "sm": "media/photos/regular-versace-eros-1-09cd89e3-sm.jpg"
+      "lg": "media/photos/regular-versace-eros-1-f113bc42.webp",
+      "sm": "media/photos/regular-versace-eros-1-f113bc42-sm.webp",
+      "xs": "media/photos/regular-versace-eros-1-f113bc42-xs.webp",
+      "og": "media/photos/regular-versace-eros-1-f113bc42.jpg"
     }
   ],
   "regular-white-london": [
@@ -606,8 +750,10 @@
       "alt": "White London",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-white-london-1-5051fae9.jpg",
-      "sm": "media/photos/regular-white-london-1-5051fae9-sm.jpg"
+      "lg": "media/photos/regular-white-london-1-a78d57ad.webp",
+      "sm": "media/photos/regular-white-london-1-a78d57ad-sm.webp",
+      "xs": "media/photos/regular-white-london-1-a78d57ad-xs.webp",
+      "og": "media/photos/regular-white-london-1-a78d57ad.jpg"
     }
   ],
   "regular-white-oud": [
@@ -615,15 +761,19 @@
       "alt": "White Oud",
       "kind": "photo",
       "for": "perfume",
-      "lg": "media/photos/regular-white-oud-1-3ef7dec6.jpg",
-      "sm": "media/photos/regular-white-oud-1-3ef7dec6-sm.jpg"
+      "lg": "media/photos/regular-white-oud-1-3f8e7b8e.webp",
+      "sm": "media/photos/regular-white-oud-1-3f8e7b8e-sm.webp",
+      "xs": "media/photos/regular-white-oud-1-3f8e7b8e-xs.webp",
+      "og": "media/photos/regular-white-oud-1-3f8e7b8e.jpg"
     },
     {
       "alt": "White Oud Attar, photo 2",
       "kind": "photo",
       "for": "attar",
-      "lg": "media/photos/regular-white-oud-2-aaa9554d.jpg",
-      "sm": "media/photos/regular-white-oud-2-aaa9554d-sm.jpg"
+      "lg": "media/photos/regular-white-oud-2-d03ea3ae.webp",
+      "sm": "media/photos/regular-white-oud-2-d03ea3ae-sm.webp",
+      "xs": "media/photos/regular-white-oud-2-d03ea3ae-xs.webp",
+      "og": "media/photos/regular-white-oud-2-d03ea3ae.jpg"
     }
   ]
 }

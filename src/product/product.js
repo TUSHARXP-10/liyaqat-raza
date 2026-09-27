@@ -9,6 +9,7 @@ import { loadContent, applyContent, cms } from '../cms/content.js';
 import { REELS } from '../blog/reels.js';
 import MEDIA from '../blog/media.json' with { type: 'json' };
 import { initCursor } from '../ui/cursor.js';
+import { initConsent } from '../ui/consent.js';
 import { SHOP } from '../content.js';
 
 // A page per fragrance: /p/<id>. Gallery (photos + films), the Perfume /
@@ -43,6 +44,7 @@ if (liveRows?.length) {
 applyContent();
 initBag();
 initCursor();
+initConsent();
 
 const p = catalog.resolve(wanted);
 if (!p || p.active === false) notFound();
@@ -54,7 +56,7 @@ function notFound() {
 }
 
 function films(prod) {
-  const list = REELS.filter((r) => r.product === prod.id && MEDIA.reels[r.slug]).map((r) => ({ slug: r.slug, title: r.title, video: blogFile(MEDIA.reels[r.slug].video), poster: blogFile(MEDIA.reels[r.slug].poster) }));
+  const list = REELS.filter((r) => r.product === prod.id && MEDIA.reels[r.slug]).map((r) => ({ slug: r.slug, title: r.title, video: blogFile(MEDIA.reels[r.slug].video), poster: blogFile(MEDIA.reels[r.slug].poster), posterSm: blogFile(MEDIA.reels[r.slug].posterSm || MEDIA.reels[r.slug].poster) }));
   for (const row of filmRows || []) {
     const i = list.findIndex((f) => f.slug === row.slug);
     if (row.product_id !== prod.id || !row.active) {
@@ -81,9 +83,9 @@ function render(prod) {
     const photos = photosOf(prod, kind);
     return [
       ...(photos.length
-        ? photos.map((ph, i) => ({ src: imageFor(prod, { size: 'lg', index: i, kind }), thumb: imageFor(prod, { index: i, kind }), alt: ph.alt || prod.name, card: ph.kind === 'card', note: ph.general ? generalNote(kind) : '' }))
+        ? photos.map((ph, i) => ({ src: imageFor(prod, { size: 'lg', index: i, kind }), thumb: imageFor(prod, { index: i, kind, size: 'xs' }), alt: ph.alt || prod.name, card: ph.kind === 'card', note: ph.general ? generalNote(kind) : '' }))
         : [{ src: imageFor(prod, { size: 'lg', kind }), thumb: imageFor(prod, { kind }), alt: prod.name, render: true }]),
-      ...reels.map((f) => ({ film: f, thumb: f.poster, alt: f.title })),
+      ...reels.map((f) => ({ film: f, thumb: f.posterSm || f.poster, alt: f.title })),
     ];
   };
   let shownKind = size()?.type ?? null;
@@ -189,7 +191,7 @@ function render(prod) {
         const on = v.id === s.id;
         const n = cart.qtyOf(prod.id, v.id);
         const price = v.price != null ? fmt(v.price) : 'On request';
-        return `<button type="button" role="radio" class="size${on ? ' is-on' : ''}" aria-checked="${on}" tabindex="${on ? 0 : -1}" data-size="${esc(v.id)}" aria-label="${v.ml} ml, ${price}${n ? `, ${n} in your bag` : ''}"><b>${v.ml} ml</b><span>${price}</span>${n ? `<i class="size__in" aria-hidden="true">${n}</i>` : ''}</button>`;
+        return `<button type="button" role="radio" class="size${on ? ' is-on' : ''}" aria-checked="${on}" tabindex="${on ? 0 : -1}" data-size="${esc(v.id)}"><b>${v.ml} ml</b><span>${price}</span>${n ? `<i class="size__in" aria-hidden="true">${n}</i><span class="sr-only">, ${n} in your bag</span>` : ''}</button>`;
       }).join('');
     }
     const room = Math.max(0, limitFor(prod.id) - cart.qtyOf(prod.id));
@@ -304,6 +306,7 @@ function render(prod) {
     if (show === bar.classList.contains('is-on')) return;
     bar.classList.toggle('is-on', show);
     bar.setAttribute('aria-hidden', !show);
+    bar.inert = !show; // nothing in it can be focused while it's hidden
   };
   window.addEventListener('scroll', () => {
     if (!ticking) requestAnimationFrame(place);
@@ -314,7 +317,7 @@ function render(prod) {
   /* ---------------------------------------------------- films + related */
   if (reels.length) {
     $('[data-films-wrap]').hidden = false;
-    $('[data-films]').innerHTML = reels.map((f) => `<a class="pp__film" href="/blogs?v=${encodeURIComponent(f.slug)}"><img src="${esc(f.poster)}" alt="" loading="lazy" /><span>▶ ${esc(f.title)}</span></a>`).join('');
+    $('[data-films]').innerHTML = reels.map((f) => `<a class="pp__film" href="/blogs?v=${encodeURIComponent(f.slug)}"><img src="${esc(f.posterSm || f.poster)}" alt="" loading="lazy" /><span>▶ ${esc(f.title)}</span></a>`).join('');
   }
   const siblings = catalog.list().filter((x) => x.category === prod.category && x.id !== prod.id);
   const at = siblings.findIndex((x) => x.number > prod.number);
