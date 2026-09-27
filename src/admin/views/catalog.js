@@ -44,7 +44,7 @@ export async function products({ page, store, setTitle }) {
   setTitle('Products', `${all.length} fragrances`, `<a class="btn" href="#/prices">${icon('tag')}Price list</a><a class="btn btn--gold" href="#/products/new">${icon('plus')}Add fragrance</a>`);
   const STATUS = [
     ['all', 'All'], ['visible', 'On the site'], ['hidden', 'Hidden'], ['featured', 'Featured'],
-    ['unpriced', 'Price on request'], ['nophoto', 'No photo'],
+    ['unpriced', 'Price on request'], ['nophoto', 'No own photo'],
   ];
   const test = {
     all: () => true, visible: (p) => p.active, hidden: (p) => !p.active, featured: (p) => p.featured,
@@ -262,7 +262,7 @@ export async function productEditor({ page, params, store, guard, setTitle, go }
           <button class="icon-btn" type="button" data-drop-photo aria-label="Remove photo">${icon('trash')}</button>
           <button class="icon-btn" type="button" data-move="1" aria-label="Move right"${i === draft.images.length - 1 ? ' disabled' : ''}>${icon('right')}</button>
         </figcaption>
-      </figure>`).join('') || '<p class="dim" style="grid-column:1/-1">No photos yet: the site shows the studio render of the Raza bottle.</p>';
+      </figure>`).join('') || '<p class="dim" style="grid-column:1/-1">No photos of its own yet: the site shows a Raza house bottle photo (and, for Attar, a Raza attar photo). Add its own photos here.</p>';
   };
   const renderPreview = () => {
     const variants = normaliseSizes(sizes.map((s) => ({ ...s, price: parsePrice(s.price) })));

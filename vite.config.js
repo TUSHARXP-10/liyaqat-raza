@@ -66,13 +66,14 @@ function productPages() {
       // nested addresses (/p/…) need root-absolute asset links
       page.source = String(page.source).replace(/(src|href)="\.\/(?!\/)/g, '$1="/');
       const LABEL = { regular: 'Regular collection', premium: 'Premium collection', luxury: 'Luxury collection' };
+      const { photosOf } = await import(new URL('./src/shop/look.js', import.meta.url).href);
       for (const p of await loadProducts()) {
         const collection = LABEL[p.category] || 'House signature';
         const title = `${p.name} — ${collection} | Raza Perfume`;
         const kinds = [...new Set((p.variants || []).map((v) => v.type))].filter(Boolean).join(' and ');
         const desc = `${p.name} from the ${collection.toLowerCase()} of Raza Perfume NX2, Kalyan.${kinds ? ` Available as ${kinds}.` : ''} Order on WhatsApp.`;
-        // the page's own first photo; an attar-only photo still beats the render
-        const shot = p.images?.find((i) => i.for !== 'attar') || p.images?.[0];
+        // the photo the page opens on (its own, else the Raza house bottle photo)
+        const shot = photosOf(p)[0];
         const image = shot?.lg ? `/${shot.lg}` : `/media/products/${p.id}.webp`;
         const url = `${site}/p/${p.id}`;
         const html = page.source

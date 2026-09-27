@@ -32,7 +32,7 @@ export async function dashboard({ page, store, setTitle }) {
   const todos = [
     fresh.length && ['bag', `<b>${fresh.length} new order${fresh.length === 1 ? '' : 's'}</b> waiting to be confirmed on WhatsApp.`, '#/orders', 'Open orders'],
     unpricedList.length && ['tag', `<b>${unpricedList.length} fragrance${unpricedList.length === 1 ? '' : 's'}</b> still show “price on request” for some sizes.`, '#/prices', 'Set prices'],
-    noPhoto.length && ['image', `<b>${noPhoto.length} fragrance${noPhoto.length === 1 ? '' : 's'}</b> have no photo yet (the site shows the studio render).`, '#/products', 'Add photos'],
+    noPhoto.length && ['image', `<b>${noPhoto.length} fragrance${noPhoto.length === 1 ? '' : 's'}</b> have no photo of their own yet (the site shows a Raza house bottle photo).`, '#/products', 'Add photos'],
     !announceOn && ['text', 'No announcement bar is showing. Use it for an offer or news.', '#/content/announce', 'Write one'],
   ].filter(Boolean);
 

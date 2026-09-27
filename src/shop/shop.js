@@ -141,6 +141,8 @@ const photo = (p, cls, { eager = false, alt = '', size = 'sm', index = 0, kind =
   const look = hasPhoto(p, kind) ? ` is-photo${photosOf(p, kind)[index]?.kind === 'card' ? ' is-card' : ''}` : '';
   return `<img class="${cls}${look}" src="${imageFor(p, { size, index, kind })}" alt="${esc(alt)}" width="800" height="800" loading="${eager ? 'eager' : 'lazy'}" decoding="async" data-photo="${esc(p.id)}" data-for="${esc(kind ?? '')}" />`;
 };
+// said over a general photo (a Raza bottle standing in for this fragrance)
+export const generalNote = (kind) => (kind === 'attar' ? 'Shown in a Raza attar bottle' : 'Shown in a Raza house bottle');
 // the kind a card (or a bag line) shows
 const cardKind = (p) => (hasSizes(p) ? pickOf(p).type : null);
 const lineKind = (p, v) => variantOf(p, v)?.type ?? null;
@@ -697,9 +699,11 @@ function initQuickView({ lenis }) {
     if (media.dataset.key === key) return;
     media.dataset.key = key;
     const item = items[q.img];
+    const shot = item.film ? null : photosOf(p, kind)[item.i];
     const main = item.film
       ? `<video class="qv__film" src="${esc(blogMedia(item.film.video))}" poster="${esc(blogMedia(item.film.poster))}" controls autoplay playsinline aria-label="Film: ${esc(item.film.title)}"></video>`
-      : photo(p, 'qv__img', { eager: true, alt: photosOf(p, kind)[item.i]?.alt || p.name, size: 'lg', index: item.i, kind });
+      : photo(p, 'qv__img', { eager: true, alt: shot?.alt || p.name, size: 'lg', index: item.i, kind })
+        + (shot?.general ? `<p class="media-note">${esc(generalNote(kind))}</p>` : '');
     const thumbs = items.map((it, i) => {
       const label = it.film ? `Film: ${it.film.title}` : `Photo ${i + 1}`;
       const src = it.film ? blogMedia(it.film.poster) : imageFor(p, { index: it.i, kind });

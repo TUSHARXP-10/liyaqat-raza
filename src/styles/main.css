@@ -1693,6 +1693,8 @@ html:not(.nav-away) .shop__controls { top: var(--nav-h); }
 .qv__thumb:hover { opacity: 0.9; }
 .qv__thumb.is-on { border-color: var(--gold-hi); opacity: 1; box-shadow: 0 0 0 1px var(--gold); }
 .cart__img.is-photo, .qv__rel-img.is-photo, .toast__img.is-photo { object-fit: cover; }
+/* over a general photo: a Raza bottle standing in for this fragrance */
+.media-note { position: absolute; left: 14px; top: 14px; z-index: 2; margin: 0; padding: 5px 11px; border: 1px solid rgba(236, 212, 154, 0.35); border-radius: 20px; background: rgba(7, 5, 4, 0.66); backdrop-filter: blur(6px); font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-hi); pointer-events: none; }
 
 /* films from Blogs Raza on the fragrances they show */
 .product__film { position: absolute; right: 12px; bottom: 12px; z-index: 1; display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px 4px 7px; border-radius: 20px; background: rgba(7, 5, 4, 0.72); border: 1px solid rgba(236, 212, 154, 0.45); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-hi); }

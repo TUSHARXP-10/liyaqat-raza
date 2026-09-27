@@ -4,7 +4,7 @@ import { wishlist } from '../shop/wishlist.js';
 import { CATEGORY_LABEL, TYPE_NOTE, typeLabel, hasSizes, variantOf } from '../shop/products.js';
 import { imageFor, photosOf, assetBase } from '../shop/look.js';
 import { backendEnabled, fetchCatalog, fetchFilms } from '../shop/backend.js';
-import { initBag, added, askUrl, pickSize } from '../shop/shop.js';
+import { initBag, added, askUrl, pickSize, generalNote } from '../shop/shop.js';
 import { loadContent, applyContent, cms } from '../cms/content.js';
 import { REELS } from '../blog/reels.js';
 import MEDIA from '../blog/media.json' with { type: 'json' };
@@ -81,7 +81,7 @@ function render(prod) {
     const photos = photosOf(prod, kind);
     return [
       ...(photos.length
-        ? photos.map((ph, i) => ({ src: imageFor(prod, { size: 'lg', index: i, kind }), thumb: imageFor(prod, { index: i, kind }), alt: ph.alt || prod.name, card: ph.kind === 'card' }))
+        ? photos.map((ph, i) => ({ src: imageFor(prod, { size: 'lg', index: i, kind }), thumb: imageFor(prod, { index: i, kind }), alt: ph.alt || prod.name, card: ph.kind === 'card', note: ph.general ? generalNote(kind) : '' }))
         : [{ src: imageFor(prod, { size: 'lg', kind }), thumb: imageFor(prod, { kind }), alt: prod.name, render: true }]),
       ...reels.map((f) => ({ film: f, thumb: f.poster, alt: f.title })),
     ];
@@ -104,7 +104,7 @@ function render(prod) {
     stage.classList.toggle('is-render', Boolean(g.render));
     stage.innerHTML = g.film
       ? `<video src="${esc(g.film.video)}" poster="${esc(g.film.poster)}" controls autoplay playsinline aria-label="Film: ${esc(g.film.title)}"></video>`
-      : `<img src="${esc(g.src)}" alt="${esc(g.alt)}" width="1200" height="1200" />`;
+      : `<img src="${esc(g.src)}" alt="${esc(g.alt)}" width="1200" height="1200" />${g.note ? `<p class="media-note">${esc(g.note)}</p>` : ''}`;
     $$('button', thumbs).forEach((b, j) => {
       b.classList.toggle('is-on', j === state.at);
       b.setAttribute('aria-pressed', j === state.at);

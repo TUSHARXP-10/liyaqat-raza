@@ -31,13 +31,25 @@ export const assetBase = () => {
 const base = assetBase;
 
 // A photo may be of one kind ("for": 'attar' | 'perfume'). The general photos
-// ("Attar bottles.jpg") stand in for a fragrance with none of that kind; each
-// fragrance leads with a different one so neighbouring cards vary.
+// ("Perfume bottles.jpg", "Attar bottles.jpg": Raza bottles with no fragrance
+// name) stand in for a fragrance with none of that kind, so every fragrance
+// shows a real photo. Each fragrance leads with a different one so
+// neighbouring cards vary, and shows at most GENERAL_SHOWN of them. They carry
+// `general: true`, so quick view and the product page can say so.
 const GENERAL = { attar: PHOTOS['*attar'] || [], perfume: PHOTOS['*perfume'] || [] };
+const GENERAL_SHOWN = 3;
+const GENERAL_ALT = { perfume: 'shown in a Raza house bottle', attar: 'Raza attar' };
+const CATEGORY_SHIFT = { luxury: 0, premium: 2, regular: 4 };
 const general = (p, kind) => {
+  // the house signatures keep their own studio bottle (the 3D bottle of the Collection chapter)
+  if (p.category === 'house') return [];
   const list = GENERAL[kind] || [];
-  const at = list.length ? hash(p.id) % list.length : 0;
-  return [...list.slice(at), ...list.slice(0, at)];
+  // round-robin by catalogue number, so consecutive fragrances never share one
+  const n = Number.isFinite(p.number) ? p.number + (CATEGORY_SHIFT[p.category] || 0) : hash(p.id);
+  const at = list.length ? n % list.length : 0;
+  return [...list.slice(at), ...list.slice(0, at)]
+    .slice(0, GENERAL_SHOWN)
+    .map((ph) => ({ ...ph, alt: `${p.name}, ${GENERAL_ALT[kind]}`, general: true }));
 };
 
 // The photos for what the shopper has picked (kind: 'perfume' | 'attar';
@@ -45,7 +57,7 @@ const general = (p, kind) => {
 //   Attar   → the fragrance's attar photos, else the general attar photos,
 //             then its notes cards (else its other photos)
 //   Perfume → its perfume photos and untagged photos, else the general
-//             perfume photos, else none (the studio render)
+//             perfume photos, else none (the studio render: house signatures)
 export function photosOf(p, kind = null) {
   const all = [
     ...(p.image ? [{ sm: p.image, lg: p.image, alt: p.name, url: true }] : []),
