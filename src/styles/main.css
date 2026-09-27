@@ -945,6 +945,26 @@ html.is-covered body > :not(.intro) * { animation-play-state: paused !important;
 .story__photo-inner img { display: block; width: 100%; height: auto; }
 .story__photo figcaption { position: absolute; left: 0; right: 0; bottom: 14px; text-align: center; font-family: var(--f-script); font-size: 22px; color: #4a3218; }
 
+/* 1984 · Kannauj: where the craft began (between "Established" and the founder) */
+.story__craft { position: absolute; left: var(--gutter); top: 18vh; width: min(410px, 30vw); visibility: hidden; opacity: 0; }
+.story__craft .eyebrow { margin-bottom: 24px; }
+.story__craft-title { font-size: clamp(30px, 3.2vw, 56px); letter-spacing: 0.12em; }
+.story__craft-school { margin-top: 16px; font-size: 10.5px; line-height: 1.8; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); }
+.story__craft-school span { color: var(--muted); }
+.story__craft .rule { margin: 22px 0; }
+.story__craft .story__text { margin-bottom: 24px; }
+.story__skills { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-hi); }
+.story__skills li { display: flex; align-items: center; gap: 12px; }
+.story__skills li::before { content: ''; flex: none; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 10px rgba(236, 196, 120, 0.6); }
+/* the etching: a print tucked under the founder's photograph once it lands */
+.story__card { left: calc(36% + 18px); top: calc(17vh - 40px); }
+.story__card-inner { overflow: hidden; background: #efe4c8; }
+.etch { display: block; width: 100%; height: auto; }
+.etch__lines path { fill: none; stroke: #5a3d1e; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.etch__lines .etch__tank { fill: url(#etchPaper); }
+.etch__place { font-family: var(--f-script); font-size: 40px; fill: #6b4a25; }
+.etch__year { font-family: var(--f-display); font-size: 13px; letter-spacing: 0.34em; fill: #7a5a33; }
+
 .story__quote { position: absolute; right: calc(var(--gutter) + 40px); top: 26vh; width: min(22vw, 360px); }
 .story__quote .story__quote-translation {
   display: block;
@@ -1064,6 +1084,14 @@ html.is-covered body > :not(.intro) * { animation-play-state: paused !important;
 .founder__quote-text { font-family: var(--f-serif); font-style: italic; font-weight: 300; font-size: clamp(32px, 3.6vw, 62px); line-height: 1.2; color: var(--text); }
 .founder__quote cite { display: block; margin-top: 18px; font-style: normal; color: var(--gold); font-size: 15px; }
 .founder__quote .signature { font-size: 44px; }
+
+/* Amjad Ali Sayed, co-founder: Liyaqat's layout mirrored (copy left, arch right).
+   His photo is full length (2:3), so the arch is narrower but the same height. */
+.cofounder { padding: 12vh var(--gutter) 18vh; }
+.cofounder__grid { display: grid; grid-template-columns: minmax(0, 0.5fr) minmax(0, 1fr) minmax(0, 1.35fr); gap: clamp(24px, 4vw, 70px); align-items: center; }
+.cofounder__copy { grid-column: 2; }
+.cofounder__arch { grid-column: 3; width: min(100%, 445px, 51.5vh); aspect-ratio: 2 / 3; }
+.cofounder__photo { object-position: 50% 50%; }
 
 /* ---------------------------------------------------------- Collection */
 
@@ -1803,7 +1831,15 @@ html.cart-open .bag-fab { opacity: 0; pointer-events: none; }
   .story__founder-name { font-size: clamp(26px, 8vw, 40px); }
   .story__founder .rule { margin: 16px 0; }
   .story__founder .story__text { font-size: 13px; margin-bottom: 0; }
+  .story__craft { top: 13vh; width: auto; right: var(--gutter); }
+  .story__craft .eyebrow { margin-bottom: 16px; }
+  .story__craft-title { font-size: clamp(26px, 8vw, 40px); }
+  .story__craft-school { margin-top: 10px; font-size: 9.5px; letter-spacing: 0.22em; }
+  .story__craft .rule { margin: 14px 0; }
+  .story__craft .story__text { font-size: 13px; margin-bottom: 14px; }
+  .story__skills { gap: 6px; font-size: 9.5px; letter-spacing: 0.16em; }
   .story__photo { left: 50%; top: auto; bottom: 8vh; width: 76vw; margin-left: -38vw; padding: 10px 10px 40px; }
+  .story__card { margin-left: calc(-38vw + 10px); bottom: calc(8vh + 16px); }
   .story__photo figcaption { font-size: 18px; bottom: 8px; }
   .story__quote { right: var(--gutter); left: var(--gutter); top: auto; bottom: 12vh; width: auto; }
   .story__quote p { font-size: 34px; }
@@ -1813,6 +1849,10 @@ html.cart-open .bag-fab { opacity: 0; pointer-events: none; }
   .founder__arch { width: 100%; justify-self: center; }
   .founder__burner { display: none; }
   .founder__quote { text-align: left; margin-top: 8vh; padding: 0; }
+  .cofounder { padding: 10vh var(--gutter) 12vh; }
+  .cofounder__grid { grid-template-columns: 1fr; gap: 50px; }
+  .cofounder__copy { grid-column: auto; }
+  .cofounder__arch { grid-column: auto; order: -1; width: 88%; justify-self: center; }
 
   .collection__head { top: 12vh; }
   .collection__title { font-size: clamp(24px, 7vw, 36px); }

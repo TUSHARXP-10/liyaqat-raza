@@ -17,12 +17,15 @@ const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const isMobile = () => window.innerWidth < 820;
 const TAU = Math.PI * 2;
+// how many screens of scroll the Origins chapter (III) stays pinned for
+const STORY_SCREENS = 5.3;
 
 export function buildChapters(ctx) {
   const intro = setupHero(ctx);
   setupAnatomy(ctx);
   setupStory(ctx);
   setupFounder(ctx);
+  setupCofounder(ctx);
   const shop = initShop(ctx);
   setupCollection({ ...ctx, shop });
   ctx.triggers.shopEnter = ScrollTrigger.create({ trigger: '#shop', start: 'top bottom', end: 'top top' });
@@ -159,6 +162,9 @@ function setupStory({ triggers: T }) {
   odo.set(year.v);
   const words = $$('[data-story-word]');
   const text = SplitText.create('[data-story-text]', { type: 'lines', mask: 'lines' }).lines;
+  const craftTitle = SplitText.create('[data-story-craft] .display__line', { type: 'words,chars' }).chars;
+  const craftText = SplitText.create('[data-craft-text]', { type: 'lines', mask: 'lines' }).lines;
+  const etch = $$('[data-etch] path');
   const founderName = SplitText.create('[data-story-founder] .display__line', { type: 'words,chars' }).chars;
   const founderText = SplitText.create('[data-founder-origin-text]', { type: 'lines', mask: 'lines' }).lines;
 
@@ -184,49 +190,64 @@ function setupStory({ triggers: T }) {
     scrollTrigger: { trigger: '#story', start: 'top 70%', end: 'top top', scrub: true },
   });
 
+  // The chapter stays pinned for STORY_SCREENS screens of scroll; every beat
+  // below is placed in screens (1 = one viewport of scrolling) via at().
+  const at = (screens) => screens / STORY_SCREENS;
   const tl = gsap.timeline({
     defaults: { ease: 'none' },
-    scrollTrigger: { trigger: '#story', start: 'top top', end: '+=460%', pin: true, scrub: 1, anticipatePin: 1, invalidateOnRefresh: true },
+    scrollTrigger: { trigger: '#story', start: 'top top', end: `+=${STORY_SCREENS * 100}%`, pin: true, scrub: 1, anticipatePin: 1, invalidateOnRefresh: true },
   });
   T.story = tl.scrollTrigger;
 
   // 1 · rewind to 1986
-  tl.fromTo('[data-rewind-label]', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.03 }, 0)
-    .fromTo('[data-rewind-sub]', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.03 }, 0.015)
-    .to(year, { v: 1986, duration: 0.2, ease: 'power2.inOut', onUpdate: () => odo.set(year.v) }, 0.015)
-    .to(['[data-rewind-label]', '[data-rewind-sub]'], { autoAlpha: 0, duration: 0.03 }, 0.22)
+  tl.fromTo('[data-rewind-label]', { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: at(0.14) }, 0)
+    .fromTo('[data-rewind-sub]', { autoAlpha: 0 }, { autoAlpha: 1, duration: at(0.14) }, at(0.07))
+    .to(year, { v: 1986, duration: at(0.92), ease: 'power2.inOut', onUpdate: () => odo.set(year.v) }, at(0.07))
+    .to(['[data-rewind-label]', '[data-rewind-sub]'], { autoAlpha: 0, duration: at(0.14) }, at(1.01))
     // 2 · the counter lands in the title: "Established in 1986"
-    .to(odoEl, { x: () => M.dx, y: () => M.dy, scale: () => M.scale, duration: 0.08, ease: 'power2.inOut' }, 0.23)
-    .from('[data-story-copy] .eyebrow', { autoAlpha: 0, x: -20, duration: 0.04 }, 0.24)
-    .from(words, { yPercent: 110, autoAlpha: 0, stagger: 0.015, duration: 0.05, ease: 'power3.out' }, 0.245)
-    .fromTo(slot, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.015 }, 0.3)
-    .to(odoEl, { autoAlpha: 0, duration: 0.015 }, 0.307)
-    .from('[data-story-rule]', { scaleX: 0, duration: 0.03 }, 0.3)
-    .from(text, { yPercent: 100, stagger: 0.008, duration: 0.04, ease: 'power3.out' }, 0.315)
-    // 3 · his photograph drops in and develops
-    .fromTo('[data-story-photo]', { autoAlpha: 0, y: 260, rotation: -18 }, { autoAlpha: 1, y: 0, rotation: -5, duration: 0.1, ease: 'power3.out' }, 0.33)
-    .fromTo('[data-story-photo-inner]', { filter: 'brightness(2.6) sepia(1) blur(6px)' }, { filter: 'brightness(1) sepia(0.15) blur(0px)', duration: 0.12 }, 0.36)
-    // 4 · the story gives way to the man who began it
-    .to('[data-story-copy]', { autoAlpha: 0, y: -40, duration: 0.05 }, 0.5)
-    .fromTo('[data-story-founder]', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01 }, 0.52)
-    .from('[data-story-founder] .eyebrow', { autoAlpha: 0, x: -20, duration: 0.04 }, 0.52)
-    .from(founderName, { yPercent: 120, rotate: 6, stagger: 0.004, duration: 0.05, ease: 'power3.out' }, 0.53)
-    .from('[data-founder-origin-rule]', { scaleX: 0, duration: 0.03 }, 0.56)
-    .from(founderText, { yPercent: 100, stagger: 0.008, duration: 0.04, ease: 'power3.out' }, 0.57)
-    .from('[data-story-btn]', { autoAlpha: 0, y: 20, duration: 0.03 }, 0.6)
-    // on phones the photograph steps aside so the quote can take its place
-    .to('[data-story-photo]', { autoAlpha: () => (isMobile() ? 0 : 1), y: () => (isMobile() ? -40 : 0), duration: 0.05 }, 0.62);
+    .to(odoEl, { x: () => M.dx, y: () => M.dy, scale: () => M.scale, duration: at(0.37), ease: 'power2.inOut' }, at(1.06))
+    .from('[data-story-copy] .eyebrow', { autoAlpha: 0, x: -20, duration: at(0.18) }, at(1.1))
+    .from(words, { yPercent: 110, autoAlpha: 0, stagger: at(0.07), duration: at(0.23), ease: 'power3.out' }, at(1.13))
+    .fromTo(slot, { autoAlpha: 0 }, { autoAlpha: 1, duration: at(0.07) }, at(1.38))
+    .to(odoEl, { autoAlpha: 0, duration: at(0.07) }, at(1.41))
+    .from('[data-story-rule]', { scaleX: 0, duration: at(0.14) }, at(1.38))
+    .from(text, { yPercent: 100, stagger: at(0.037), duration: at(0.18), ease: 'power3.out' }, at(1.45))
+    // 3 · where the craft began: Kannauj, FFDC. An etching of the still draws itself.
+    .to('[data-story-copy]', { autoAlpha: 0, y: -40, duration: at(0.23) }, at(1.8))
+    .fromTo('[data-story-card]', { autoAlpha: 0, y: 260, rotation: 14 }, { autoAlpha: 1, y: 0, rotation: 4, duration: at(0.46), ease: 'power3.out' }, at(1.86))
+    .fromTo(etch, { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: at(0.16), stagger: { amount: at(0.46) } }, at(1.95))
+    .from('[data-etch-label]', { autoAlpha: 0, duration: at(0.14) }, at(2.4))
+    .fromTo('[data-story-craft]', { autoAlpha: 0 }, { autoAlpha: 1, duration: at(0.05) }, at(1.92))
+    .from('[data-story-craft] .eyebrow', { autoAlpha: 0, x: -20, duration: at(0.18) }, at(1.92))
+    .from(craftTitle, { yPercent: 120, rotate: 6, stagger: at(0.018), duration: at(0.23), ease: 'power3.out' }, at(1.97))
+    .from('[data-craft-school]', { autoAlpha: 0, y: 10, duration: at(0.14) }, at(2.1))
+    .from('[data-craft-rule]', { scaleX: 0, duration: at(0.14) }, at(2.12))
+    .from(craftText, { yPercent: 100, stagger: at(0.037), duration: at(0.18), ease: 'power3.out' }, at(2.17))
+    .from('[data-craft-skill]', { autoAlpha: 0, x: -14, stagger: at(0.05), duration: at(0.14) }, at(2.3))
+    // 4 · the man who learned it: his photograph lands over the etching
+    .to('[data-story-craft]', { autoAlpha: 0, y: -40, duration: at(0.23) }, at(2.75))
+    .to('[data-story-card]', { rotation: 9, scale: 0.94, filter: 'brightness(0.82)', duration: at(0.3) }, at(2.78))
+    .fromTo('[data-story-photo]', { autoAlpha: 0, y: 260, rotation: -18 }, { autoAlpha: 1, y: 0, rotation: -5, duration: at(0.46), ease: 'power3.out' }, at(2.8))
+    .fromTo('[data-story-photo-inner]', { filter: 'brightness(2.6) sepia(1) blur(6px)' }, { filter: 'brightness(1) sepia(0.15) blur(0px)', duration: at(0.55) }, at(2.94))
+    .fromTo('[data-story-founder]', { autoAlpha: 0 }, { autoAlpha: 1, duration: at(0.05) }, at(2.95))
+    .from('[data-story-founder] .eyebrow', { autoAlpha: 0, x: -20, duration: at(0.18) }, at(2.95))
+    .from(founderName, { yPercent: 120, rotate: 6, stagger: at(0.018), duration: at(0.23), ease: 'power3.out' }, at(3))
+    .from('[data-founder-origin-rule]', { scaleX: 0, duration: at(0.14) }, at(3.14))
+    .from(founderText, { yPercent: 100, stagger: at(0.037), duration: at(0.18), ease: 'power3.out' }, at(3.19))
+    .from('[data-story-btn]', { autoAlpha: 0, y: 20, duration: at(0.14) }, at(3.31))
+    // on phones the photograph and the etching step aside so the quote can take their place
+    .to(['[data-story-photo]', '[data-story-card]'], { autoAlpha: () => (isMobile() ? 0 : 1), y: () => (isMobile() ? -40 : 0), duration: at(0.23) }, at(3.45));
 
   // 5 · his words, in his hand
   $$('[data-quote-line]').forEach((line, i) => {
-    tl.to(line, { clipPath: 'inset(-20% -12% -30% 0%)', duration: 0.06, ease: 'power1.inOut' }, 0.64 + i * 0.06);
+    tl.to(line, { clipPath: 'inset(-20% -12% -30% 0%)', duration: at(0.28), ease: 'power1.inOut' }, at(3.55 + i * 0.28));
   });
-  tl.to('[data-quote-translation]', { opacity: 1, y: 0, duration: 0.04 }, 0.75)
-    .to('[data-signature]', { clipPath: 'inset(-20% -25% -40% 0%)', duration: 0.06 }, 0.79)
-    .to('.story__quote-role', { opacity: 1, duration: 0.03 }, 0.85)
+  tl.to('[data-quote-translation]', { opacity: 1, y: 0, duration: at(0.18) }, at(4.05))
+    .to('[data-signature]', { clipPath: 'inset(-20% -25% -40% 0%)', duration: at(0.28) }, at(4.25))
+    .to('.story__quote-role', { opacity: 1, duration: at(0.14) }, at(4.52))
     // 6 · colour returns
-    .to('[data-bd-present]', { opacity: 1, duration: 0.1 }, 0.86)
-    .to('[data-film]', { opacity: 0, duration: 0.08 }, 0.88)
+    .to('[data-bd-present]', { opacity: 1, duration: at(0.46) }, at(4.6))
+    .to('[data-film]', { opacity: 0, duration: at(0.37) }, at(4.7))
     .set({}, {}, 1);
 }
 
@@ -268,6 +289,26 @@ function setupFounder() {
 
   const smoke = $('[data-smoke]');
   if (smoke && !isMobile()) new Smoke(smoke);
+}
+
+/* -------------------------------------------------------------- CO-FOUNDER */
+
+// Amjad Ali Sayed, still chapter IV: the same arch reveal as Liyaqat's, mirrored
+function setupCofounder() {
+  const name = SplitText.create('[data-cofounder-name]', { type: 'words,chars' }).chars;
+  const text = SplitText.create('[data-cofounder-text]', { type: 'lines', mask: 'lines' }).lines;
+
+  gsap.timeline({ scrollTrigger: { trigger: '.cofounder__grid', start: 'top 70%', toggleActions: 'play none none reverse' } })
+    .fromTo('[data-cofounder-arch-inner]', { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.8, ease: 'expo.inOut' }, 0)
+    .from('[data-cofounder-arch]', { autoAlpha: 0, duration: 1.2 }, 0)
+    .from('#cofounder .eyebrow', { autoAlpha: 0, x: -20, duration: 1 }, 0.4)
+    .from(name, { yPercent: 115, stagger: 0.035, duration: 1.4, ease: 'expo.out' }, 0.5)
+    .from('[data-cofounder-surname]', { autoAlpha: 0, y: 14, duration: 1.2, ease: 'expo.out' }, 0.95)
+    .from('[data-cofounder-rule]', { scaleX: 0, duration: 1.2, ease: 'expo.out' }, 0.9)
+    .from(text, { yPercent: 100, stagger: 0.08, duration: 1.2, ease: 'expo.out' }, 0.9)
+    .from('[data-cofounder-btn]', { autoAlpha: 0, y: 20, duration: 1 }, 1.2);
+
+  gsap.fromTo('[data-cofounder-arch]', { y: 70 }, { y: -70, ease: 'none', scrollTrigger: { trigger: '#cofounder', start: 'top bottom', end: 'bottom top', scrub: true } });
 }
 
 /* ------------------------------------------------------------- COLLECTION */
@@ -417,7 +458,7 @@ function setupBackdropFades() {
   });
   gsap.fromTo('[data-skyline="near"]', { xPercent: 0 }, {
     xPercent: -4, ease: 'none', immediateRender: false,
-    scrollTrigger: { trigger: '#story', start: 'top top', end: () => `+=${innerHeight * 5.6}`, scrub: true },
+    scrollTrigger: { trigger: '#story', start: 'top top', end: () => `+=${innerHeight * (STORY_SCREENS + 1)}`, scrub: true },
   });
 }
 
@@ -442,7 +483,7 @@ function setupChrome({ lenis, ambient }) {
     },
   });
 
-  const chapterOf = { hero: 'hero', anatomy: 'anatomy', story: 'story', founder: 'founder', collection: 'collection', shop: 'shop', promise: 'shop', journey: 'journey' };
+  const chapterOf = { hero: 'hero', anatomy: 'anatomy', story: 'story', founder: 'founder', cofounder: 'founder', collection: 'collection', shop: 'shop', promise: 'shop', journey: 'journey' };
   const setActive = (id) => {
     document.documentElement.classList.toggle('in-shop', id === 'shop');
     $$('[data-chapter]').forEach((a) => a.classList.toggle('is-active', a.dataset.chapter === id));
