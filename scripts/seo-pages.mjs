@@ -60,7 +60,6 @@ export function siteLd(products) {
         founder: [
           { '@type': 'Person', name: 'Yasinali Sayed' },
           { '@type': 'Person', name: 'Liyaqat Sayed', jobTitle: 'Founder & Owner' },
-          { '@type': 'Person', name: 'Amjad Ali Sayed', jobTitle: 'Co-Founder & Partner' },
         ],
         telephone: '+91-90295-04320',
         address: {

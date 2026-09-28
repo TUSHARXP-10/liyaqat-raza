@@ -295,7 +295,7 @@ added to `/guides`, every footer and the sitemap. Link to fragrances as `/p/<id>
 | I | Prologue (`#hero`) | The bottle rises onto a marble plinth in a Moorish colonnade while liquid-gold ribbons pour around it. Slides 01/02/03 switch the headline and turn the bottle into Base, Oud or Musk. |
 | II | Anatomy (`#anatomy`, pinned) | The bottle comes apart piece by piece: cap, R seal, spray, collar, glass, fragrance, base. Each label is attached to the actual 3D part and follows it. It then snaps back together. |
 | III | Origins (`#story`, pinned 5.3 screens) | The screen turns to sepia film and an odometer rewinds 2026 → 1986. The counter lands in "Established in 1986" with the Raza story. Then **1984 · Kannauj, where the craft began**: Yasinali's training at the Fragrance & Flavour Development Centre (FFDC Kannauj) and three skills, beside a print whose etching of a deg-and-bhapka still draws itself line by line. Next, the real photograph of founder **Yasinali Sayed** at his counter lands over that print and develops. His name and story take over the panel, and his words *"Sugandh se rishte bante hain"* write themselves in script, signed. Colour then returns over a dusk skyline. Beats are placed in screens of scroll (`STORY_SCREENS` in `chapters.js`). |
-| IV | The House Today (`#founder`, `#cofounder`) | **Liyaqat Sayed**, founder and owner of Raza Perfume today and Yasinali's son. His portrait at the Raza counter sits in a tall Mughal arch (3:4) beside incense smoke from a brass burner, and his quote lights up word by word as you scroll. "Meet our co-founder" leads on to **Amjad Ali Sayed**, co-founder and partner: the same arch reveal, mirrored (copy left, arch right), in a 2:3 arch the same height as Liyaqat's. The chapter rail stays on IV for both. |
+| IV | The House Today (`#founder`) | **Liyaqat Sayed**, founder and owner of Raza Perfume today and Yasinali's son. His portrait at the Raza counter sits in a tall Mughal arch (3:4) beside incense smoke from a brass burner, and his quote lights up word by word as you scroll. "Discover the collection" leads on to Chapter V. |
 | V | Collection (`#collection`, pinned) | The bottle spins through Base → Oud → Musk. Liquid, glass tint, label, splash colour and backdrop grade all change with it. |
 | — | Promises / Journey | Line icons draw themselves. A giant RAZA rises from the footer and the gold follows the cursor. |
 
@@ -333,7 +333,6 @@ If the logo changes, re-trace it, then run `npm run render:products` and `npm ru
   3:4, in a tall arch). To change it, add the new photo under a new file name and point
   `index.html` at it: `/media/` files are cached for a week, so reusing a name can show the old photo.
   It appears inside the arch automatically. If the file is missing, a candle shows in its place.
-- `public/media/amjad-ali-sayed-portrait.webp`: Amjad Ali Sayed, co-founder (Chapter IV, portrait 2:3).
   Same rule: a new photo gets a new file name.
 - The Kannauj etching (deg and bhapka) is inline SVG in `index.html`, drawn for the site.
 - `public/media/anatomy.jpg` is only shown if a visitor's device can't run WebGL.
@@ -346,8 +345,6 @@ If the logo changes, re-trace it, then run `npm run render:products` and `npm ru
   gave 1984 as the year of his training. FFDC Kannauj itself was set up in 1991, so the text dates
   his going to Kannauj (1984) and names FFDC without a year. Edit it under Site content →
   "Origins · The craft, Kannauj".
-- **Amjad Ali Sayed's "about"** (Chapter IV) is a draft: co-founder and Liyaqat's partner, with no
-  family relation stated. Edit it under Site content → "The House Today · Amjad Ali Sayed".
 - **Fragrance notes and descriptions** in the Collection chapter are placeholder copy written for the layout.
 - **Privacy policy and Terms** (`legal/`) are written for how the site works today. Have the client
   confirm the business details in the Terms: delivery across India, the 48-hour window for damaged

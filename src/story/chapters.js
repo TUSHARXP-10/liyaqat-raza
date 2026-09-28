@@ -30,7 +30,6 @@ export function buildChapters(ctx) {
   setupAnatomy(ctx);
   setupStory(ctx);
   setupFounder(ctx);
-  setupCofounder(ctx);
   const shop = initShop(ctx);
   setupCollection({ ...ctx, shop });
   ctx.triggers.shopEnter = ScrollTrigger.create({ trigger: '#shop', start: 'top bottom', end: 'top top' });
@@ -296,26 +295,6 @@ function setupFounder() {
   if (smoke && !isMobile()) new Smoke(smoke);
 }
 
-/* -------------------------------------------------------------- CO-FOUNDER */
-
-// Amjad Ali Sayed, still chapter IV: the same arch reveal as Liyaqat's, mirrored
-function setupCofounder() {
-  const name = SplitText.create('[data-cofounder-name]', { type: 'words,chars' }).chars;
-  const text = splitLines('[data-cofounder-text]');
-
-  gsap.timeline({ scrollTrigger: { trigger: '.cofounder__grid', start: 'top 70%', toggleActions: 'play none none reverse' } })
-    .fromTo('[data-cofounder-arch-inner]', { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.8, ease: 'expo.inOut' }, 0)
-    .from('[data-cofounder-arch]', { autoAlpha: 0, duration: 1.2 }, 0)
-    .from('#cofounder .eyebrow', { autoAlpha: 0, x: -20, duration: 1 }, 0.4)
-    .from(name, { yPercent: 115, stagger: 0.035, duration: 1.4, ease: 'expo.out' }, 0.5)
-    .from('[data-cofounder-surname]', { autoAlpha: 0, y: 14, duration: 1.2, ease: 'expo.out' }, 0.95)
-    .from('[data-cofounder-rule]', { scaleX: 0, duration: 1.2, ease: 'expo.out' }, 0.9)
-    .from(text, { yPercent: 100, stagger: 0.08, duration: 1.2, ease: 'expo.out' }, 0.9)
-    .from('[data-cofounder-btn]', { autoAlpha: 0, y: 20, duration: 1 }, 1.2);
-
-  gsap.fromTo('[data-cofounder-arch]', { y: 70 }, { y: -70, ease: 'none', scrollTrigger: { trigger: '#cofounder', start: 'top bottom', end: 'bottom top', scrub: true } });
-}
-
 /* ------------------------------------------------------------- COLLECTION */
 
 function setupCollection({ triggers: T, lenis, ambient, shop }) {
@@ -498,7 +477,7 @@ function setupChrome({ lenis, ambient }) {
     },
   });
 
-  const chapterOf = { hero: 'hero', anatomy: 'anatomy', story: 'story', founder: 'founder', cofounder: 'founder', collection: 'collection', shop: 'shop', promise: 'shop', journey: 'journey' };
+  const chapterOf = { hero: 'hero', anatomy: 'anatomy', story: 'story', founder: 'founder', collection: 'collection', shop: 'shop', promise: 'shop', journey: 'journey' };
   const setActive = (id) => {
     document.documentElement.classList.toggle('in-shop', id === 'shop');
     $$('[data-chapter]').forEach((a) => a.classList.toggle('is-active', a.dataset.chapter === id));

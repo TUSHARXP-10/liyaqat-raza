@@ -63,16 +63,8 @@ export const SECTIONS = [
     key: 'founder',
     title: 'The House Today · Liyaqat Sayed',
     fields: [
-      { key: 'founder.about', label: 'His story', type: 'textarea', default: 'What his father Yasinali began at a single counter in 1986, Liyaqat Sayed carries forward today. With his partner Amjad Ali Sayed, he founded Raza Perfume as it stands now, shaping that legacy into a house of rare oud, musk and amber, made with the same devotion, and the same promise that every bottle carries a story worth wearing.', bind: { sel: '[data-founder-text]' } },
+      { key: 'founder.about', label: 'His story', type: 'textarea', default: 'What his father Yasinali began at a single counter in 1986, Liyaqat Sayed carries forward today. He founded Raza Perfume as it stands now, shaping that legacy into a house of rare oud, musk and amber, made with the same devotion, and the same promise that every bottle carries a story worth wearing.', bind: { sel: '[data-founder-text]' } },
       { key: 'founder.quote', label: 'His words', type: 'lines', count: 2, default: ['True luxury is not seen,', 'it is felt.'], bind: { sel: '[data-quote-words]', br: true } },
-    ],
-  },
-  {
-    key: 'cofounder',
-    title: 'The House Today · Amjad Ali Sayed',
-    note: 'Co-founder and partner, shown right after Liyaqat.',
-    fields: [
-      { key: 'cofounder.about', label: 'His story', type: 'textarea', default: 'Amjad Ali Sayed is Liyaqat’s partner and the co-founder of Raza Perfume as it stands today. Together they run the house, carrying the craft Yasinali began in 1986 into a new generation, with the same care for every fragrance and every customer who walks in.', bind: { sel: '[data-cofounder-text]' } },
     ],
   },
   {
