@@ -6,11 +6,10 @@ import { legalPage, LEGAL } from './scripts/license-page.mjs';
 const productCount = () => JSON.parse(readFileSync(new URL('./src/shop/catalog.json', import.meta.url), 'utf8')).products.length;
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
-// Public site address for link previews, canonical URL and sitemap.
-// On Vercel this comes from VERCEL_PROJECT_PRODUCTION_URL automatically;
-// set SITE_URL (e.g. https://razaperfume.in) once a custom domain is live.
-const site = (process.env.SITE_URL
-  || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : '')).replace(/\/$/, '');
+// Public site address for link previews, canonical URLs and the sitemap: the
+// live domain, so every copy of the site (including *.vercel.app) points
+// search engines and shared links at www.razaperfume.com. SITE_URL overrides it.
+const site = (process.env.SITE_URL || 'https://www.razaperfume.com').replace(/\/$/, '');
 
 const loadProducts = async () => (await import(new URL('./src/shop/products.js', import.meta.url).href)).PRODUCTS;
 

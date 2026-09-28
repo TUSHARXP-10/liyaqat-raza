@@ -206,8 +206,16 @@ After the first deploy, in the Vercel project:
 - **Analytics → Enable** (Web Analytics) and **Speed Insights → Enable**. The site loads both only
   for visitors who tap "Allow" in the privacy notice; until they are enabled the scripts simply
   don't run.
-- Optional: add the custom domain, then set `SITE_URL` (e.g. `https://razaperfume.com`) under
-  Environment Variables so the sitemap, canonical links and link previews use it.
+
+**Live domain: https://www.razaperfume.com** (Vercel project `liyaqat-raza-15nd`). DNS is at
+Hostinger: `A @ 216.198.79.1` and `CNAME www cname.vercel-dns.com`; Vercel redirects
+`razaperfume.com` to `www` and renews the HTTPS certificates itself. The sitemap, canonical links
+and link previews use `https://www.razaperfume.com` (`vite.config.js`; `SITE_URL` overrides it).
+
+**Database:** Supabase project `supabase-bronze-cave` (`jxufcqcvfnfmhuhnojfq`). The site reads its
+URL and publishable key from `.env.production`. Set up with `supabase/setup.sql`; admins are
+listed in `public.admins`. In Supabase → Authentication → URL Configuration, the Site URL is the
+live domain and `https://www.razaperfume.com/admin` is an allowed redirect (password resets).
 
 ## Launch checklist (what's in place)
 
