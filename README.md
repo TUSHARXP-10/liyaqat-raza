@@ -62,7 +62,14 @@ With Supabase connected, the same prices and stock can also be changed live in t
   exist; sold-out items sink to the end.
 - **Shareable views:** active filters appear as removable pills and are kept in the address bar,
   so a filtered view can be shared.
-- **Product cards:** photo, number, collection, Inspired tag, and a **Perfume | Attar toggle with
+- **Original or Inspired, on every fragrance:** each one carries exactly one label, **Raza
+  Original** (gold) or **Inspired** (outlined), on the card, in quick view, on its page, in the bag,
+  in page titles and in search results ("Inspired by Dior Sauvage — …"). Inspired fragrances also
+  state: "Raza Perfume's own impression … not the original product, and not affiliated with or
+  endorsed by its brand." The wording lives in `src/shop/origin.js`; the flag is `inspired` in
+  `src/shop/products.js` (`NAMES`) and in the admin panel's product editor. A fragrance named after
+  another brand's scent must be marked Inspired: when in doubt, mark it Inspired.
+- **Product cards:** photo, number, collection, origin label, and a **Perfume | Attar toggle with
   the ml sizes right on the card**. The card shows the price of the selected size (or "Ask price"
   for that exact size), and Add puts that size straight in the bag, turning into a quantity stepper.
   A dot marks sizes already in the bag. Each card remembers its choice per kind (back to Attar
