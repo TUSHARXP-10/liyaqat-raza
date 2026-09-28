@@ -30,10 +30,17 @@ view, the bag and the footer.
      under it and to its right. The sizes apply to every section below the heading row, so every
      fragrance (Regular, Premium and Luxury) is offered as Perfume 30/50/100 ml and Attar 6/12 ml.
      Customers pick Perfume or Attar (on the card or in quick view), then the size.
-   - **Prices:** Regular is priced (Perfume ₹250/₹400/₹900, Attar ₹150/₹250), and the card shows
-     "From ₹150". To price Premium or Luxury, type the prices in the same five columns on their
-     rows. An empty cell means that size is **on request**: customers can still choose it, add it
-     to the bag, and ask its price on WhatsApp.
+   - **Prices:** every fragrance is priced, one set per collection:
+
+     | Collection | Perfume 30 / 50 / 100 ml | Attar 6 / 12 ml |
+     |---|---|---|
+     | Regular | ₹250 / ₹400 / ₹900 | ₹150 / ₹250 |
+     | Premium | ₹800 / ₹1,100 / ₹1,600 | ₹650 / ₹1,500 |
+     | Luxury | ₹1,200 / ₹1,800 / ₹2,500 | ₹1,200 / ₹2,000 |
+
+     To change one, type the new price in its cell. An empty cell means that size is
+     **on request**: customers can still choose it, add it to the bag, and ask its price on
+     WhatsApp.
    - **PRICE:** a single price, for products sold in one size. `499`, `₹ 499` or `499/-` all work.
    - **QUANTITY** (optional): leave it empty for "not tracked". `0` shows **Sold out** (add
      disabled, ask availability instead). `1–5` shows **Only n left**, and customers can't add
