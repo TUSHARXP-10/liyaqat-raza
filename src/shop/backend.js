@@ -1,4 +1,10 @@
 import { SHOP } from '../content.js';
+import PHOTOS from './photos.json' with { type: 'json' };
+
+// the bundled photos in this build; a database row can point at an older one
+// (re-importing photos changes file names), and then the bundled set is used
+const BUNDLED = new Set(Object.values(PHOTOS).flat().flatMap((e) => [e.lg, e.sm].map((p) => `/${p}`)));
+const stale = (images) => images.some((i) => i.lg.startsWith('/media/photos/') && !BUNDLED.has(i.lg));
 
 // Supabase is optional: without keys the shop runs on the local catalogue and
 // orders go straight to WhatsApp. The client library is loaded on demand so
@@ -38,6 +44,10 @@ export async function fetchCatalog() {
       }))
       : null;
     const sizePrices = (variants || []).map((v) => v.price).filter((n) => n != null);
+    let images = Array.isArray(r.images) && r.images.length
+      ? r.images.filter((i) => i?.lg || i?.sm).map((i) => ({ lg: i.lg || i.sm, sm: i.sm || i.lg, ...(i.xs ? { xs: i.xs } : {}), ...(i.og ? { og: i.og } : {}), alt: i.alt || r.name, kind: i.kind === 'card' ? 'card' : 'photo', ...(['attar', 'perfume'].includes(i.for) ? { for: i.for } : {}), url: true }))
+      : null;
+    if (images && stale(images)) images = null;
     return {
       id: r.id,
       name: r.name,
@@ -52,10 +62,8 @@ export async function fetchCatalog() {
       sizeMl: r.size_ml,
       image: r.image_url || null,
       description: r.description || null,
-      // photos managed in the admin panel (none = keep the bundled photo / render)
-      images: Array.isArray(r.images) && r.images.length
-        ? r.images.filter((i) => i?.lg || i?.sm).map((i) => ({ lg: i.lg || i.sm, sm: i.sm || i.lg, ...(i.xs ? { xs: i.xs } : {}), ...(i.og ? { og: i.og } : {}), alt: i.alt || r.name, kind: i.kind === 'card' ? 'card' : 'photo', ...(['attar', 'perfume'].includes(i.for) ? { for: i.for } : {}), url: true }))
-        : null,
+      // photos managed in the admin panel (none, or out of date = the bundled photos)
+      images,
       featured: Boolean(r.featured),
     };
   });
