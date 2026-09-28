@@ -190,10 +190,17 @@ const variantsOf = (row) =>
 
 export const UNREVIEWED = [];
 
+// The client's decision (28 Sep 2026): every fragrance in the shop is labelled
+// Inspired, so none is ever presented as another house's original. The
+// per-name flags in NAMES are kept for reference; set this to false to use
+// them (Raza Original for the others) again.
+export const ALL_INSPIRED = true;
+
 export const PRODUCTS = CATALOG.products.map((row) => {
   const known = NAMES[row.sheetName];
   if (!known) UNREVIEWED.push(row.sheetName);
-  const [name, inspired = false] = known || [titleCase(row.sheetName)];
+  const [name, flagged = false] = known || [titleCase(row.sheetName)];
+  const inspired = ALL_INSPIRED || flagged;
   const variants = variantsOf(row);
   const prices = variants.map((v) => v.price).filter((n) => n != null);
   const id = `${row.category}-${slug(name)}`;

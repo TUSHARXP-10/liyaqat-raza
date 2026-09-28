@@ -181,7 +181,7 @@ export async function productEditor({ page, params, store, guard, setTitle, go }
   }
   const next = (cat) => Math.max(0, ...store.data.products.filter((p) => p.category === cat).map((p) => p.number)) + 1;
   const draft = saved ? clone(saved) : {
-    id: null, name: '', sheet_name: null, category: 'regular', number: next('regular'), inspired: false, description: '',
+    id: null, name: '', sheet_name: null, category: 'regular', number: next('regular'), inspired: true, description: '',
     variants: normaliseSizes(STANDARD_SIZES), images: [], active: true, featured: false, stock: null, price: null,
   };
   // sizes as editable rows (price text as typed)

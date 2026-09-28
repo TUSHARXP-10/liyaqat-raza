@@ -339,10 +339,15 @@ function initGrid({ lenis, quickView }) {
     refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 220);
   };
 
+  // the Raza originals / Inspired filter only when the shop has both
+  const mixedOrigins = () => {
+    const all = catalog.list();
+    return all.some((p) => p.inspired) && all.some((p) => !p.inspired);
+  };
   // one filter pass; `skip` leaves one filter out (for the counts on tabs/chips)
   const filtered = (skip = null) => catalog.list()
     .filter((p) => skip === 'cat' || state.cat === 'all' || p.category === state.cat)
-    .filter((p) => skip === 'origin' || state.origin === 'all' || (state.origin === 'inspired' ? p.inspired : !p.inspired))
+    .filter((p) => skip === 'origin' || state.origin === 'all' || !mixedOrigins() || (state.origin === 'inspired' ? p.inspired : !p.inspired))
     .filter((p) => skip === 'saved' || !state.saved || wishlist.has(p.id))
     .map((p) => ({ p, s: state.q ? score(p, state.q) : 1 }))
     .filter((x) => x.s > 0);
@@ -380,7 +385,7 @@ function initGrid({ lenis, quickView }) {
     }).join('');
 
     const byOrigin = filtered('origin').map((x) => x.p);
-    chipsEl.innerHTML = ORIGINS.map((o) => {
+    chipsEl.innerHTML = (mixedOrigins() ? ORIGINS : []).map((o) => {
       const n = byOrigin.filter((p) => (o.key === 'inspired' ? p.inspired : !p.inspired)).length;
       const on = state.origin === o.key;
       return `<button type="button" class="chip${on ? ' is-on' : ''}" aria-pressed="${on}" data-origin="${o.key}">${o.label}<small>${n}</small></button>`;
