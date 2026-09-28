@@ -24,6 +24,25 @@ export const SHOP = {
   pageSize: 12,
 };
 
+// The shop as Google should know it (Search, Maps, the business panel). Keep
+// every detail exactly as on the Google Business Profile: the same name,
+// address and phone everywhere is what local search rewards. Empty fields are
+// left out of the pages until they're filled in.
+export const BUSINESS = {
+  name: 'Raza Perfume',
+  alternateNames: ['Raza Perfume NX2', 'Raza Perfume Kalyan', 'Raza Perfumes'],
+  street: '', // e.g. 'Shop 12, NX2 …'
+  locality: 'Kalyan',
+  region: 'Maharashtra',
+  postalCode: '',
+  country: 'IN',
+  geo: null, // { lat: 19.2403, lng: 73.1305 } from the shop's Google Maps pin
+  mapsUrl: '', // the "Share" link of the Google Maps listing
+  // e.g. [{ days: ['Monday', 'Tuesday'], opens: '10:00', closes: '22:00' }]
+  hours: [],
+  since: 1986,
+};
+
 export const VARIANTS = [
   {
     key: 'base',

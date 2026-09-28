@@ -10,9 +10,8 @@ import { REELS } from '../blog/reels.js';
 import MEDIA from '../blog/media.json' with { type: 'json' };
 import { initCursor } from '../ui/cursor.js';
 import { initConsent } from '../ui/consent.js';
-import { originLabel, originLine, seoName, seoOrigin } from '../shop/origin.js';
-
-const SITE = 'https://www.razaperfume.com';
+import { originLabel, originLine } from '../shop/origin.js';
+import { SITE, COLLECTION_PAGE, productTitle, productDescription, productLd, breadcrumbLd } from '../shop/seo.js';
 import { SHOP } from '../content.js';
 
 // A page per fragrance: /p/<id>. Gallery (photos + films), the Perfume /
@@ -95,7 +94,7 @@ function render(prod) {
   let gallery = galleryFor(shownKind);
 
   // crumbs + SEO
-  $('[data-crumbs]').innerHTML = `<a href="/">Home</a><span>/</span><a href="/#shop">Shop</a><span>/</span><a href="/?c=${prod.category}#shop">${esc(collectionOf(prod))}</a><span>/</span><b>${esc(prod.name)}</b>`;
+  $('[data-crumbs]').innerHTML = `<a href="/">Home</a><span>/</span><a href="/#shop">Shop</a><span>/</span><a href="${COLLECTION_PAGE[prod.category]?.path || `/?c=${prod.category}#shop`}">${esc(collectionOf(prod))}</a><span>/</span><b>${esc(prod.name)}</b>`;
   seo(prod, gallery[0]);
 
   /* ------------------------------------------------------------ gallery */
@@ -107,9 +106,16 @@ function render(prod) {
     stage.classList.toggle('is-film', Boolean(g.film));
     stage.classList.toggle('is-card', Boolean(g.card));
     stage.classList.toggle('is-render', Boolean(g.render));
-    stage.innerHTML = g.film
-      ? `<video src="${esc(g.film.video)}" poster="${esc(g.film.poster)}" controls autoplay playsinline aria-label="Film: ${esc(g.film.title)}"></video>`
-      : `<img src="${esc(g.src)}" alt="${esc(g.alt)}" width="1200" height="1200" />${g.note ? `<p class="media-note">${esc(g.note)}</p>` : ''}`;
+    // the prerendered page already shows the first photo: keep it (no second fade-in)
+    const pre = !stage.dataset.shown && stage.querySelector('img');
+    stage.dataset.shown = '1';
+    if (pre && !g.film && pre.getAttribute('src') === g.src) {
+      if (g.note) pre.insertAdjacentHTML('afterend', `<p class="media-note">${esc(g.note)}</p>`);
+    } else {
+      stage.innerHTML = g.film
+        ? `<video src="${esc(g.film.video)}" poster="${esc(g.film.poster)}" controls autoplay playsinline aria-label="Film: ${esc(g.film.title)}"></video>`
+        : `<img src="${esc(g.src)}" alt="${esc(g.alt)}" width="1200" height="1200" />${g.note ? `<p class="media-note">${esc(g.note)}</p>` : ''}`;
+    }
     $$('button', thumbs).forEach((b, j) => {
       b.classList.toggle('is-on', j === state.at);
       b.setAttribute('aria-pressed', j === state.at);
@@ -335,35 +341,27 @@ function render(prod) {
   }
 }
 
+// the same title, description and structured data as the prerendered page
+// (src/shop/seo.js), with the live prices; fragrances added in the admin
+// panel get theirs here
 function seo(prod, first) {
-  const collection = collectionOf(prod);
-  const title = `${seoName(prod)} — ${collection} | Raza Perfume`;
-  const sizes = hasSizes(prod) ? `Perfume ${prod.variants.filter((v) => v.type === 'perfume').map((v) => v.ml).join('/')} ml and attar ${prod.variants.filter((v) => v.type === 'attar').map((v) => v.ml).join('/')} ml. ` : '';
-  const text = `${seoOrigin(prod)}, from the ${collection.toLowerCase()} of Raza Perfume NX2, Kalyan. ${sizes}Order on WhatsApp.`;
-  document.title = title;
-  document.querySelector('meta[name="description"]')?.setAttribute('content', text);
+  document.title = productTitle(prod);
+  document.querySelector('meta[name="description"]')?.setAttribute('content', productDescription(prod));
   // search engines get the live domain, whichever copy of the site this is
   const url = `${SITE}/p/${encodeURIComponent(prod.id)}`;
   document.querySelector('[data-canonical]')?.setAttribute('href', url);
-  const prices = (hasSizes(prod) ? prod.variants.map((v) => v.price) : [prod.price]).filter((n) => n != null);
-  const ld = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: seoName(prod),
-    description: `${originLine(prod)} ${prod.description || ''}`.trim(),
-    image: new URL(first.src || first.thumb, location.origin).href,
-    brand: { '@type': 'Brand', name: 'Raza Perfume' },
-    sku: prod.id,
-    category: collection,
-    ...(prices.length ? {
-      offers: {
-        '@type': 'AggregateOffer', priceCurrency: 'INR', lowPrice: Math.min(...prices), highPrice: Math.max(...prices),
-        offerCount: prices.length, availability: soldOut(prod) ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock', url,
-      },
-    } : {}),
+  const image = new URL(first.src || first.thumb, SITE).href;
+  const cPage = COLLECTION_PAGE[prod.category];
+  const put = (key, data) => {
+    let s = document.head.querySelector(`script[data-ld="${key}"]`);
+    if (!s) {
+      s = document.createElement('script');
+      s.type = 'application/ld+json';
+      s.dataset.ld = key;
+      document.head.append(s);
+    }
+    s.textContent = JSON.stringify(data);
   };
-  const s = document.createElement('script');
-  s.type = 'application/ld+json';
-  s.textContent = JSON.stringify(ld);
-  document.head.append(s);
+  put('product', productLd(prod, { image, soldOut: soldOut(prod) }));
+  put('crumbs', breadcrumbLd([['Home', '/'], ...(cPage ? [[cPage.label, cPage.path]] : []), [prod.name, `/p/${prod.id}`]]));
 }

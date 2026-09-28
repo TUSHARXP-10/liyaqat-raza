@@ -37,7 +37,7 @@ export const SECTIONS = [
       ...slide(1, ['Scents', 'that tell', 'stories'], 'Base — The Original Essence'),
       ...slide(2, ['Rich.', 'Bold.', 'Timeless.'], 'Oud — Rich. Bold. Timeless.'),
       ...slide(3, ['Pure.', 'Elegant.', 'Everlasting.'], 'Musk — Pure. Elegant. Everlasting.'),
-      { key: 'hero.lead', label: 'Intro paragraph', type: 'textarea', default: 'Rooted in tradition. Created for today. Raza Perfume brings you the finest scents, inspired by heritage, designed for modern gentlemen.', bind: { sel: '[data-hero-lead]' } },
+      { key: 'hero.lead', label: 'Intro paragraph', type: 'textarea', default: 'Rooted in tradition. Created for today. Since 1986, Raza Perfume in Kalyan brings you the finest attars and perfumes, inspired by heritage, designed for modern gentlemen.', bind: { sel: '[data-hero-lead]' } },
       { key: 'hero.aside', label: 'Side line', type: 'lines', count: 3, default: ['A legacy', 'in every', 'drop'], bind: { sel: '[data-hero-aside]', lines: 'span' } },
     ],
   },
@@ -130,8 +130,8 @@ export const SECTIONS = [
     title: 'Search & sharing',
     note: 'What Google and link previews show.',
     fields: [
-      { key: 'seo.title', label: 'Page title', type: 'text', default: 'Raza Perfume — Scents That Tell Stories', max: 70 },
-      { key: 'seo.description', label: 'Description', type: 'textarea', default: 'Raza Perfume. Rooted in tradition since 1986 — rare fragrances inspired by Arabian heritage, crafted for the modern gentleman.', max: 170 },
+      { key: 'seo.title', label: 'Page title', type: 'text', default: 'Raza Perfume Kalyan | Attars & Inspired Perfumes Since 1986', max: 70 },
+      { key: 'seo.description', label: 'Description', type: 'textarea', default: 'Raza Perfume, Kalyan: 145 attars and inspired perfumes since 1986. Attar from ₹150, perfume from ₹250. Order on WhatsApp; delivery across India.', max: 170 },
     ],
   },
 ];

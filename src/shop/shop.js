@@ -240,7 +240,7 @@ function productCard(p, query = '') {
   </button>
   ${heartButton(p, 'heart product__heart')}
   <div class="product__body">
-    <h3 class="product__name"><button type="button" data-view="${esc(p.id)}">${highlight(p.name, query, esc)}</button></h3>
+    <h3 class="product__name"><a href="/p/${encodeURIComponent(p.id)}" data-view="${esc(p.id)}">${highlight(p.name, query, esc)}</a></h3>
     <p class="product__meta"><span class="dot dot--${p.category}" aria-hidden="true"></span>${collectionOf(p)}<span class="product__tag product__tag--${p.inspired ? 'inspired' : 'original'}">${originLabel(p)}</span></p>
     ${hasSizes(p) ? `<div class="product__opts" data-opts="${esc(p.id)}">${optionsBlock(p)}</div>` : ''}
     <div class="product__foot">
@@ -595,7 +595,13 @@ function initGrid({ lenis, quickView }) {
     const save = e.target.closest('[data-save]');
     if (save) return toggleSaved(save.dataset.save);
     const view = e.target.closest('[data-view]');
-    if (view) return quickView.open(view.dataset.view, results(), { v: picks.get(view.dataset.view) });
+    if (view) {
+      // the name is a real link to the fragrance's page: Ctrl/⌘-click opens it
+      // in a new tab, a plain click opens quick view
+      if (view.tagName === 'A' && (e.ctrlKey || e.metaKey || e.shiftKey || e.button)) return;
+      e.preventDefault();
+      return quickView.open(view.dataset.view, results(), { v: picks.get(view.dataset.view) });
+    }
     // Perfume | Attar and size, right on the card
     const type = e.target.closest('[data-pick-type]');
     const size = e.target.closest('[data-pick-size]');

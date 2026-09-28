@@ -2,18 +2,20 @@
 //   LICENSE.md        → /license
 //   legal/privacy.md  → /privacy
 //   legal/terms.md    → /terms
-// Handles the small Markdown subset they use: headings, paragraphs, lists,
-// tables, bold, links and rules.
+// Handles the small Markdown subset they (and the guides, scripts/seo-pages.mjs)
+// use: headings, paragraphs, lists, numbered lists, tables, bold, italics,
+// links and rules.
 import { readFileSync } from 'node:fs';
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const inline = (s) =>
   esc(s)
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[^*\w])\*([^*\s][^*]*?)\*(?![*\w])/g, '$1<em>$2</em>')
     .replace(/\[([^\][]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
     .replace(/\[([^\][]+)\]\((\/[^\s)]*)\)/g, '<a href="$2">$1</a>');
 
-function markdownToHtml(md) {
+export function markdownToHtml(md) {
   const out = [];
   const lines = md.replace(/\r\n/g, '\n').split('\n');
   let para = [];
@@ -33,6 +35,14 @@ function markdownToHtml(md) {
       while (i < lines.length && lines[i].startsWith('- ')) items.push(`<li>${inline(lines[i++].slice(2))}</li>`);
       i--;
       out.push(`<ul>${items.join('')}</ul>`);
+      continue;
+    }
+    if (/^\d+\.\s/.test(line)) {
+      flush();
+      const items = [];
+      while (i < lines.length && /^\d+\.\s/.test(lines[i])) items.push(`<li>${inline(lines[i++].replace(/^\d+\.\s+/, ''))}</li>`);
+      i--;
+      out.push(`<ol>${items.join('')}</ol>`);
       continue;
     }
     if (line.startsWith('|')) {

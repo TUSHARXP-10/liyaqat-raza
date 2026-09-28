@@ -149,9 +149,9 @@ Every fragrance has its own page, for example `/p/regular-cool-water` or `/p/lux
   Ask on WhatsApp for that exact size, Share, and "More from the collection". On phones, a buy
   bar stays in reach.
 - **SEO and sharing:** the build writes a real page per fragrance (`dist/p/<id>.html`) with its
-  own title, description and photo, so Google and WhatsApp / Instagram link previews show the
-  fragrance. It also adds Google product data (price range, availability) and lists every page
-  in the sitemap.
+  own title, description and photo, its details, sizes and prices, related fragrances and an
+  "About" section in the HTML, plus Google product data (an offer per size) and breadcrumbs.
+  See [Search (SEO)](#search-seo).
 - **Links:** old links still land on the right page after a fragrance moves collection. The
   shop's quick view has "View full details", share links point here, and so does "Shop this
   fragrance" on the Blogs page.
@@ -243,7 +243,7 @@ live domain and `https://www.razaperfume.com/admin` is an allowed redirect (pass
 | Analytics | Vercel Web Analytics + Speed Insights (cookieless), gated by the notice |
 | Meta titles/descriptions, social preview | Every page; each product page has its own title, description and photo (JPEG) for link previews |
 | Favicon | `favicon.ico`, PNG icons, `site.webmanifest` |
-| Sitemap, robots.txt | Generated at build: home, Blogs, every product, Privacy, Terms |
+| Sitemap, robots.txt | Generated at build: home, the landing pages and guides, every product (with its photo), Blogs, Privacy, Terms |
 | Images | WebP in three sizes (thumbnails, cards, large views), lazy-loaded, every image has alt text |
 | Speed | Fonts load without blocking; the Raza mark paints immediately while the intro loads |
 | Contrast, mobile, 404 | Small print lightened to ≥4.5:1; no sideways scrolling at 360–1440 px; custom 404 page |
@@ -251,6 +251,41 @@ live domain and `https://www.razaperfume.com/admin` is an allowed redirect (pass
 | Forms | The order form checks name (letters), phone (digits, 7–15) and city; the newsletter checks the email. Errors are announced and the field marked |
 | Spam protection | A hidden honeypot field in both forms; the database also validates everything and rate-limits orders (3 per phone per 10 minutes, 30 a minute) and sign-ups (20 a minute) |
 | One clear call to action | The opening screen leads with **Shop 145 fragrances**; the story is the quiet alternative |
+
+## Search (SEO)
+
+Everything below is built from the catalogue and `guides/`, so it stays up to date with each
+deploy. `scripts/seo-pages.mjs` writes the pages; `src/shop/seo.js` holds the wording shared
+with the product page script.
+
+| What | Where |
+|------|-------|
+| The shop for Google Search and Maps | `BUSINESS` in `src/content.js` → schema.org `Store` + `WebSite` on the home page, the address in every footer. **Fill in the street, PIN code, map pin, Maps link and opening hours exactly as on the Google Business Profile.** Empty fields are left out |
+| Home page | Title and description lead with "Raza Perfume Kalyan", attar and perfume, and the prices |
+| Landing pages | `/attar`, `/perfumes`, `/oud`, `/luxury`, `/premium`, `/regular`: plain, fast HTML with prices, guidance and every fragrance linked. In every footer |
+| Guides | `/guides` and one page per file in `guides/*.md` (frontmatter: `title`, `description`, `short`, `order`, `date`, `related`). `{{price-table}}` inserts the current prices |
+| Product pages | Title "Inspired by X · Perfume & Attar", description with prices, Product data with an offer per size, breadcrumbs, and the content in the HTML (readable without JavaScript) |
+| Shop cards | The fragrance name is a real link to its page (a plain click still opens quick view) |
+| Sitemap | `/sitemap.xml`, with each fragrance's photo for Google Images |
+| IndexNow (Bing, Yandex) | `npm run indexnow` after a deploy sends every page in the live sitemap; the key file is `public/4592bd9d78cd738cf45fed9c9b4a3e6a.txt` |
+| Link check | The build warns about any link in the landing pages or guides to a page that doesn't exist |
+
+**Adding a guide:** copy a file in `guides/`, change the frontmatter and text, build. It is
+added to `/guides`, every footer and the sitemap. Link to fragrances as `/p/<id>`.
+
+**Outside the code (the biggest levers for local search):**
+
+1. **Google Business Profile** for the shop (business.google.com): category *Perfume store*,
+   the same name, address and phone as the site, hours, photos, the website link, and a steady
+   flow of customer reviews (ask every happy customer; reply to every review).
+2. **Google Search Console** (search.google.com/search-console): add the domain
+   `razaperfume.com` (DNS TXT record at Hostinger), submit `https://www.razaperfume.com/sitemap.xml`,
+   then use *URL inspection → Request indexing* for the home page and the landing pages.
+3. **Bing Webmaster Tools**: import the site from Search Console, then run `npm run indexnow`.
+4. **Listings with the same name, address and phone:** Justdial, Sulekha, IndiaMART,
+   Apple Business Connect, Bing Places, Facebook page.
+5. **Instagram and WhatsApp Business:** link `https://www.razaperfume.com` in the bio and the
+   catalogue; share product pages (`/p/…`), not just photos.
 
 ## The story, chapter by chapter
 
@@ -320,6 +355,14 @@ If the logo changes, re-trace it, then run `npm run render:products` and `npm ru
 - **House bottle photos**: fragrances without a photo of their own show a Raza house bottle, marked
   "Shown in a Raza house bottle". Add their own photos to `product image/` as they are taken.
 - The newsletter stores emails once Supabase is connected; until then it points to Instagram.
+- **The guides** (`guides/*.md`) and the landing-page copy are written from general fragrance
+  knowledge and what the site already says about Raza (since 1986, Kalyan, Kannauj, WhatsApp
+  orders, prices). Have the client read them, and add their own experience from the counter:
+  that is what makes guides rank.
+- **The shop's address, PIN code, map pin and hours** are still empty in `BUSINESS`
+  (`src/content.js`); the site says "Kalyan, Maharashtra" until they're filled in.
+- **Product descriptions:** none of the 145 fragrances has its own description yet. A few lines
+  per fragrance (notes, when to wear it), added in the admin panel, make each page stronger in search.
 
 ## License
 

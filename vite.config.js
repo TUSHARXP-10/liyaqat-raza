@@ -1,11 +1,17 @@
 import { defineConfig } from 'vite';
 import { readFileSync } from 'node:fs';
 import { legalPage, LEGAL } from './scripts/license-page.mjs';
-import { seoName, seoOrigin } from './src/shop/origin.js';
+import { seoPages, productPage, siteLdTag, addressLine, brokenLinks } from './scripts/seo-pages.mjs';
 
 // "Browse 145 fragrances" in link previews and page copy follows the spreadsheet
-const productCount = () => JSON.parse(readFileSync(new URL('./src/shop/catalog.json', import.meta.url), 'utf8')).products.length;
+const catalogFile = () => JSON.parse(readFileSync(new URL('./src/shop/catalog.json', import.meta.url), 'utf8'));
+const productCount = () => catalogFile().products.length;
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+// the lowest price of a kind across the catalogue ("attar from ₹150")
+const lowest = (type) => {
+  const all = catalogFile().products.flatMap((p) => (p.variants || []).filter((v) => v.type === type && v.price != null).map((v) => Number(v.price)));
+  return all.length ? `₹${Math.min(...all).toLocaleString('en-IN')}` : '';
+};
 
 // Public site address for link previews, canonical URLs and the sitemap: the
 // live domain, so every copy of the site (including *.vercel.app) points
@@ -13,19 +19,37 @@ const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 const site = (process.env.SITE_URL || 'https://www.razaperfume.com').replace(/\/$/, '');
 
 const loadProducts = async () => (await import(new URL('./src/shop/products.js', import.meta.url).href)).PRODUCTS;
+const loadPhotos = async () => (await import(new URL('./src/shop/look.js', import.meta.url).href)).photosOf;
+// the landing pages and guides (scripts/seo-pages.mjs)
+const buildSeoPages = async () => seoPages(await loadProducts(), await loadPhotos());
 
 function siteMeta() {
   return {
     name: 'raza-site-meta',
-    transformIndexHtml: (html) => html.replaceAll('__SITE_URL__', site).replaceAll('__PRODUCT_COUNT__', productCount()),
+    transformIndexHtml: async (html) => html
+      .replaceAll('__SITE_URL__', site)
+      .replaceAll('__PRODUCT_COUNT__', productCount())
+      .replaceAll('__ATTAR_FROM__', lowest('attar'))
+      .replaceAll('__PERFUME_FROM__', lowest('perfume'))
+      .replaceAll('__ADDRESS__', addressLine())
+      .replace('<!--raza:site-ld-->', siteLdTag(await loadProducts())),
     // dev server: the same addresses as on Vercel (see vercel.json)
     //   /license, /privacy, /terms are rendered from Markdown · /blogs, /admin, /p/<fragrance>
+    //   /attar, /perfumes, /oud, /luxury, /premium, /regular, /guides[/<slug>]
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
         const legal = req.url.match(/^\/(license|privacy|terms)(\.html)?\/?(\?|$)/);
         if (!legal) return next();
         res.setHeader('Content-Type', 'text/html; charset=utf-8');
         res.end(legalPage(legal[1]));
+      });
+      server.middlewares.use(async (req, res, next) => {
+        const path = req.url.split(/[?#]/)[0].replace(/\/$/, '');
+        if (!/^\/(attar|perfumes|oud|luxury|premium|regular|guides)(\/[a-z0-9-]+)?$/.test(path)) return next();
+        const found = (await buildSeoPages()).find((p) => p.path === path);
+        if (!found) return next();
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.end(found.html);
       });
       server.middlewares.use((req, res, next) => {
         if (/^\/blogs\/?(\?|$)/.test(req.url)) req.url = req.url.replace(/^\/blogs\/?/, '/blogs.html');
@@ -41,12 +65,29 @@ function siteMeta() {
         fileName: 'robots.txt',
         source: `User-agent: *\nAllow: /\nDisallow: /tools/\nDisallow: /admin\n${site ? `\nSitemap: ${site}/sitemap.xml\n` : ''}`,
       });
+      const products = await loadProducts();
+      const photosOf = await loadPhotos();
+      const pages = await buildSeoPages();
+      const broken = brokenLinks(pages, products);
+      if (broken.length) this.warn(`links to pages that don't exist:\n  ${broken.join('\n  ')}`);
+      for (const pg of pages) this.emitFile({ type: 'asset', fileName: pg.file, source: pg.html });
       if (site) {
-        const urls = [['/', '1.0'], ['/blogs', '0.8'], ...(await loadProducts()).map((p) => [`/p/${p.id}`, '0.7']), ['/privacy', '0.3'], ['/terms', '0.3']];
+        // with each fragrance's photo, so Google Images can show it too
+        const photo = (p) => { const s = photosOf(p)[0]; return s ? `${site}/${s.og || s.lg}` : null; };
+        const urls = [
+          { u: '/' },
+          ...pages.filter((pg) => !pg.path.startsWith('/guides')).map((pg) => ({ u: pg.path })),
+          ...products.map((p) => ({ u: `/p/${p.id}`, img: photo(p) })),
+          { u: '/guides' },
+          ...pages.filter((pg) => pg.path.startsWith('/guides/')).map((pg) => ({ u: pg.path, mod: pg.lastmod })),
+          { u: '/blogs' },
+          { u: '/privacy' },
+          { u: '/terms' },
+        ];
         this.emitFile({
           type: 'asset',
           fileName: 'sitemap.xml',
-          source: `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(([u, pr]) => `  <url><loc>${site}${u}</loc><changefreq>weekly</changefreq><priority>${pr}</priority></url>`).join('\n')}\n</urlset>\n`,
+          source: `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${urls.map(({ u, img, mod }) => `  <url><loc>${site}${u}</loc>${mod ? `<lastmod>${mod}</lastmod>` : ''}${img ? `<image:image><image:loc>${esc(img)}</image:loc></image:image>` : ''}</url>`).join('\n')}\n</urlset>\n`,
         });
       }
     },
@@ -67,28 +108,12 @@ function productPages() {
       if (!page) return;
       // nested addresses (/p/…) need root-absolute asset links
       page.source = String(page.source).replace(/(src|href)="\.\/(?!\/)/g, '$1="/');
-      const LABEL = { regular: 'Regular collection', premium: 'Premium collection', luxury: 'Luxury collection' };
-      const { photosOf } = await import(new URL('./src/shop/look.js', import.meta.url).href);
-      for (const p of await loadProducts()) {
-        const collection = LABEL[p.category] || 'House signature';
-        const title = `${seoName(p)} — ${collection} | Raza Perfume`;
-        const kinds = [...new Set((p.variants || []).map((v) => v.type))].filter(Boolean).join(' and ');
-        const desc = `${seoOrigin(p)}, from the ${collection.toLowerCase()} of Raza Perfume NX2, Kalyan.${kinds ? ` Available as ${kinds}.` : ''} Order on WhatsApp.`;
-        // the photo the page opens on (its own, else the Raza house bottle photo)
-        // as a JPEG (og), which every link preview reads
-        const shot = photosOf(p)[0];
-        const file = shot?.og || shot?.lg;
-        const image = file ? `/${file}` : `/media/products/${p.id}.webp`;
-        const url = `${site}/p/${p.id}`;
-        const html = page.source
-          .replace(/<title>[^<]*<\/title>/, `<title>${esc(title)}</title>`)
-          .replace(/(<meta name="description" content=")[^"]*/, `$1${esc(desc)}`)
-          .replace(/(<meta property="og:title" content=")[^"]*/, `$1${esc(title)}`)
-          .replace(/(<meta property="og:description" content=")[^"]*/, `$1${esc(desc)}`)
-          .replace(/(<meta property="og:image" content=")[^"]*/, `$1${site}${image}`)
-          .replace(/(<meta property="og:url" content=")[^"]*/, `$1${url}`)
-          .replace(/(<link rel="canonical" href=")[^"]*/, `$1${url}`);
-        this.emitFile({ type: 'asset', fileName: `p/${p.id}.html`, source: html });
+      // title, description, the photo it opens on (as a JPEG, which every
+      // link preview reads), its details and prices, structured data
+      const products = await loadProducts();
+      const photosOf = await loadPhotos();
+      for (const p of products) {
+        this.emitFile({ type: 'asset', fileName: `p/${p.id}.html`, source: productPage(page.source, p, products, photosOf) });
       }
     },
   };
