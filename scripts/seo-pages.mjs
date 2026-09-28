@@ -283,6 +283,7 @@ article.prose h1{font-size:clamp(28px,4.4vw,44px)}
 .foot a{color:#cbbfa6;text-decoration:none}
 .foot a:hover{color:#ecd49a}
 .foot small{display:block;max-width:1180px;margin:30px auto 0;color:#9a8d77;font-size:12px}
+.foot small a{text-decoration:underline;text-decoration-color:rgba(203,191,166,.5)}
 @media (max-width:600px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}.top nav{gap:6px 16px;font-size:11px;letter-spacing:.14em}main{padding-top:24px}}
 `;
 
