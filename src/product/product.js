@@ -10,6 +10,9 @@ import { REELS } from '../blog/reels.js';
 import MEDIA from '../blog/media.json' with { type: 'json' };
 import { initCursor } from '../ui/cursor.js';
 import { initConsent } from '../ui/consent.js';
+import { originLabel, originLine, seoName, seoOrigin } from '../shop/origin.js';
+
+const SITE = 'https://www.razaperfume.com';
 import { SHOP } from '../content.js';
 
 // A page per fragrance: /p/<id>. Gallery (photos + films), the Perfume /
@@ -156,7 +159,8 @@ function render(prod) {
       <h1 class="pp__title">${esc(prod.name)}</h1>
       <button class="heart heart--lg" type="button" data-save aria-pressed="false" aria-label="Save to wishlist">${ICON_HEART}</button>
     </div>
-    ${prod.inspired ? '<p class="qv__tag">Inspired impression</p>' : ''}
+    <p class="qv__tag qv__tag--${prod.inspired ? 'inspired' : 'original'}">${esc(originLabel(prod))}</p>
+    <p class="qv__origin">${esc(originLine(prod))}</p>
     <p class="pp__desc">${esc(describe)}</p>
     <div class="qv__options" data-options ${hasSizes(prod) ? '' : 'hidden'}>
       <div class="qv__opt" data-types-wrap><p class="qv__opt-label" id="pp-type">Choose</p><div class="seg" role="radiogroup" aria-labelledby="pp-type" data-types></div></div>
@@ -333,19 +337,20 @@ function render(prod) {
 
 function seo(prod, first) {
   const collection = collectionOf(prod);
-  const title = `${prod.name} — ${collection} | Raza Perfume`;
+  const title = `${seoName(prod)} — ${collection} | Raza Perfume`;
   const sizes = hasSizes(prod) ? `Perfume ${prod.variants.filter((v) => v.type === 'perfume').map((v) => v.ml).join('/')} ml and attar ${prod.variants.filter((v) => v.type === 'attar').map((v) => v.ml).join('/')} ml. ` : '';
-  const text = prod.description || `${prod.name} from the ${collection.toLowerCase()} of Raza Perfume NX2, Kalyan. ${sizes}Order on WhatsApp.`;
+  const text = `${seoOrigin(prod)}, from the ${collection.toLowerCase()} of Raza Perfume NX2, Kalyan. ${sizes}Order on WhatsApp.`;
   document.title = title;
   document.querySelector('meta[name="description"]')?.setAttribute('content', text);
-  const url = `${location.origin}/p/${encodeURIComponent(prod.id)}`;
+  // search engines get the live domain, whichever copy of the site this is
+  const url = `${SITE}/p/${encodeURIComponent(prod.id)}`;
   document.querySelector('[data-canonical]')?.setAttribute('href', url);
   const prices = (hasSizes(prod) ? prod.variants.map((v) => v.price) : [prod.price]).filter((n) => n != null);
   const ld = {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: prod.name,
-    description: text,
+    name: seoName(prod),
+    description: `${originLine(prod)} ${prod.description || ''}`.trim(),
     image: new URL(first.src || first.thumb, location.origin).href,
     brand: { '@type': 'Brand', name: 'Raza Perfume' },
     sku: prod.id,

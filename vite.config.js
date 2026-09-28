@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import { readFileSync } from 'node:fs';
 import { legalPage, LEGAL } from './scripts/license-page.mjs';
+import { seoName, seoOrigin } from './src/shop/origin.js';
 
 // "Browse 145 fragrances" in link previews and page copy follows the spreadsheet
 const productCount = () => JSON.parse(readFileSync(new URL('./src/shop/catalog.json', import.meta.url), 'utf8')).products.length;
@@ -70,9 +71,9 @@ function productPages() {
       const { photosOf } = await import(new URL('./src/shop/look.js', import.meta.url).href);
       for (const p of await loadProducts()) {
         const collection = LABEL[p.category] || 'House signature';
-        const title = `${p.name} — ${collection} | Raza Perfume`;
+        const title = `${seoName(p)} — ${collection} | Raza Perfume`;
         const kinds = [...new Set((p.variants || []).map((v) => v.type))].filter(Boolean).join(' and ');
-        const desc = `${p.name} from the ${collection.toLowerCase()} of Raza Perfume NX2, Kalyan.${kinds ? ` Available as ${kinds}.` : ''} Order on WhatsApp.`;
+        const desc = `${seoOrigin(p)}, from the ${collection.toLowerCase()} of Raza Perfume NX2, Kalyan.${kinds ? ` Available as ${kinds}.` : ''} Order on WhatsApp.`;
         // the photo the page opens on (its own, else the Raza house bottle photo)
         // as a JPEG (og), which every link preview reads
         const shot = photosOf(p)[0];

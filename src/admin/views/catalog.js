@@ -202,7 +202,7 @@ export async function productEditor({ page, params, store, guard, setTitle, go }
             <label class="field"><span>Stock <small>(optional)</small></span><input class="input" name="stock" type="number" min="0" step="1" value="${draft.stock ?? ''}" placeholder="Not tracked" /></label>
           </div>
           <label class="field"><span>Description <small>shown in the product view</small></span><textarea class="textarea" name="description" maxlength="600" placeholder="A few words about the scent: its character, notes, when to wear it.">${esc(draft.description || '')}</textarea></label>
-          <label class="switch"><input type="checkbox" name="inspired"${draft.inspired ? ' checked' : ''} /><i></i>Inspired by another house (shows the “Inspired” tag)</label>
+          <label class="switch"><input type="checkbox" name="inspired"${draft.inspired ? ' checked' : ''} /><i></i>Inspired by another brand’s scent: the site labels it “Inspired” with “not the original, not affiliated”. Off = “Raza Original”. When in doubt, keep it on.</label>
         </div></section>
 
         <section class="card"><header class="card__head"><div><h2>Sizes &amp; prices</h2><p>Leave a price empty for “price on request”. Customers can still choose that size and ask on WhatsApp.</p></div></header>

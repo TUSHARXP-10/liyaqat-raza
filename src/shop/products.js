@@ -39,7 +39,7 @@ const NAMES = {
   'TOMMY GIRL': ['Tommy Girl', true],
   'JAGUAR BLACK': ['Jaguar Black', true],
   'GUCCI BAMBOO': ['Gucci Bamboo', true],
-  'BLACK EXCESS': ['Black Excess'],
+  'BLACK EXCESS': ['Black Excess', true], // Paco Rabanne Black XS
   'COOL GIRL': ['Cool Girl'],
   'RASASI ROYAL BLUE': ['Rasasi Royal Blue', true],
   'BLACK ORCHID': ['Black Orchid', true],
@@ -74,7 +74,7 @@ const NAMES = {
   'BRIGHT CRYSTAL': ['Bright Crystal', true],
   'T ROSE': ['T Rose'],
   'DEVID OFF CHAMPION': ['Davidoff Champion', true],
-  'BLUE LADY': ['Blue Lady'],
+  'BLUE LADY': ['Blue Lady', true], // Rasasi Blue Lady
   'ROYAL MIRAJ BROWN': ['Royal Miraj Brown'],
   'DOVE': ['Dove', true],
   'C 5': ['C5'],
@@ -92,7 +92,7 @@ const NAMES = {
   'TOM F OMBER LEATHER': ['Tom Ford Ombre Leather', true],
   'LOCOST': ['Lacoste', true],
   'LACOST ALLURE P HOME': ['Lacoste Allure Pour Homme', true],
-  'ICON': ['Icon'],
+  'ICON': ['Icon', true], // Dunhill Icon
   // Premium
   'T.F FUCKING FABOULOS': ['T.F. F*** Fabulous', true],
   'BULGARI TIGER': ['Bvlgari Tygar', true],
@@ -146,7 +146,7 @@ const NAMES = {
   'TOM FORD OUD SATIN MOOD': ['Tom Ford Oud Satin Mood', true],
   'PURPLE OUD': ['Purple Oud'],
   'COLLECTION OUD': ['Collection Oud'],
-  'OUD MOOD': ['Oud Mood'],
+  'OUD MOOD': ['Oud Mood', true], // Lattafa Oud Mood
   'TAM DAO': ['Tam Dao', true],
   'MUSK RIZALI': ['Musk Rizali'],
   'AFTERNOON SWIM': ['Afternoon Swim', true],

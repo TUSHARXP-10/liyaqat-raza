@@ -7,6 +7,7 @@ import { cart, limitFor } from './cart.js';
 import { wishlist } from './wishlist.js';
 import { score, suggest, highlight } from './search.js';
 import { tintFor, imageFor, photosOf, hasPhoto, assetBase } from './look.js';
+import { originLabel, originLine } from './origin.js';
 import { backendEnabled, fetchCatalog, submitOrder } from './backend.js';
 import { REELS } from '../blog/reels.js';
 import BLOG_MEDIA from '../blog/media.json' with { type: 'json' };
@@ -240,7 +241,7 @@ function productCard(p, query = '') {
   ${heartButton(p, 'heart product__heart')}
   <div class="product__body">
     <h3 class="product__name"><button type="button" data-view="${esc(p.id)}">${highlight(p.name, query, esc)}</button></h3>
-    <p class="product__meta"><span class="dot dot--${p.category}" aria-hidden="true"></span>${collectionOf(p)}${p.inspired ? '<span class="product__tag">Inspired</span>' : ''}</p>
+    <p class="product__meta"><span class="dot dot--${p.category}" aria-hidden="true"></span>${collectionOf(p)}<span class="product__tag product__tag--${p.inspired ? 'inspired' : 'original'}">${originLabel(p)}</span></p>
     ${hasSizes(p) ? `<div class="product__opts" data-opts="${esc(p.id)}">${optionsBlock(p)}</div>` : ''}
     <div class="product__foot">
       <div class="product__pricebox" data-price="${esc(p.id)}">${priceBlock(p)}</div>
@@ -772,7 +773,10 @@ function initQuickView({ lenis }) {
     renderMedia(p, size?.type ?? null);
     $('[data-qv-eyebrow]', root).textContent = `${collectionOf(p)} · No. ${pad(p.number)}`;
     $('[data-qv-title]', root).textContent = p.name;
-    $('[data-qv-tag]', root).hidden = !p.inspired;
+    const tag = $('[data-qv-tag]', root);
+    tag.textContent = originLabel(p);
+    tag.className = `qv__tag qv__tag--${p.inspired ? 'inspired' : 'original'}`;
+    $('[data-qv-origin]', root).textContent = originLine(p);
     $('[data-qv-desc]', root).textContent = describe(p);
     renderOptions(p, size);
     const unit = size ? size.price : p.price;
@@ -997,7 +1001,7 @@ function initDrawer({ lenis }) {
         <div class="cart__info">
           <p class="cart__name">${esc(p.name)}</p>
           ${size ? `<p class="cart__variant">${esc(size.label)}${unit != null && qty > 1 ? ` <span>· ${fmt(unit)} each</span>` : ''}</p>` : ''}
-          <p class="cart__meta">${collectionOf(p)}${lowStock(p) ? ` · <span class="cart__low">only ${p.stock} left</span>` : ''}</p>
+          <p class="cart__meta">${collectionOf(p)} · ${originLabel(p)}${lowStock(p) ? ` · <span class="cart__low">only ${p.stock} left</span>` : ''}</p>
           <div class="stepper stepper--sm" role="group" aria-label="Quantity of ${what}">
             <button type="button" data-dec aria-label="One less">−</button><span>${qty}</span><button type="button" data-inc aria-label="One more"${atMax ? ' disabled' : ''}>+</button>
           </div>

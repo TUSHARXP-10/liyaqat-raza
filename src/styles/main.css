@@ -1647,6 +1647,10 @@ html:not(.nav-away) .shop__controls { top: var(--nav-h); }
 .qv__title { font-family: var(--f-display); font-weight: 400; font-size: clamp(26px, 2.6vw, 40px); line-height: 1.15; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-hi); }
 .qv__tag { align-self: flex-start; padding: 4px 10px; border: 1px solid var(--line); font-size: 9.5px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--gold); }
 .qv__tag[hidden] { display: none; }
+/* Raza Original (gold, filled) vs Inspired (outlined), on every fragrance */
+.qv__tag--original, .product__tag--original { border-color: var(--gold); background: rgba(201, 164, 92, 0.14); color: var(--gold-hi); }
+.qv__tag--inspired, .product__tag--inspired { border-color: var(--line); color: var(--muted); }
+.qv__origin { margin: -2px 0 0; font-size: 12px; line-height: 1.6; color: var(--dim); }
 .qv__desc { color: var(--muted); }
 .qv__price { margin-top: 6px; font-family: var(--f-display); font-size: 22px; letter-spacing: 0.04em; color: var(--gold-hi); }
 .qv__price.is-request { font-family: var(--f-serif); font-style: italic; font-size: 22px; letter-spacing: 0; }
