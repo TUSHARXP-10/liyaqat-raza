@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { readFileSync } from 'node:fs';
 import { legalPage, LEGAL } from './scripts/license-page.mjs';
 import { seoPages, productPage, siteLdTag, addressLine, brokenLinks } from './scripts/seo-pages.mjs';
+import { BUSINESS } from './src/content.js';
 
 // "Browse 145 fragrances" in link previews and page copy follows the spreadsheet
 const catalogFile = () => JSON.parse(readFileSync(new URL('./src/shop/catalog.json', import.meta.url), 'utf8'));
@@ -32,6 +33,7 @@ function siteMeta() {
       .replaceAll('__ATTAR_FROM__', lowest('attar'))
       .replaceAll('__PERFUME_FROM__', lowest('perfume'))
       .replaceAll('__ADDRESS__', addressLine())
+      .replaceAll('__MAPS_URL__', BUSINESS.mapsUrl || 'https://www.google.com/maps/search/Raza+Perfume+NX2+Kalyan')
       .replace('<!--raza:site-ld-->', siteLdTag(await loadProducts())),
     // dev server: the same addresses as on Vercel (see vercel.json)
     //   /license, /privacy, /terms are rendered from Markdown · /blogs, /admin, /p/<fragrance>

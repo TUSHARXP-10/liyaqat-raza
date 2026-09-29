@@ -1228,6 +1228,8 @@ html.is-covered body > :not(.intro) * { animation-play-state: paused !important;
 .journey__kinds a { color: var(--gold); transition: color 0.3s; }
 .journey__kinds a:hover { color: var(--gold-hi); }
 .journey__place { margin-top: 12px; text-align: center; font-size: 12px; letter-spacing: 0.14em; color: var(--dim); }
+.journey__place a { color: var(--muted); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(201, 164, 92, 0.4); transition: color 0.3s; }
+.journey__place a:hover { color: var(--gold-hi); }
 .journey__bottom {
   display: grid;
   grid-template-columns: 1fr auto 1fr;

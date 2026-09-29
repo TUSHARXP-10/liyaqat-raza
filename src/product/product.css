@@ -83,6 +83,9 @@
 
 .pp__foot { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 24px 40px; max-width: 1320px; margin: 0 auto; padding: 48px var(--gutter) 60px; border-top: 1px solid var(--line-soft); font-size: 13px; }
 .pp__foot .logo__word { width: 150px; margin-bottom: 8px; }
+.pp__foot .muted { max-width: 420px; line-height: 1.6; }
+.pp__foot .muted a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(201, 164, 92, 0.4); }
+.pp__foot .muted a:hover { color: var(--gold-hi); }
 .pp__contact { display: grid; gap: 8px; }
 .pp__contact span { display: inline-block; min-width: 150px; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--dim); }
 .pp__contact a { color: var(--gold-hi); }

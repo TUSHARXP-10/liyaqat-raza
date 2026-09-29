@@ -28,17 +28,21 @@ export const SHOP = {
 // every detail exactly as on the Google Business Profile: the same name,
 // address and phone everywhere is what local search rewards. Empty fields are
 // left out of the pages until they're filled in.
+// From the shop's Google Business Profile "Raza Perfume NX2" (the Maps link in
+// its Instagram bio), checked 29 Sep 2026.
 export const BUSINESS = {
-  name: 'Raza Perfume',
-  alternateNames: ['Raza Perfume NX2', 'Raza Perfume Kalyan', 'Raza Perfumes'],
-  street: '', // e.g. 'Shop 12, NX2 …'
+  name: 'Raza Perfume NX2',
+  alternateNames: ['Raza Perfume', 'Raza Perfume Kalyan', 'Raza Perfumes'],
+  street: 'Shop no 1, Kalyan-Murbad Rd, near National Bakery, next to Saraswati Mandir School, Syndicate',
   locality: 'Kalyan',
   region: 'Maharashtra',
-  postalCode: '',
+  postalCode: '421301',
   country: 'IN',
-  geo: null, // { lat: 19.2403, lng: 73.1305 } from the shop's Google Maps pin
-  mapsUrl: '', // the "Share" link of the Google Maps listing
-  // e.g. [{ days: ['Monday', 'Tuesday'], opens: '10:00', closes: '22:00' }]
+  geo: { lat: 19.2399601, lng: 73.1427945 },
+  mapsUrl: 'https://www.google.com/maps?cid=6405203498827657814',
+  // The profile lists hours for Tuesday only (10:30 am–10 pm), so none are
+  // published until the week is confirmed, e.g.
+  // [{ days: ['Monday', 'Tuesday', …], opens: '10:30', closes: '22:00' }]
   hours: [],
   since: 1986,
 };

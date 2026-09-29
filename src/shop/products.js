@@ -1,5 +1,6 @@
 import CATALOG from './catalog.json' with { type: 'json' };
 import PHOTOS from './photos.json' with { type: 'json' };
+import { DESCRIPTIONS } from './descriptions.js';
 
 // Product catalogue.
 //
@@ -216,6 +217,7 @@ export const PRODUCTS = CATALOG.products.map((row) => {
     variants, // [] = sold in one size
     stock: row.quantity, // units · null = not tracked
     images: PHOTOS[id] || [], // real photos (npm run import:photos); none = studio render
+    description: DESCRIPTIONS[id] || null, // src/shop/descriptions.js
   };
 });
 

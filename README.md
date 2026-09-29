@@ -260,11 +260,11 @@ with the product page script.
 
 | What | Where |
 |------|-------|
-| The shop for Google Search and Maps | `BUSINESS` in `src/content.js` → schema.org `Store` + `WebSite` on the home page, the address in every footer. **Fill in the street, PIN code, map pin, Maps link and opening hours exactly as on the Google Business Profile.** Empty fields are left out |
+| The shop for Google Search and Maps | `BUSINESS` in `src/content.js` → schema.org `Store` (name, address, map pin and Maps link exactly as on the Google Business Profile "Raza Perfume NX2") + `WebSite` on the home page; the address, linked to Google Maps, in every footer. Keep it identical to the profile. Opening hours go in `hours` once the profile has the full week |
 | Home page | Title and description lead with "Raza Perfume Kalyan", attar and perfume, and the prices |
 | Landing pages | `/attar`, `/perfumes`, `/oud`, `/luxury`, `/premium`, `/regular`: plain, fast HTML with prices, guidance and every fragrance linked. In every footer |
 | Guides | `/guides` and one page per file in `guides/*.md` (frontmatter: `title`, `description`, `short`, `order`, `date`, `related`). `{{price-table}}` inserts the current prices |
-| Product pages | Title "Inspired by X · Perfume & Attar", description with prices, Product data with an offer per size, breadcrumbs, and the content in the HTML (readable without JavaScript) |
+| Product pages | Title "Inspired by X · Perfume & Attar", description with prices, Product data with an offer per size, breadcrumbs, and the content in the HTML (readable without JavaScript). Each fragrance's own description comes from `src/shop/descriptions.js` |
 | Shop cards | The fragrance name is a real link to its page (a plain click still opens quick view) |
 | Sitemap | `/sitemap.xml`, with each fragrance's photo for Google Images |
 | IndexNow (Bing, Yandex) | `npm run indexnow` after a deploy sends every page in the live sitemap; the key file is `public/4592bd9d78cd738cf45fed9c9b4a3e6a.txt` |
@@ -275,9 +275,10 @@ added to `/guides`, every footer and the sitemap. Link to fragrances as `/p/<id>
 
 **Outside the code (the biggest levers for local search):**
 
-1. **Google Business Profile** for the shop (business.google.com): category *Perfume store*,
-   the same name, address and phone as the site, hours, photos, the website link, and a steady
-   flow of customer reviews (ask every happy customer; reply to every review).
+1. **Google Business Profile** "Raza Perfume NX2" (business.google.com; already listed, Perfume
+   store, 4.9★): add the website `https://www.razaperfume.com`, the opening hours for every day
+   (only Tuesday is set), photos, and keep a steady flow of customer reviews (ask every happy
+   customer; reply to every review).
 2. **Google Search Console** (search.google.com/search-console): add the domain
    `razaperfume.com` (DNS TXT record at Hostinger), submit `https://www.razaperfume.com/sitemap.xml`,
    then use *URL inspection → Request indexing* for the home page and the landing pages.
@@ -356,10 +357,15 @@ If the logo changes, re-trace it, then run `npm run render:products` and `npm ru
   knowledge and what the site already says about Raza (since 1986, Kalyan, Kannauj, WhatsApp
   orders, prices). Have the client read them, and add their own experience from the counter:
   that is what makes guides rank.
-- **The shop's address, PIN code, map pin and hours** are still empty in `BUSINESS`
-  (`src/content.js`); the site says "Kalyan, Maharashtra" until they're filled in.
-- **Product descriptions:** none of the 145 fragrances has its own description yet. A few lines
-  per fragrance (notes, when to wear it), added in the admin panel, make each page stronger in search.
+- **The shop's details** in `BUSINESS` (`src/content.js`) come from its Google Business Profile
+  "Raza Perfume NX2" (address, PIN, map pin, Maps link). The profile lists **opening hours for
+  Tuesday only**, so no hours are published: set the full week on the profile, then add it to
+  `hours`. The profile also has **no website**: add `https://www.razaperfume.com` there.
+- **Product descriptions** (`src/shop/descriptions.js`): 73 of 145 fragrances have one, describing
+  the published scent profile of the fragrance they're inspired by, or what their name says
+  (rose, oud, sandal, musk…). The other 72 (local or ambiguous names such as Madina, Green
+  Ajmeri, Arrow Magnet, "Versace") need a line from the client. A description saved in the
+  admin panel replaces the one in the file.
 
 ## License
 

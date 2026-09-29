@@ -1,0 +1,90 @@
+// A line or two about each fragrance: its scent and when to wear it. Shown on
+// its page, in quick view, and read by search engines (a page with its own
+// words ranks better than one that repeats a template).
+//
+// Inspired fragrances describe the scent profile of the fragrance they are
+// inspired by, as widely published; the others describe what their name says.
+// Fragrances not listed here (local names such as Madina or Green Ajmeri, and
+// names that could mean more than one fragrance) keep the collection's
+// standard line until the client supplies theirs. A description saved in the
+// admin panel replaces the one here.
+export const DESCRIPTIONS = {
+  // Regular
+  'regular-cool-water': 'Fresh and aquatic: cool mint, lavender and sea notes over sandalwood and musk. A classic for hot days.',
+  'regular-desire': 'Warm and fruity: crisp apple and citrus over rose and woods, settling into a soft vanilla and musk base.',
+  'regular-invictus': 'Fresh and sporty: grapefruit and a salty marine accord over bay leaf, with guaiac wood and ambergris in the base.',
+  'regular-polo-sport': 'Clean and energetic: citrus, mint and lavender over marine notes and musk. Made for the gym bag and hot afternoons.',
+  'regular-polo-red': 'Bright and warm: red grapefruit and cranberry over saffron, with coffee and amber in the base.',
+  'regular-be-delicious': 'Crisp and green: a bite of apple and cucumber with grapefruit and soft florals, on a light woody base.',
+  'regular-tommy-girl': 'Light and airy: citrus, apple blossom and camellia over fresh florals and soft woods. An easy everyday scent.',
+  'regular-gucci-bamboo': 'Soft and elegant: bergamot and lily over orange blossom and ylang-ylang, with sandalwood and vanilla.',
+  'regular-black-orchid': 'Dark and opulent: black truffle and black orchid over patchouli, dark chocolate, incense and vanilla. One for the evening.',
+  'regular-lacoste-white': 'Clean and crisp: grapefruit, rosemary and cardamom over cedar and soft suede, like a fresh white shirt.',
+  'regular-versace-eros': 'Bold and sweet: fresh mint and green apple over tonka bean, with a rich vanilla base. Loved for nights out.',
+  'regular-212-sexy-men': 'Warm and spicy-sweet: pepper and mandarin over soft florals, with vanilla, musk and woods.',
+  'regular-bombshell': 'Bright and fruity-floral: passion fruit and grapefruit with peony and vanilla orchid, on a soft musky base.',
+  'regular-bvlgari-black': 'Smoky and unusual: black tea and a leathery, rubbery accord, softened by vanilla and amber.',
+  'regular-ck-one': 'Clean and easy: citrus and green tea over soft florals and musk. The original fresh scent for anyone.',
+  'regular-mont-blanc-legend': 'Fresh and polished: lavender, bergamot and green apple over oakmoss and a warm tonka base.',
+  'regular-allure-sport': 'Fresh and energetic: orange and sea notes over pepper and cedar, finished with white musk and tonka.',
+  'regular-poison': 'Dramatic and spicy: dark plum and coriander over tuberose and cinnamon, with incense and vanilla. An evening classic.',
+  'regular-gucci-bloom': 'White florals in full bloom: tuberose and jasmine with a soft, powdery floral finish.',
+  'regular-gucci-flora': 'Fresh and feminine: citrus and peony over rose and osmanthus, on sandalwood and patchouli.',
+  'regular-bright-crystal': 'Light and luminous: pomegranate and yuzu with peony and magnolia over soft musk.',
+  'regular-davidoff-champion': 'Crisp and green: citrus and galbanum over sage, with oakmoss and cedar.',
+  'regular-white-oud': 'A lighter, cleaner take on oud: woody warmth without the heaviness, easy to wear by day.',
+  'regular-red-rose': 'A rich red rose: velvety, romantic and full, as lovely in an attar as in a spray.',
+  'regular-ruh-gulab': 'Pure rose in the classic ruh gulab style: soft, deep and romantic. A traditional attar favourite.',
+  'regular-dior-sauvage': 'Fresh and spicy: bright bergamot and pepper over a warm, woody ambroxan base. An easy all-rounder for day and evening.',
+  'regular-bleu-de-chanel': 'Fresh and woody: grapefruit, lemon and mint over ginger and nutmeg, with incense, cedar and sandalwood.',
+  'regular-creed-aventus': 'Fruity and smoky: pineapple, black currant and bergamot over birch and jasmine, with musk, oakmoss and ambergris.',
+  'regular-terre-d-hermes': 'Earthy and mineral: orange and grapefruit over pepper and a flinty accord, with vetiver and cedar.',
+  'regular-versace-dylan-blue': 'Fresh and aromatic: bergamot, grapefruit and fig leaf over ambroxan and pepper, with incense and tonka.',
+  'regular-one-million': 'Warm and spicy-sweet: grapefruit and mint over cinnamon and rose, with leather and amber. Made to be noticed.',
+  'regular-chocolate': 'A gourmand treat built around rich chocolate: sweet, warm and cosy.',
+  'regular-biscuit': 'Sweet and comforting, with a warm, biscuity gourmand character.',
+  'regular-tom-ford-ombre-leather': 'Smooth leather with cardamom and jasmine over amber, moss and patchouli. Warm, dry and confident.',
+
+  // Premium
+  'premium-t-f-f-fabulous': 'Leathery and smooth: lavender, clary sage and bitter almond over leather and orris, with vanilla and tonka.',
+  'premium-bvlgari-tygar': 'Bright and woody: sparkling grapefruit over a clean, warm ambroxan and woods base.',
+  'premium-dubai-chocolate': 'A rich, Arabian-style gourmand built around chocolate: sweet, warm and indulgent.',
+  'premium-lavender-oud': 'Aromatic lavender over a deep, woody oud: calming on top, rich underneath.',
+  'premium-vanilla': 'Warm, soft vanilla: creamy, sweet and comforting, close to the skin.',
+  'premium-lattafa-khamrah': 'Warm and spicy-sweet: cinnamon and nutmeg over dates and praline, with vanilla, tonka and amber. A winter favourite.',
+  'premium-9pm': 'Sweet and seductive: apple, cinnamon and lavender over orange blossom, with a rich vanilla and tonka base. Made for nights out.',
+  'premium-smoke-whisky': 'Smoky and boozy, with a whisky-like warmth: rich, deep and made for the evening.',
+  'premium-replica-fireplace': 'Cosy and smoky: pink pepper and clove over roasted chestnut and guaiac wood, with vanilla and balsam, like a winter fireside.',
+  'premium-armani-stronger-with-you': 'Warm and spicy-sweet: cardamom and pink pepper over sage, with a smooth chestnut, vanilla and amber base.',
+  'premium-the-one': 'Warm and refined: grapefruit and coriander over ginger and cardamom, with tobacco, amber and cedar.',
+  'premium-oud-intense': 'A deep, concentrated oud: dark, woody and long-lasting. A little goes a long way.',
+  'premium-marshmallow': 'Soft and sugary, with a fluffy marshmallow sweetness.',
+  'premium-lattafa-yara': 'Sweet and creamy: orchid, heliotrope and tangerine over a gourmand, tropical heart, with vanilla and musk.',
+  'premium-ysl-y': 'Fresh and woody: apple, ginger and bergamot over sage and juniper, with amberwood and tonka.',
+  'premium-neroli-portofino': 'Bright Mediterranean citrus: bergamot, lemon and neroli over orange blossom, on a light amber base.',
+  'premium-secret-musk': 'A soft, sensual musk: clean, close to the skin and long-lasting.',
+  'premium-cream-de-musk': 'Creamy, powdery musk: soft, clean and comforting.',
+  'premium-gold-sandal': 'Rich, creamy sandalwood with a warm golden glow.',
+  'premium-kasturi-sandal': 'Musk (kasturi) and sandalwood: a traditional pairing, warm, soft and calming.',
+  'premium-kesar-chandan': 'Saffron (kesar) and sandalwood (chandan): warm, golden and traditional, beautiful as an attar.',
+  'premium-heena': 'The classic heena attar: warm, earthy, herbal and spicy, traditionally worn in the cooler months.',
+  'premium-good-girl': 'Sweet and bold: almond and coffee over tuberose and jasmine, with tonka, cocoa and vanilla.',
+  'premium-bvlgari-aqua': 'Fresh and marine: mandarin and petitgrain over sea notes, on a light woody base. Made for the heat.',
+  'premium-acqua-di-gio': 'Fresh and aquatic: lime, bergamot and marine notes over rosemary, with white musk, cedar and patchouli.',
+  'premium-ysl-myslf': 'Fresh and woody-floral: bergamot and a clean orange blossom heart over warm woods and patchouli.',
+
+  // Luxury
+  'luxury-rouge-540': 'Airy and radiant: saffron and jasmine over amberwood and ambergris, with fir resin and cedar. Sweet, glowing and unmistakable.',
+  'luxury-rasasi-hawas': 'Fresh and sweet-aquatic: apple and bergamot with a touch of cinnamon, over plum, cardamom and ambergris. Long-lasting.',
+  'luxury-lv-ombre-nomade': 'Rich and smoky: oud with raspberry and rose, over benzoin, incense and birch. Deep and luxurious.',
+  'luxury-tom-ford-oud-satin-mood': 'Velvety and rich: oud wrapped in rose and violet, with vanilla and benzoin.',
+  'luxury-tam-dao': 'Creamy and woody: smooth sandalwood with cypress and cedar. Calm, quiet and elegant.',
+  'luxury-afternoon-swim': 'Sunny citrus: mandarin, bergamot and bitter orange with ginger, on a soft ambergris base. Fresh and bright.',
+  'luxury-azzaro-most-wanted': 'Warm and addictive: cardamom over a smooth toffee accord and amberwood.',
+  'luxury-caramel-oud': 'Sweet caramel over a warm oud base: rich, smooth and indulgent.',
+  'luxury-lv-imagination': 'Fresh and sparkling: citron, bergamot and orange with ginger and cinnamon, over black tea and ambroxan.',
+  'luxury-armaf-club-de-nuit': 'Fruity and smoky: pineapple, lemon and black currant over birch and rose, with musk, ambergris and vanilla.',
+  'luxury-lattafa-khamrah-qahwa': 'Rich and spicy-sweet: cardamom, cinnamon and ginger over praline, with coffee, vanilla and tonka.',
+  'luxury-kaccha-gulab': 'Fresh, green rose, like a just-opened bud: lighter and brighter than a deep rose attar.',
+  'luxury-gucci-oud': 'Rich and fruity-spicy: raspberry and saffron over rose and oud, with warm amber.',
+};
