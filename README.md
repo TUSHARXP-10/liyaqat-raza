@@ -191,10 +191,12 @@ can't be framed.
 3. Supabase → **Authentication → Users → Add user**: the same email and a password (tick
    "Auto confirm user"). Under **Authentication → Sign In / Providers**, turn off "Allow new
    users to sign up".
-4. Supabase → **Project Settings → API Keys**: copy the **Publishable key**. In Vercel →
-   **Settings → Environment Variables**, add these, then redeploy:
-   - `VITE_SUPABASE_URL` = `https://unsrlrbbgjecswbswncc.supabase.co`
-   - `VITE_SUPABASE_PUBLISHABLE_KEY` = the key
+4. The site's Supabase URL and **Publishable key** (Supabase → Project Settings → API Keys) go in
+   `.env.production`, which is committed. Nothing needs to be set in Vercel. If
+   `VITE_SUPABASE_URL` / `VITE_SUPABASE_PUBLISHABLE_KEY` are set there, they override the file,
+   so they must hold the real values; empty ones are ignored (`vite.config.js`), and a build
+   without either prints "Supabase isn't configured" in the build log. Without them the live
+   site and `/admin` run in **demo mode**.
 5. Open `/admin`, sign in, and add the rest of the team under Settings (then create their users
    as in step 3).
 

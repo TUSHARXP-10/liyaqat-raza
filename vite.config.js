@@ -4,6 +4,12 @@ import { legalPage, LEGAL } from './scripts/license-page.mjs';
 import { seoPages, productPage, siteLdTag, addressLine, brokenLinks } from './scripts/seo-pages.mjs';
 import { BUSINESS } from './src/content.js';
 
+// A variable defined but left empty in the host's settings (Vercel → Settings →
+// Environment Variables) would override .env.production and silently switch
+// the live site and admin panel to demo mode. Empty means "not set". (Vite
+// reads the environment after this file runs.)
+for (const [k, v] of Object.entries(process.env)) if (k.startsWith('VITE_') && !String(v ?? '').trim()) delete process.env[k];
+
 // "Browse 145 fragrances" in link previews and page copy follows the spreadsheet
 const catalogFile = () => JSON.parse(readFileSync(new URL('./src/shop/catalog.json', import.meta.url), 'utf8'));
 const productCount = () => catalogFile().products.length;
@@ -27,6 +33,13 @@ const buildSeoPages = async () => seoPages(await loadProducts(), await loadPhoto
 function siteMeta() {
   return {
     name: 'raza-site-meta',
+    // say so in the build log if the site would go live without its database
+    configResolved(config) {
+      const env = config.env || {};
+      if (config.command === 'build' && !(env.VITE_SUPABASE_URL && (env.VITE_SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_ANON_KEY))) {
+        config.logger.warn('\n  Supabase isn’t configured (VITE_SUPABASE_URL / VITE_SUPABASE_PUBLISHABLE_KEY): the live site and admin panel will run in demo mode.\n');
+      }
+    },
     transformIndexHtml: async (html) => html
       .replaceAll('__SITE_URL__', site)
       .replaceAll('__PRODUCT_COUNT__', productCount())
