@@ -229,6 +229,11 @@ Hostinger: `A @ 216.198.79.1` and `CNAME www cname.vercel-dns.com`; Vercel redir
 `razaperfume.com` to `www` and renews the HTTPS certificates itself. The sitemap, canonical links
 and link previews use `https://www.razaperfume.com` (`vite.config.js`; `SITE_URL` overrides it).
 
+**Second domain: razaperfumenx2.com** (same Vercel project). It and `www.razaperfumenx2.com`
+redirect permanently (308) to the same path on `https://www.razaperfume.com`, through the
+`redirects` in `vercel.json`. DNS is at Hostinger: `A @ 216.198.79.1` and
+`CNAME www cname.vercel-dns.com`.
+
 **Database:** Supabase project `supabase-bronze-cave` (`jxufcqcvfnfmhuhnojfq`). The site reads its
 URL and publishable key from `.env.production`. Set up with `supabase/setup.sql`; admins are
 listed in `public.admins`. In Supabase → Authentication → URL Configuration, the Site URL is the

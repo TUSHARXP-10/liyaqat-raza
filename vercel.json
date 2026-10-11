@@ -71,6 +71,30 @@
       ]
     }
   ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.razaperfumenx2.com"
+        }
+      ],
+      "destination": "https://www.razaperfume.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "razaperfumenx2.com"
+        }
+      ],
+      "destination": "https://www.razaperfume.com/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/p/:id",
