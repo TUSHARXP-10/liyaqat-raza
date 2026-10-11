@@ -21,6 +21,7 @@ export const TIMINGS = {
   gentle: { converge: 0, crisp: 0.1, sweep: 0.6, hole: 1.6, suck: 1.6, collapse: 1.6, flash: 1.6, since: 1.7, credits: 2.5, end: 4.2 },
 };
 const GOLDS = ['#fff1c9', '#f0cf88', '#d9a852', '#b8862f'];
+const PARTS = ['mark', 'word']; // the intro leaves out the "— NX2 —" line
 
 const newCanvas = (w, h) => {
   if (typeof OffscreenCanvas !== 'undefined') return new OffscreenCanvas(w, h);
@@ -91,7 +92,7 @@ export class IntroRenderer {
   // Samples the logo into particle targets (grouped by colour, so each frame
   // is one pass per colour) and keeps a crisp gold copy for the hold.
   buildLogo() {
-    const aspect = LOGO.height / LOGO.width;
+    const aspect = LOGO.heightWithoutTag / LOGO.width;
     const W = Math.round(Math.min(this.w * (this.w < 820 ? 0.9 : 0.62), 820, (this.h * 0.62) / aspect));
     const H = Math.round(W * aspect);
     this.lw = W;
@@ -99,7 +100,7 @@ export class IntroRenderer {
 
     const mask = newCanvas(W, H);
     const mctx = mask.getContext('2d', { willReadFrequently: true });
-    drawLogo(mctx, 0, 0, W, '#fff');
+    drawLogo(mctx, 0, 0, W, '#fff', PARTS);
     const data = mctx.getImageData(0, 0, W, H).data;
     let filled = 0;
     for (let i = 3; i < data.length; i += 4) if (data[i] > 140) filled++;
@@ -159,7 +160,7 @@ export class IntroRenderer {
     grad.addColorStop(0.8, '#f3dea4');
     grad.addColorStop(1, '#9d6f2e');
     // champagne-gold ink, with the logo's own gold details a shade deeper
-    drawLogo(gctx, 0, 0, W, { ink: grad, gold: '#c9a45c' });
+    drawLogo(gctx, 0, 0, W, { ink: grad, gold: '#c9a45c' }, PARTS);
     this.gold = gold;
     [this.sweepCanvas, this.sweepCtx] = make();
   }
