@@ -38,6 +38,15 @@ export function initCursor() {
     const t = e.target.closest(interactive);
     if (!t) return;
     root.classList.add('is-hover');
+    // Keep the ring sized to the hovered element while it is under the pointer.
+    gsap.ticker.add(() => {
+      const r = t.getBoundingClientRect();
+      ring.style.width = `${Math.max(40, r.height * 0.9)}px`;
+      ring.style.height = ring.style.width;
+      document.querySelectorAll(interactive).forEach((el) => {
+        el.style.setProperty('--cursor-d', `${Math.hypot(pos.x - el.offsetLeft, pos.y - el.offsetTop)}`);
+      });
+    });
     const label = t.getAttribute('data-cursor-label');
     if (label) {
       text.textContent = label;
