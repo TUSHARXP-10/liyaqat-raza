@@ -102,6 +102,19 @@ async function boot() {
   lenis.stop();
   lenis.on('scroll', ScrollTrigger.update);
   // depth cue for the parallax layers: how far each element sits from the fold
+  // record how deep readers get, once the scroll has come to rest
+  const SETTLE_MS = 1500;
+  let lastDepth = 0;
+  lenis.on('scroll', () => {
+    const now = performance.now();
+    if (now - lastDepth < 3000) return;
+    lastDepth = now;
+    const until = now + SETTLE_MS;
+    while (Math.abs(lenis.velocity) > 0.01 && performance.now() < until) {
+      document.documentElement.getBoundingClientRect();
+    }
+    try { sessionStorage.setItem('raza:depth', String(Math.round(window.scrollY))); } catch { /* private mode */ }
+  });
   lenis.on('scroll', () => {
     document.querySelectorAll('main *').forEach((el) => {
       const top = el.getBoundingClientRect().top;
