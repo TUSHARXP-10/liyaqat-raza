@@ -101,6 +101,13 @@ async function boot() {
   const lenis = new Lenis({ lerp: reduced ? 1 : 0.085, smoothWheel: !reduced, wheelMultiplier: 0.9 });
   lenis.stop();
   lenis.on('scroll', ScrollTrigger.update);
+  // depth cue for the parallax layers: how far each element sits from the fold
+  lenis.on('scroll', () => {
+    document.querySelectorAll('main *').forEach((el) => {
+      const top = el.getBoundingClientRect().top;
+      el.style.setProperty('--fold', (top / innerHeight).toFixed(3));
+    });
+  });
   gsap.ticker.add((t) => lenis.raf(t * 1000));
   gsap.ticker.lagSmoothing(0);
 
