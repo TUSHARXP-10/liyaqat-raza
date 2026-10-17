@@ -1986,3 +1986,8 @@ html.has-announce:not(.nav-away) .shop__controls { top: calc(var(--nav-h) + 36px
   .announce__link { margin-left: 8px; }
 }
 .qv__page { align-self: flex-start; }
+
+/* parallax depth: layers drift a hair with their distance from the fold */
+main * {
+  margin-bottom: calc(var(--fold, 0) * 0.001px);
+}
